@@ -1,0 +1,96 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Back Right Virtual" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="717"/>
+	</widget>
+	<widget field="Front Right Virtual" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="532"/>
+	</widget>
+	<widget field="Back Left Virtual" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="452"/>
+	</widget>
+	<widget field="Front Left Virtual" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="104"/>
+	</widget>
+	<widget field="Back Right Absolute" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="431"/>
+	</widget>
+	<widget field="Front Right Absolute" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="385"/>
+	</widget>
+	<widget field="Back Left Absolute" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="52"/>
+	</widget>
+	<widget field="Front Left Absolute" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="326"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.RobotPreferences">
+		<location x="17" y="125"/>
+	</static-widget>
+	<widget field="Back Right Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="211" y="410"/>
+	</widget>
+	<widget field="Back Left Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="19" y="410"/>
+	</widget>
+	<widget field="Front Right Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="213" y="363"/>
+	</widget>
+	<widget field="Front Left Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="17" y="364"/>
+	</widget>
+	<widget field="RearRightTurningAbsoluteEncoderVirtualPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="23" y="696"/>
+	</widget>
+	<widget field="FrontRightTurningAbsoluteEncoderVirtualPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="26" y="577"/>
+	</widget>
+	<widget field="RearLeftTurningAbsoluteEncoderVirtualPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="24" y="635"/>
+		<height>20</height>
+	</widget>
+	<widget field="FrontLeftTurningAbsoluteEncoderVirtualPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="27" y="511"/>
+	</widget>
+	<widget field="RearRightTurningAbsoluteEncoderPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="25" y="675"/>
+	</widget>
+	<widget field="FrontRightTurningAbsoluteEncoderPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="26" y="557"/>
+	</widget>
+	<widget field="RearLeftTurningAbsoluteEncoderPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="24" y="615"/>
+	</widget>
+	<widget field="FrontLeftTurningAbsoluteEncoderPosition" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="27" y="489"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="12" y="11"/>
+		<height>19</height>
+		<property name="Text" value="Robot connection Status"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="175" y="27"/>
+		<height>23</height>
+		<property name="Text" value="Autonomous Routine"/>
+	</static-widget>
+	<widget field="Intake Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.ProgressBar">
+		<location x="11" y="73"/>
+		<width>87</width>
+		<height>30</height>
+		<property name="Maximum" value="1.0"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="11" y="33"/>
+		<width>117</width>
+		<height>18</height>
+	</static-widget>
+	<widget field="Auto choices" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="176" y="43"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="Field"/>
+	<hidden field="Swerve Odometry"/>
+</xml>

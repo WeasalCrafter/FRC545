@@ -1,0 +1,217 @@
+{
+  "tabPane": [
+    {
+      "title": "SmartDashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "5,0": {
+            "size": [
+              7,
+              4
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Swerve Odometry",
+              "_title": "ODOMETRY",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "k2024Crescendo",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false,
+              "Colors/centeredTrajectory": "#FFFFFFFF",
+              "Colors/trajectory": "#FFFFFFFF"
+            }
+          },
+          "2,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "BACK",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Number of columns": 2,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "BOTTOM",
+              "_children": {
+                "1,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Back Right Offset",
+                  "_title": "Back Right Offset",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "1,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Back Right Absolute",
+                  "_title": "Back Right Absolute",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "1,1": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Back Right Virtual",
+                  "_title": "Back Right Virtual",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "0,1": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Back Left Virtual",
+                  "_title": "Back Left Virtual",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "0,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Back Left Offset",
+                  "_title": "Back Left Offset",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Back Left Absolute",
+                  "_title": "/SmartDashboard/Back Left Absolute",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                }
+              }
+            }
+          },
+          "2,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "FRONT",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Number of columns": 2,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "BOTTOM",
+              "_children": {
+                "1,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Front Right Absolute",
+                  "_title": "/SmartDashboard/Front Right Absolute",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "1,1": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Front Right Virtual",
+                  "_title": "/SmartDashboard/Front Right Virtual",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "1,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Front Right Offset",
+                  "_title": "/SmartDashboard/Front Right Offset",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "0,0": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Front Left Absolute",
+                  "_title": "/SmartDashboard/Front Left Absolute",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "0,2": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Front Left Offset",
+                  "_title": "/SmartDashboard/Front Left Offset",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                "0,1": {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Front Left Virtual",
+                  "_title": "/SmartDashboard/Front Left Virtual",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                }
+              }
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "INFO",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Number Slider",
+                  "_source0": "network_table:///SmartDashboard/Intake Speed",
+                  "_title": "Intake Speed",
+                  "_glyph": 148,
+                  "_showGlyph": false,
+                  "Slider Settings/Min": -1.0,
+                  "Slider Settings/Max": 1.0,
+                  "Slider Settings/Block increment": 0.0625,
+                  "Visuals/Display value": true
+                },
+                {
+                  "_type": "ComboBox Chooser",
+                  "_source0": "network_table:///SmartDashboard/Auto choices",
+                  "_title": "Auto choices",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Robot Preferences",
+                  "_source0": "network_table:///Preferences",
+                  "_title": "/Preferences",
+                  "_glyph": 148,
+                  "_showGlyph": false,
+                  "Miscellaneous/Show search box": true
+                }
+              ]
+            }
+          },
+          "0,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Field",
+              "_title": "Field",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "k2024Crescendo",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1936.0,
+    "height": 1048.0
+  }
+}
