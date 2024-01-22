@@ -117,43 +117,23 @@ public class Robot extends TimedRobot {
 		// Do this in either robot or subsystem init
 		SmartDashboard.putData("Field", m_field);
 
-		// Do this in either robot periodic or subsystem periodic
-		//SmartDashboard.putNumber("FrontLeftDrivingEncoderPosition", m_robotContainer.getDrive().getFrontLeftModule().getDrivingEncoder().getPosition());
-		//SmartDashboard.putNumber("FrontLeftTurningEncoderPosition", m_robotContainer.getDrive().getFrontLeftModule().getTurningEncoder().getPosition());
-		
-		//SmartDashboard.putNumber("RearLeftDrivingEncoderPosition", m_robotContainer.getDrive().getRearLeftModule().getDrivingEncoder().getPosition());
-		//SmartDashboard.putNumber("RearLeftTurningEncoderPosition", m_robotContainer.getDrive().getRearLeftModule().getTurningEncoder().getPosition());
-		
-		//SmartDashboard.putNumber("FrontRightDrivingEncoderPosition", m_robotContainer.getDrive().getFrontRightModule().getDrivingEncoder().getPosition());
-		//SmartDashboard.putNumber("FrontRightTurningEncoderPosition", m_robotContainer.getDrive().getFrontRightModule().getTurningEncoder().getPosition());
-		
-		//SmartDashboard.putNumber("RearRightDrivingEncoderPosition", m_robotContainer.getDrive().getRearRightModule().getDrivingEncoder().getPosition());
-		//SmartDashboard.putNumber("RearRightTurningEncoderPosition", m_robotContainer.getDrive().getRearRightModule().getTurningEncoder().getPosition());
-	
-		//SmartDashboard.putNumber("FrontLeftTurningAbsoluteEncoderPosition", m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getPosition());
-		//SmartDashboard.putNumber("RearLeftTurningAbsoluteEncoderPosition", m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getPosition());
-		//SmartDashboard.putNumber("FrontRightTurningAbsoluteEncoderPosition", m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getPosition());
-		//SmartDashboard.putNumber("RearRightTurningAbsoluteEncoderPosition", m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getPosition());
+		SmartDashboard.putNumber("Front Left Offset", m_robotContainer.getDrive().FRONT_LEFT_VIRTUAL_OFFSET_RADIANS);
+		SmartDashboard.putNumber("Front Right Offset", m_robotContainer.getDrive().FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS);
+		SmartDashboard.putNumber("Back Left Offset", m_robotContainer.getDrive().REAR_LEFT_VIRTUAL_OFFSET_RADIANS);
+		SmartDashboard.putNumber("Back Right Offset", m_robotContainer.getDrive().REAR_RIGHT_VIRTUAL_OFFSET_RADIANS);
 
-		//SmartDashboard.putNumber("FrontLeftTurningAbsoluteEncoderVirtualPosition", m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getVirtualPosition());
-		//SmartDashboard.putNumber("RearLeftTurningAbsoluteEncoderVirtualPosition", m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getVirtualPosition());
-		//SmartDashboard.putNumber("FrontRightTurningAbsoluteEncoderVirtualPosition", m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getVirtualPosition());
-		//SmartDashboard.putNumber("RearRightTurningAbsoluteEncoderVirtualPosition", m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getVirtualPosition());
+		SmartDashboard.putNumber("Front Left Absolute", m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getPosition());
+		SmartDashboard.putNumber("Back Left Absolute", m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getPosition());
+		SmartDashboard.putNumber("Front Right Absolute", m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getPosition());
+		SmartDashboard.putNumber("Back Right Absolute", m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getPosition());
+
+		SmartDashboard.putNumber("Front Left Virtual", m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getVirtualPosition());
+		SmartDashboard.putNumber("Back Left Virtual", m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getVirtualPosition());
+		SmartDashboard.putNumber("Front Right Virtual", m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getVirtualPosition());
+		SmartDashboard.putNumber("Back Right Virtual", m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getVirtualPosition());
 	
-		//SmartDashboard.putNumber("FrontLeftTurningDesiredState", m_robotContainer.getDrive().getFrontLeftModule().getDesiredState().angle.getRadians());
-		//SmartDashboard.putNumber("RearLeftTurningDesiredState", m_robotContainer.getDrive().getRearLeftModule().getDesiredState().angle.getRadians());
-		//SmartDashboard.putNumber("FrontRightTurningDesiredState", m_robotContainer.getDrive().getFrontRightModule().getDesiredState().angle.getRadians());
-		//SmartDashboard.putNumber("RearRightTurningDesiredState", m_robotContainer.getDrive().getRearRightModule().getDesiredState().angle.getRadians());
 		SmartDashboard.putNumber("Intake Speed", m_robotContainer.getIntake().getSpeed());
 		SmartDashboard.putNumberArray("SwerveModuleStates", loggingState);
-
-		/* Display 6-axis Processed Angle Data                                      */
-		SmartDashboard.putBoolean(  "IMU_Connected",        m_robotContainer.getDrive().getImu().isConnected());
-		SmartDashboard.putBoolean(  "IMU_IsCalibrating",    m_robotContainer.getDrive().getImu().isCalibrating());
-		SmartDashboard.putNumber(   "IMU_Yaw",              m_robotContainer.getDrive().getImu().getYaw());
-		SmartDashboard.putNumber(   "IMU_Pitch",            m_robotContainer.getDrive().getImu().getPitch());
-		SmartDashboard.putNumber(   "IMU_Roll",             m_robotContainer.getDrive().getImu().getRoll());
-
 		m_robotContainer.getField().setRobotPose(m_robotContainer.getDrive().getPose());
 	}
 

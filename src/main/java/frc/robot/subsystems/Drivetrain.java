@@ -15,6 +15,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.utils.SwerveUtils;
@@ -23,11 +26,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Drivetrain extends SubsystemBase {
 	
 	//********adjust as needed so that virtual (turn) position of wheel is zero when straight********
-	public static final double FRONT_LEFT_VIRTUAL_OFFSET_RADIANS = -1.6; // DEFAULT: -1.653 
-	public static final double FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS = -1; // DEFAULT: -1.650 
-	public static final double REAR_LEFT_VIRTUAL_OFFSET_RADIANS = -1; // DEFAULT: -0.987 
-	public static final double REAR_RIGHT_VIRTUAL_OFFSET_RADIANS = -1; // DEFAULT: +1.021 
-
+	public static final double FRONT_LEFT_VIRTUAL_OFFSET_RADIANS = Preferences.getDouble("frontloffset", 0); // DEFAULT: -1.653 CODED -1.6
+	public static final double FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS = Preferences.getDouble("frontroffset", 0); // DEFAULT: -1.650 CODED -1
+	public static final double REAR_LEFT_VIRTUAL_OFFSET_RADIANS = Preferences.getDouble("backloffset", 0); // DEFAULT: -0.987 CODED -1
+	public static final double REAR_RIGHT_VIRTUAL_OFFSET_RADIANS = Preferences.getDouble("backroffset", 0); // DEFAULT: +1.021 CODED -1
+	
 	public static final int GYRO_ORIENTATION = -1; // might be able to merge with kGyroReversed
 
 	public static final double FIELD_LENGTH_INCHES = 54*12+1; // 54ft 1in

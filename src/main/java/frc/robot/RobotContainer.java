@@ -7,7 +7,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.drivetrain.LoadPathweaver;
-import frc.robot.commands.intake.ToggleIntake;
+//import frc.robot.commands.intake.ToggleIntake; TOGGLE INTAKE ONLY
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.trajectories.MoveForward;
@@ -47,11 +47,18 @@ public class RobotContainer {
 					-MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
 					true, true),
 				m_robotDrive));
+		m_intake.setDefaultCommand(new RunCommand( //INTAKE WHILE-PRESSED MODE
+			() -> m_intake.endIntakeOuttake(), m_intake));
 	}
 
 	private void configureButtonBindings() {
-		new JoystickButton(m_driverController, Button.kA.value)
-			.onTrue(new ToggleIntake(m_intake));
+		//new JoystickButton(m_driverController, Button.kA.value) //INTAKE TOGGLE MODE
+		//	.onTrue(new ToggleIntake(m_intake));
+
+		new JoystickButton(m_driverController, Button.kA.value) //INTAKE WHILE-PRESSED MODE
+			.whileTrue(new RunCommand(
+				() -> m_intake.startIntake(),
+				m_intake));
 
 		new JoystickButton(m_driverController, Button.kB.value)
 			.onTrue(new LoadPathweaver(m_robotDrive, this, AUTON_PATH_FLIP)); 

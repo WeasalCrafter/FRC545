@@ -2,7 +2,7 @@
   {
     "name": "/Preferences/frontroffset",
     "type": "double",
-    "value": -1.0,
+    "value": 1.0,
     "properties": {
       "persistent": true,
       "retained": true
