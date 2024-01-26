@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
     private int IntakeMotorCanID = IntakeConstants.IntakeMotorCanID;
     private static CANSparkMax m_intake;
-    private final static double speed = 0.5;
+    private final static double speed = IntakeConstants.IntakeSpeedConstant * IntakeConstants.IntakeOrientation;
 
     public Intake() {
         m_intake = new CANSparkMax(IntakeMotorCanID, MotorType.kBrushless);
@@ -18,6 +18,11 @@ public class Intake extends SubsystemBase {
     public void startIntake() {
         m_intake.set(speed);
         System.out.println("Intake: Started");
+    }
+
+    public void startOuttake() {
+        m_intake.set(speed*-1);
+        System.out.println("Outtake: Started");
     }
 
     public void endIntakeOuttake() {

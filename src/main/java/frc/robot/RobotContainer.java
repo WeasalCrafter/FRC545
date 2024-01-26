@@ -60,8 +60,13 @@ public class RobotContainer {
 				() -> m_intake.startIntake(),
 				m_intake));
 
-		new JoystickButton(m_driverController, Button.kB.value)
-			.onTrue(new LoadPathweaver(m_robotDrive, this, AUTON_PATH_FLIP)); 
+		new JoystickButton(m_driverController, Button.kB.value) //INTAKE WHILE-PRESSED MODE
+			.whileTrue(new RunCommand(
+				() -> m_intake.startOuttake(),
+				m_intake));
+
+		// new JoystickButton(m_driverController, Button.kB.value)
+		// 	.onTrue(new LoadPathweaver(m_robotDrive, this, AUTON_PATH_FLIP)); 
 
 		new JoystickButton(m_driverController, Button.kX.value)
 			.whileTrue(new RunCommand(

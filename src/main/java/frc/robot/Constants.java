@@ -134,6 +134,8 @@ public final class Constants {
 
 	public static final class IntakeConstants {
 		public static final int IntakeMotorCanID = 11; 
+		public static final double IntakeSpeedConstant = 0.5;
+		public static final int IntakeOrientation = 1; //-1 is reversed
 	}
 
 	public static final class OIConstants {
