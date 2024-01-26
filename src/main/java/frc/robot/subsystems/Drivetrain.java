@@ -30,10 +30,10 @@ public class Drivetrain extends SubsystemBase {
 	// public final double REAR_LEFT_VIRTUAL_OFFSET_RADIANS = Preferences.getDouble("backloffset", 0); // DEFAULT: -0.987 CODED -1
 	// public final double REAR_RIGHT_VIRTUAL_OFFSET_RADIANS = Preferences.getDouble("backroffset", 0); // DEFAULT: +1.021 CODED -1
 	
-	public final double FRONT_LEFT_VIRTUAL_OFFSET_RADIANS = -2.4; // DEFAULT: -1.653 CODED -1.6
-	public final double FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS = -0.47; // DEFAULT: -1.650 CODED -1
-	public final double REAR_LEFT_VIRTUAL_OFFSET_RADIANS = 2.65; // DEFAULT: -0.987 CODED -1
-	public final double REAR_RIGHT_VIRTUAL_OFFSET_RADIANS = -0.17; // DEFAULT: +1.021 CODED -1
+	public final double FRONT_LEFT_VIRTUAL_OFFSET_RADIANS = 3.14;//-2.4; // DEFAULT: -1.653 CODED -1.6
+	public final double FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS = 3.14;//-0.39; // DEFAULT: -1.650 CODED -1
+	public final double REAR_LEFT_VIRTUAL_OFFSET_RADIANS = -1.74;//2.65; // DEFAULT: -0.987 CODED -1
+	public final double REAR_RIGHT_VIRTUAL_OFFSET_RADIANS = 0.38;//-0.17; // DEFAULT: +1.021 CODED -1
 
 	public static final int GYRO_ORIENTATION = -1; // might be able to merge with kGyroReversed
 

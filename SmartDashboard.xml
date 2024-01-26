@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Auto Selector" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="52"/>
+	</widget>
 	<widget field="Back Right Virtual" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="219" y="448"/>
 		<height>19</height>
@@ -36,18 +39,18 @@
 		<location x="25" y="121"/>
 	</static-widget>
 	<widget field="Back Right Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="219" y="469"/>
+		<location x="234" y="616"/>
 		<width>176</width>
 	</widget>
 	<widget field="Back Left Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="16" y="470"/>
+		<location x="60" y="617"/>
 	</widget>
 	<widget field="Front Right Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="221" y="387"/>
+		<location x="234" y="572"/>
 		<width>179</width>
 	</widget>
 	<widget field="Front Left Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="19" y="387"/>
+		<location x="49" y="567"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
 		<location x="12" y="11"/>
