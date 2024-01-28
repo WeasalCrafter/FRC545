@@ -274,6 +274,11 @@ public class Drivetrain extends SubsystemBase {
 		m_gyro.reset();
 	}
 
+	public void oppositeHeading() {
+		m_gyro.reset();
+		m_gyro.setAngleAdjustment(180);
+	}
+
 	/**
 	 * Returns the heading of the robot.
 	 *

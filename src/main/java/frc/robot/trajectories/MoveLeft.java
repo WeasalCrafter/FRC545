@@ -13,11 +13,11 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.drivetrain.DrivetrainSwerveRelative;
 import frc.robot.subsystems.*;
 
-public class MoveForward extends SequentialCommandGroup {
+public class MoveLeft extends SequentialCommandGroup {
 
     private double distance;
 	
-	public MoveForward(Drivetrain drivetrain, RobotContainer container, double distance) {
+	public MoveLeft(Drivetrain drivetrain, RobotContainer container, double distance) {
         this.distance = distance;
 		
 		addCommands(
@@ -29,7 +29,7 @@ public class MoveForward extends SequentialCommandGroup {
 		Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
 			new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
 			List.of(),
-				new Pose2d(+distance, 0, Rotation2d.fromDegrees(0)),
+				new Pose2d(0, -distance, Rotation2d.fromDegrees(0)),
 				container.createTrajectoryConfig()
 			);
 		return trajectory;

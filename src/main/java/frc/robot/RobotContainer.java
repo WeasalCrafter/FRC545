@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
 import frc.robot.commands.drivetrain.LoadPathweaver;
 //import frc.robot.commands.intake.ToggleIntake; TOGGLE INTAKE ONLY
 import frc.robot.subsystems.Drivetrain;
@@ -54,7 +55,7 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		//new JoystickButton(m_driverController, Button.kA.value) //INTAKE TOGGLE MODE
 		//	.onTrue(new ToggleIntake(m_intake));
-
+		
 		new JoystickButton(m_driverController, Button.kA.value) //INTAKE WHILE-PRESSED MODE
 			.whileTrue(new RunCommand(
 				() -> m_intake.startIntake(),
@@ -74,9 +75,11 @@ public class RobotContainer {
 				m_robotDrive));
 
 		new JoystickButton(m_driverController, Button.kY.value)
-			.onTrue(new MoveSShape(m_robotDrive,this,3));   
-				
+			.onTrue(new DrivetrainReverseHeading(m_robotDrive));   
+				//new MoveSShape(m_robotDrive,this,3)
 
+		//m_driverController.rightBumper(m_intake.startIntake());
+		
 	}
 	public Command getAutonomousCommand() {
 		switch (getSelected()) {
