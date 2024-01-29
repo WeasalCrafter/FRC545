@@ -29,8 +29,11 @@ public class Robot extends TimedRobot {
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		m_robotContainer = new RobotContainer();
-
-		SmartDashboard.putData("Swerve Odometry", m_robotContainer.getField());		
+		Field2d m_field = new Field2d();
+		
+		SmartDashboard.putData("Swerve Odometry", m_robotContainer.getField());
+		SmartDashboard.putData("Field", m_field);
+		//updateToSmartDash();		
 	}
 
 	/**
@@ -86,16 +89,18 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
 	}
 
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
-
 		updateToSmartDash();
+		
 	}
 
 	public void updateToSmartDash()
@@ -111,29 +116,43 @@ public class Robot extends TimedRobot {
 			m_robotContainer.getDrive().getRearRightModule().getDesiredState().angle.getRadians(),
 			m_robotContainer.getDrive().getRearRightModule().getDesiredState().speedMetersPerSecond
 		};
+		
+		//FL, FR, BL, BR
+		double offsets[] = {
+			m_robotContainer.getDrive().FRONT_LEFT_VIRTUAL_OFFSET_RADIANS,
+			m_robotContainer.getDrive().FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS,
+			m_robotContainer.getDrive().REAR_LEFT_VIRTUAL_OFFSET_RADIANS,
+			m_robotContainer.getDrive().REAR_RIGHT_VIRTUAL_OFFSET_RADIANS
+		};
 
-		final Field2d m_field = new Field2d();
+		//FL, FR, BL, BR
+		double virtualPositions[] = {
+			m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getVirtualPosition(),
+			m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getVirtualPosition(),
+			m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getVirtualPosition(),
+			m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getVirtualPosition()
+		};
+
+		//FL, FR, BL, BR
+		double absolutePositions[] = {
+			m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getPosition(),
+			m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getPosition(),
+			m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getPosition(),
+			m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getPosition()
+		};
+
+
+		
 		
 		// Do this in either robot or subsystem init
-		SmartDashboard.putData("Field", m_field);
-
-		SmartDashboard.putNumber("Front Left Offset", m_robotContainer.getDrive().FRONT_LEFT_VIRTUAL_OFFSET_RADIANS);
-		SmartDashboard.putNumber("Front Right Offset", m_robotContainer.getDrive().FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS);
-		SmartDashboard.putNumber("Back Left Offset", m_robotContainer.getDrive().REAR_LEFT_VIRTUAL_OFFSET_RADIANS);
-		SmartDashboard.putNumber("Back Right Offset", m_robotContainer.getDrive().REAR_RIGHT_VIRTUAL_OFFSET_RADIANS);
-
-		SmartDashboard.putNumber("Front Left Absolute", m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getPosition());
-		SmartDashboard.putNumber("Back Left Absolute", m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getPosition());
-		SmartDashboard.putNumber("Front Right Absolute", m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getPosition());
-		SmartDashboard.putNumber("Back Right Absolute", m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getPosition());
-
-		SmartDashboard.putNumber("Front Left Virtual", m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getVirtualPosition());
-		SmartDashboard.putNumber("Back Left Virtual", m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getVirtualPosition());
-		SmartDashboard.putNumber("Front Right Virtual", m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getVirtualPosition());
-		SmartDashboard.putNumber("Back Right Virtual", m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getVirtualPosition());
-	
+		//SmartDashboard.putData("Field", m_field);
 		SmartDashboard.putNumber("Intake Speed", m_robotContainer.getIntake().getSpeed());
+		
+		SmartDashboard.putNumberArray("offsets", offsets);
+		SmartDashboard.putNumberArray("absolute", absolutePositions);
+		SmartDashboard.putNumberArray("virtual", virtualPositions);
 		SmartDashboard.putNumberArray("SwerveModuleStates", loggingState);
+
 		m_robotContainer.getField().setRobotPose(m_robotContainer.getDrive().getPose());
 	}
 

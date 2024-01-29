@@ -7,15 +7,17 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
+import frc.robot.commands.drivetrain.DrivetrainTestPath;
 import frc.robot.commands.drivetrain.LoadPathweaver;
-//import frc.robot.commands.intake.ToggleIntake; TOGGLE INTAKE ONLY
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,39 +50,34 @@ public class RobotContainer {
 					-MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
 					true, true),
 				m_robotDrive));
+
 		m_intake.setDefaultCommand(new RunCommand( //INTAKE WHILE-PRESSED MODE
 			() -> m_intake.endIntakeOuttake(), m_intake));
 	}
 
-	private void configureButtonBindings() {
-		//new JoystickButton(m_driverController, Button.kA.value) //INTAKE TOGGLE MODE
-		//	.onTrue(new ToggleIntake(m_intake));
-		
+	private void configureButtonBindings() {		
 		new JoystickButton(m_driverController, Button.kA.value) //INTAKE WHILE-PRESSED MODE
 			.whileTrue(new RunCommand(
 				() -> m_intake.startIntake(),
 				m_intake));
-
+		
 		new JoystickButton(m_driverController, Button.kB.value) //INTAKE WHILE-PRESSED MODE
 			.whileTrue(new RunCommand(
 				() -> m_intake.startOuttake(),
 				m_intake));
 
-		// new JoystickButton(m_driverController, Button.kB.value)
-		// 	.onTrue(new LoadPathweaver(m_robotDrive, this, AUTON_PATH_FLIP)); 
-
 		new JoystickButton(m_driverController, Button.kX.value)
-			.whileTrue(new RunCommand(
-				() -> m_robotDrive.setX(),
-				m_robotDrive));
+			.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
 
 		new JoystickButton(m_driverController, Button.kY.value)
-			.onTrue(new DrivetrainReverseHeading(m_robotDrive));   
-				//new MoveSShape(m_robotDrive,this,3)
+			.onTrue(new DrivetrainTestPath(this, m_robotDrive, 1));
+			//.onTrue(new DrivetrainReverseHeading(m_robotDrive));   
 
-		//m_driverController.rightBumper(m_intake.startIntake());
-		
+		//lefTrigger.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
+		//.whileTrue(new RunCommand(() -> m_intake.startIntake(), m_intake));
+					
 	}
+
 	public Command getAutonomousCommand() {
 		switch (getSelected()) {
 			case AUTON_FORWARD:

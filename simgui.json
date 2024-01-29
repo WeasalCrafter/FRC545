@@ -25,9 +25,6 @@
     },
     "transitory": {
       "SmartDashboard": {
-        "Auto choices": {
-          "open": true
-        },
         "open": true
       }
     }
