@@ -25,7 +25,7 @@ public class DrivetrainReverseHeading extends InstantCommand {
 	@Override
 	public void initialize() {
 		System.out.println("DrivetrainOppositeHeading: initialize");
-		drivetrain.oppositeHeading();
+		drivetrain.toggleHeading();
 	}
 
 }

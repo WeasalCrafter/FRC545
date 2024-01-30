@@ -34,6 +34,7 @@ public class RobotContainer {
 	private final Intake m_intake = new Intake();
 
 	XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+	//CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
 	public RobotContainer() {
 		autonChooser.addOption("Forward", AUTON_FORWARD);
@@ -56,26 +57,16 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {		
-		new JoystickButton(m_driverController, Button.kA.value) //INTAKE WHILE-PRESSED MODE
-			.whileTrue(new RunCommand(
-				() -> m_intake.startIntake(),
-				m_intake));
-		
-		new JoystickButton(m_driverController, Button.kB.value) //INTAKE WHILE-PRESSED MODE
-			.whileTrue(new RunCommand(
-				() -> m_intake.startOuttake(),
-				m_intake));
-
-		new JoystickButton(m_driverController, Button.kX.value)
-			.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
-
-		new JoystickButton(m_driverController, Button.kY.value)
-			.onTrue(new DrivetrainTestPath(this, m_robotDrive, 1));
-			//.onTrue(new DrivetrainReverseHeading(m_robotDrive));   
-
-		//lefTrigger.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
-		//.whileTrue(new RunCommand(() -> m_intake.startIntake(), m_intake));
-					
+		// m_driverController.rightTrigger()
+		// 		.whileTrue(new RunCommand(() -> m_intake.startIntake(),m_intake));
+		// m_driverController.rightBumper()
+		// 		.whileTrue(new RunCommand(() -> m_intake.startOuttake(),m_intake));
+		// m_driverController.leftTrigger()
+		// 		.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
+		// m_driverController.x()
+		// 		.onTrue(new DrivetrainReverseHeading(m_robotDrive));
+		// m_driverController.y()
+		// 		.onTrue(new DrivetrainTestPath(this, m_robotDrive, 1));			
 	}
 
 	public Command getAutonomousCommand() {

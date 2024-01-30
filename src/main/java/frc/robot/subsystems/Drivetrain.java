@@ -16,7 +16,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
 //import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.ctre.phoenix6.signals.IsPROLicensedValue;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.utils.SwerveUtils;
@@ -78,6 +80,7 @@ public class Drivetrain extends SubsystemBase {
 	private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DrivetrainConstants.kRotationalSlewRate);
 	private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
+	private boolean IS_REVERSED = false;
 	// Odometry class for tracking robot pose
 	SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
 		DrivetrainConstants.kDriveKinematics,
@@ -272,13 +275,23 @@ public class Drivetrain extends SubsystemBase {
 	/** Zeroes the heading of the robot. */
 	public void zeroHeading() {
 		m_gyro.reset();
+		m_gyro.setAngleAdjustment(0);
+		IS_REVERSED  = false;
 	}
 
 	public void oppositeHeading() {
 		m_gyro.reset();
 		m_gyro.setAngleAdjustment(180);
+		IS_REVERSED = true;
 	}
-
+	public void toggleHeading(){
+		SmartDashboard.putBoolean("IS REVERSED", IS_REVERSED);
+		if(IS_REVERSED == true){
+			zeroHeading();
+		}else{
+			oppositeHeading();
+		}
+	}
 	/**
 	 * Returns the heading of the robot.
 	 *
