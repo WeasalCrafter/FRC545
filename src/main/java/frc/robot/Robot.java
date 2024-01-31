@@ -147,6 +147,7 @@ public class Robot extends TimedRobot {
 		// Do this in either robot or subsystem init
 		//SmartDashboard.putData("Field", m_field);
 		SmartDashboard.putNumber("Intake Speed", m_robotContainer.getIntake().getSpeed());
+		SmartDashboard.putString("Light Status", m_robotContainer.getLights().GetState());
 		
 		SmartDashboard.putNumberArray("offsets", offsets);
 		SmartDashboard.putNumberArray("absolute", absolutePositions);

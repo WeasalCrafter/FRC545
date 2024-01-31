@@ -138,6 +138,21 @@ public final class Constants {
 		public static final int IntakeOrientation = 1; //-1 is reversed
 	}
 
+	public static final class LEDConstants{ //https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+		public static final int BlinkinPWMPort = 0;
+	    public static final double DEFAULT_STATE = 0.43; //Beats per Minute, Color 1 and 2
+    	public static final double SHOOT_STATE = 0.57; //Hot Pink
+    	public static final double INTAKE_STATE = 0.71; //Lawn Green
+    	public static final double OUTTAKE_STATE = 0.87; //Blue
+    	public static final double CLIMB_STATE = 0.67; //Gold
+    	public static final double BREAK_STATE = 0.59; //Dark red
+	}
+
+	public static final class ShooterConstants{
+		public static final int ShooterMotor1CanID = 12;
+		public static final int ShooterMotor2CanID = 13;
+	}
+
 	public static final class OIConstants {
 		public static final int kDriverControllerPort = 0;
 		public static final double kDriveDeadband = 0.05; //0.05;

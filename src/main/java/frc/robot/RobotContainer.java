@@ -1,23 +1,20 @@
 package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
 import frc.robot.commands.drivetrain.DrivetrainTestPath;
-import frc.robot.commands.drivetrain.LoadPathweaver;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Shooter;
 import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,11 +27,13 @@ public class RobotContainer {
 
 	private final Field2d field = new Field2d(); //  a representation of the field
 
+	private final Lights m_lights = new Lights(); // MUST BE BEFORE ITS USES
+
 	private final Drivetrain m_robotDrive = new Drivetrain();
 	private final Intake m_intake = new Intake();
+	private final Shooter m_shooter = new Shooter();
 
-	XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-	//CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
 	public RobotContainer() {
 		autonChooser.addOption("Forward", AUTON_FORWARD);
@@ -52,21 +51,38 @@ public class RobotContainer {
 					true, true),
 				m_robotDrive));
 
-		m_intake.setDefaultCommand(new RunCommand( //INTAKE WHILE-PRESSED MODE
-			() -> m_intake.endIntakeOuttake(), m_intake));
+		m_intake.setDefaultCommand(new RunCommand(() -> m_intake.endIntakeOuttake(), m_intake));
+		m_lights.setDefaultCommand(new RunCommand(() -> m_lights.DefaultState(), m_lights));
 	}
 
 	private void configureButtonBindings() {		
-		// m_driverController.rightTrigger()
-		// 		.whileTrue(new RunCommand(() -> m_intake.startIntake(),m_intake));
-		// m_driverController.rightBumper()
-		// 		.whileTrue(new RunCommand(() -> m_intake.startOuttake(),m_intake));
-		// m_driverController.leftTrigger()
-		// 		.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
-		// m_driverController.x()
-		// 		.onTrue(new DrivetrainReverseHeading(m_robotDrive));
-		// m_driverController.y()
-		// 		.onTrue(new DrivetrainTestPath(this, m_robotDrive, 1));			
+		//m_driverController.a() FUTURE BINDING
+
+		//m_driverController.b() FUTURE BINDING
+				
+
+		m_driverController.x()
+				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
+
+		m_driverController.y()
+				.onTrue(new DrivetrainTestPath(this, m_robotDrive, 1));
+
+		m_driverController.leftTrigger()
+				.whileTrue(new RunCommand(() -> m_intake.startIntake(),m_intake))
+				.whileTrue(new RunCommand(() -> m_lights.IntakeState(), m_lights));
+
+		m_driverController.leftBumper()
+				.whileTrue(new RunCommand(() -> m_intake.startOuttake(),m_intake))
+				.whileTrue(new RunCommand(() -> m_lights.OuttakeState(), m_lights));
+
+		m_driverController.rightTrigger()
+				.whileTrue(new RunCommand(() -> m_shooter.shoot(),m_shooter))
+				.whileTrue(new RunCommand(() -> m_lights.ShootState(), m_lights));
+
+		m_driverController.rightBumper()
+				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
+	
 	}
 
 	public Command getAutonomousCommand() {
@@ -105,5 +121,10 @@ public class RobotContainer {
 	public Intake getIntake()
 	{
 		return m_intake;
+	}
+
+	public Lights getLights()
+	{
+		return m_lights;
 	}
 }

@@ -15,10 +15,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
-//import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.ctre.phoenix6.signals.IsPROLicensedValue;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.utils.SwerveUtils;
@@ -66,7 +64,7 @@ public class Drivetrain extends SubsystemBase {
 		DrivetrainConstants.kRearRightTurningCanId,
 		DrivetrainConstants.kRearRightTurningAnalogPort,
 		DrivetrainConstants.kBackRightChassisAngularOffset);
-
+	
 	// The gyro sensor
 	//private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
 	private final AHRS m_gyro = new AHRS(); // usign SPI by default, which is what we want.
@@ -94,6 +92,7 @@ public class Drivetrain extends SubsystemBase {
 
 	/** Creates a new Drivetrain. */
 	public Drivetrain() {
+
 		m_frontLeft.calibrateVirtualPosition(FRONT_LEFT_VIRTUAL_OFFSET_RADIANS); // set virtual position for absolute encoder
 		m_frontRight.calibrateVirtualPosition(FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS);
 		m_rearLeft.calibrateVirtualPosition(REAR_LEFT_VIRTUAL_OFFSET_RADIANS);

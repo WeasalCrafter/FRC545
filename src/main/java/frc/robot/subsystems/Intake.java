@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,21 +19,21 @@ public class Intake extends SubsystemBase {
     public void startIntake() {
         if(getSpeed()!=speed*1){
             m_intake.set(speed);
-            System.out.println("Intake: Started");
+            //System.out.println("Intake: Started");
         }
     }
 
     public void startOuttake() {
         if(getSpeed()!=speed*-1){
             m_intake.set(speed*-1);
-            System.out.println("Intake: Reversed");
+            //System.out.println("Intake: Reversed");
         }
     }
 
     public void endIntakeOuttake() {
         if(getSpeed()!=0){
             m_intake.set(0);
-            System.out.println("Intake: Ended");
+            //System.out.println("Intake: Ended");
         }
     }
 
