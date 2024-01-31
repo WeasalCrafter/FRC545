@@ -8,7 +8,8 @@ public class Lights extends SubsystemBase {
     int m_port = Constants.LEDConstants.BlinkinPWMPort;
     Spark m_ledController = new Spark(m_port);
 
-    double DEFAULT_STATE = Constants.LEDConstants.DEFAULT_STATE;
+    double TELEOP_STATE = Constants.LEDConstants.TELEOP_STATE;
+    double AUTON_STATE = Constants.LEDConstants.AUTON_STATE;
     double SHOOT_STATE = Constants.LEDConstants.SHOOT_STATE;
     double INTAKE_STATE = Constants.LEDConstants.INTAKE_STATE;
     double OUTTAKE_STATE = Constants.LEDConstants.OUTTAKE_STATE;
@@ -18,19 +19,23 @@ public class Lights extends SubsystemBase {
     private String STATE;   
 
     public Lights() {
-        DefaultState();
+        AutonState();
     }
 
     public void changeState(double state, String name){
         if(this.STATE != name){
             m_ledController.set(state);
-            //System.out.println("Lights: " + name);
+            System.out.println("Lights: " + name);
             this.STATE = name;
         }
     }
 
-    public void DefaultState(){
-        changeState(DEFAULT_STATE, "default");
+    public void TeleopState(){
+        changeState(TELEOP_STATE, "tele-op");
+    }
+
+    public void AutonState(){
+        changeState(AUTON_STATE, "autonomous");
     }
 
     public void ShootState(){

@@ -52,7 +52,7 @@ public class RobotContainer {
 				m_robotDrive));
 
 		m_intake.setDefaultCommand(new RunCommand(() -> m_intake.endIntakeOuttake(), m_intake));
-		m_lights.setDefaultCommand(new RunCommand(() -> m_lights.DefaultState(), m_lights));
+		m_lights.setDefaultCommand(new RunCommand(() -> m_lights.TeleopState(), m_lights));
 	}
 
 	private void configureButtonBindings() {		
