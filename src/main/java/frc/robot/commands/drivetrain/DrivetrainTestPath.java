@@ -10,13 +10,10 @@ import frc.robot.trajectories.MoveRight;
 
 public class DrivetrainTestPath extends SequentialCommandGroup {
     public DrivetrainTestPath(RobotContainer container, Drivetrain drivetrain, int distance){addCommands(
-        //SHOULD MOVE FORWARD, LEFT, BACKWARD, RIGHT, END UP AT BEGINNING, THEN VIRTUAL REVERSE, MOVE FORWARD(backward), AND RESET REVERSE
+        //SHOULD MOVE FORWARD, LEFT, BACKWARD, RIGHT, END UP AT BEGINNING
         new MoveForward(drivetrain, container, distance),
-        new MoveLeft(drivetrain, container, distance),
         new MoveBackward(drivetrain, container, distance),
-        new MoveRight(drivetrain, container, distance),
-        new DrivetrainReverseHeading(drivetrain),
-        new MoveForward(drivetrain, container, distance),
-        new DrivetrainReverseHeading(drivetrain)
+        new MoveLeft(drivetrain, container, distance),
+        new MoveRight(drivetrain, container, distance)
     );}
 }

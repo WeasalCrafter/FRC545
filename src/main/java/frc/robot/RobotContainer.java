@@ -6,6 +6,7 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
 import frc.robot.commands.drivetrain.DrivetrainTestPath;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
@@ -32,6 +33,7 @@ public class RobotContainer {
 	private final Drivetrain m_robotDrive = new Drivetrain();
 	private final Intake m_intake = new Intake();
 	private final Shooter m_shooter = new Shooter();
+	private final Climber m_climber = new Climber();
 
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
@@ -52,34 +54,37 @@ public class RobotContainer {
 				m_robotDrive));
 
 		m_intake.setDefaultCommand(new RunCommand(() -> m_intake.endIntakeOuttake(), m_intake));
-		m_lights.setDefaultCommand(new RunCommand(() -> m_lights.TeleopState(), m_lights));
+		m_lights.setDefaultCommand(new RunCommand(() -> m_lights.DefaultState(), m_lights));
 	}
 
 	private void configureButtonBindings() {		
-		//m_driverController.a() FUTURE BINDING
+		m_driverController.a() //START CLIMBING
+				.whileTrue(new RunCommand(() -> m_climber.Climb(),m_climber))
+				.whileTrue(new RunCommand(() -> m_lights.ClimbState(), m_lights));
 
-		//m_driverController.b() FUTURE BINDING
-				
+		m_driverController.b() //DESCEND CLIMBING
+				.whileTrue(new RunCommand(() -> m_climber.Descend(),m_climber))
+				.whileTrue(new RunCommand(() -> m_lights.ClimbReverseState(), m_lights));
 
-		m_driverController.x()
+		m_driverController.x() // REVERSE HEADING
 				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
 
-		m_driverController.y()
+		m_driverController.y() // TEST PATH
 				.onTrue(new DrivetrainTestPath(this, m_robotDrive, 1));
 
-		m_driverController.leftTrigger()
+		m_driverController.leftTrigger() // START INTAKE
 				.whileTrue(new RunCommand(() -> m_intake.startIntake(),m_intake))
 				.whileTrue(new RunCommand(() -> m_lights.IntakeState(), m_lights));
 
-		m_driverController.leftBumper()
+		m_driverController.leftBumper() // START OUTTAKE
 				.whileTrue(new RunCommand(() -> m_intake.startOuttake(),m_intake))
 				.whileTrue(new RunCommand(() -> m_lights.OuttakeState(), m_lights));
 
-		m_driverController.rightTrigger()
+		m_driverController.rightTrigger() // SHOOT
 				.whileTrue(new RunCommand(() -> m_shooter.shoot(),m_shooter))
 				.whileTrue(new RunCommand(() -> m_lights.ShootState(), m_lights));
 
-		m_driverController.rightBumper()
+		m_driverController.rightBumper() // BRAKE
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
 				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 	
@@ -121,6 +126,11 @@ public class RobotContainer {
 	public Intake getIntake()
 	{
 		return m_intake;
+	}
+
+	public Climber getcClimber()
+	{
+		return m_climber;
 	}
 
 	public Lights getLights()

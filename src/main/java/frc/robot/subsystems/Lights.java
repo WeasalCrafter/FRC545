@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -13,13 +14,14 @@ public class Lights extends SubsystemBase {
     double SHOOT_STATE = Constants.LEDConstants.SHOOT_STATE;
     double INTAKE_STATE = Constants.LEDConstants.INTAKE_STATE;
     double OUTTAKE_STATE = Constants.LEDConstants.OUTTAKE_STATE;
-    double CLIMB_STATE = Constants.LEDConstants.CLIMB_STATE;  
+    double CLIMB_STATE = Constants.LEDConstants.CLIMB_STATE; 
+    double REVERSE_CLIMB_STATE = Constants.LEDConstants.REVERSE_CLIMB_STATE;  
     double BREAK_STATE = Constants.LEDConstants.BREAK_STATE;  
 
     private String STATE;   
 
     public Lights() {
-        AutonState();
+        nothing();
     }
 
     public void changeState(double state, String name){
@@ -30,12 +32,16 @@ public class Lights extends SubsystemBase {
         }
     }
 
-    public void TeleopState(){
-        changeState(TELEOP_STATE, "tele-op");
+    public void nothing(){
+        changeState(0, "off");
     }
 
-    public void AutonState(){
-        changeState(AUTON_STATE, "autonomous");
+    public void DefaultState(){
+        if(RobotState.isTeleop() == true){
+            changeState(TELEOP_STATE, "tele-op");
+        }else if(RobotState.isAutonomous() == true){
+            changeState(AUTON_STATE, "autonomous");
+        }
     }
 
     public void ShootState(){
@@ -52,6 +58,10 @@ public class Lights extends SubsystemBase {
 
     public void ClimbState(){
         changeState(CLIMB_STATE, "climb");
+    }
+
+    public void ClimbReverseState(){
+        changeState(REVERSE_CLIMB_STATE, "climb reversed");
     }
 
     public void BreakState(){

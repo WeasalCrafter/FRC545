@@ -138,20 +138,34 @@ public final class Constants {
 		public static final int IntakeOrientation = 1; //-1 is reversed
 	}
 
-	public static final class LEDConstants{ //https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+	public static final class LEDConstants{ 
+		//PWM VALUES FOR LED COLORS
+		//https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+
 		public static final int BlinkinPWMPort = 0;
-	    public static final double TELEOP_STATE = 0.57; //Beats per Minute, Color 1 and 2
-		public static final double AUTON_STATE = 0.59; //Blue
-    	public static final double SHOOT_STATE = 0.43; //Hot Pink
-    	public static final double INTAKE_STATE = 0.71; //Lawn Green
-    	public static final double OUTTAKE_STATE = 0.87; //Blue
-    	public static final double CLIMB_STATE = 0.67; //Gold
-    	public static final double BREAK_STATE = 0.59; //Dark red
+
+	    public static final double TELEOP_STATE = 0.77; //solid green
+		public static final double AUTON_STATE = 0.15; //change color 1 on BLINKEN to green //TODO flashing green
+
+    	public static final double BREAK_STATE = 0.61; //solid red
+
+    	public static final double SHOOT_STATE = 0.65; //solid orange //TODO make flashing 
+
+    	public static final double INTAKE_STATE = 0.87; //solid blue
+    	public static final double OUTTAKE_STATE = -0.09; //strobe blue //TODO flashing blue
+
+    	public static final double CLIMB_STATE = 0.69; //solid yellow
+		public static final double REVERSE_CLIMB_STATE = -0.07; //strobe gold //TODO make flashing yellow
 	}
 
 	public static final class ShooterConstants{
 		public static final int ShooterMotor1CanID = 12;
 		public static final int ShooterMotor2CanID = 13;
+	}
+
+	public static final class ClimberConstants{
+		public static final int LeftActuatorCANID = 14;
+		public static final int RightActuatorCANID = 15;
 	}
 
 	public static final class OIConstants {
@@ -169,7 +183,6 @@ public final class Constants {
 		public static final double kPYController = 1;
 		public static final double kPThetaController = 1;
 
-		// Constraint for the motion profiled robot angle controller
 		public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
 				kMaxAngularSpeedRadiansPerSecond, kMaxAngularAccelerationRadiansPerSecondSquared);
 	}
