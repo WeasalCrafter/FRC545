@@ -30,7 +30,7 @@ public class MoveBackward extends SequentialCommandGroup {
 			new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
 			List.of(),
 				new Pose2d(-distance, 0, Rotation2d.fromDegrees(0)),
-				container.createTrajectoryConfig()
+				container.createReverseTrajectoryConfig()
 			);
 		return trajectory;
 	}

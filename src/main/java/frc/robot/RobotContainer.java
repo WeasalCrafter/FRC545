@@ -36,6 +36,7 @@ public class RobotContainer {
 	private final Climber m_climber = new Climber();
 
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+	//CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorrControllerPort);
 
 	public RobotContainer() {
 		autonChooser.addOption("Forward", AUTON_FORWARD);
@@ -105,6 +106,12 @@ public class RobotContainer {
 		TrajectoryConfig config = new TrajectoryConfig(
 			AutoConstants.kMaxSpeedMetersPerSecond,
 			AutoConstants.kMaxAccelerationMetersPerSecondSquared).setKinematics(DrivetrainConstants.kDriveKinematics);
+		return config;
+	}
+
+	public TrajectoryConfig createReverseTrajectoryConfig() {
+		TrajectoryConfig config = createTrajectoryConfig();
+		config.setReversed(true);
 		return config;
 	}
 
