@@ -77,15 +77,15 @@ public final class Constants {
 		public static final double kBackRightChassisAngularOffset = 0.0; // Math.PI / 2;
 
 		// SPARK MAX CAN IDs
-		public static final int kFrontLeftDrivingCanId = 5;
+		public static final int kFrontLeftDrivingCanId = 6;
 		public static final int kFrontRightDrivingCanId = 10;
 		public static final int kRearLeftDrivingCanId = 7;
-		public static final int kRearRightDrivingCanId = 4;
+		public static final int kRearRightDrivingCanId = 3;
 
-		public static final int kFrontLeftTurningCanId = 6;
+		public static final int kFrontLeftTurningCanId = 5;
 		public static final int kFrontRightTurningCanId = 9;
 		public static final int kRearLeftTurningCanId = 8;
-		public static final int kRearRightTurningCanId = 3;
+		public static final int kRearRightTurningCanId = 4;
 
 		 // SPARK MAX Absolute encoders
 		public static final int kFrontLeftTurningAnalogPort = 3;
@@ -100,10 +100,10 @@ public final class Constants {
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class IntakeConstants {
-		public static final int IntakeMotor1CanID = 11; 
-		public static final int IntakeMotor2CanID = 12; 
+		public static final int IntakeMotor1CanID = 15; 
+		public static final int IntakeMotor2CanID = 16; 
 
-		public static final double IntakeSpeedConstant = 0.5;
+		public static final double IntakeSpeedConstant = 0.2;
 		public static final int IntakeOrientation = 1; //-1 is reversed
 	}
 
@@ -111,16 +111,19 @@ public final class Constants {
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class ShooterConstants{
-		public static final int ShooterMotor1CanID = 13;
-		public static final int ShooterMotor2CanID = 14;
+		public static final int ShooterMotor1CanID = 11;
+		public static final int ShooterMotor2CanID = 12;
+
+		public static final int SupportMotor1CanID = 13;
+		public static final int SupportMotor2CanID = 14;
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class ClimberConstants{
-		public static final int LeftActuatorCANID = 15;
-		public static final int RightActuatorCANID = 16;
+		public static final int LeftActuatorCANID = 18;
+		public static final int RightActuatorCANID = 17;
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//
@@ -216,6 +219,8 @@ public final class Constants {
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class AutoConstants {
+
+
 		public static final double kMaxSpeedMetersPerSecond = 3.0; //4.42; //3.0;
 		public static final double kMaxAccelerationMetersPerSecondSquared = 3;
 		public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;

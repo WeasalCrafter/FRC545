@@ -10,48 +10,48 @@ public class Intake extends SubsystemBase {
     private int IntakeMotor1CanID = IntakeConstants.IntakeMotor1CanID;
     private int IntakeMotor2CanID = IntakeConstants.IntakeMotor2CanID;
 
-    private static CANSparkMax m_motor1;
-    private static CANSparkMax m_motor2;
-    private static boolean isReversed;
+    private static CANSparkMax intake_motor1;
+    private static CANSparkMax intake_motor2;
 
-    private final static double speed = IntakeConstants.IntakeSpeedConstant * IntakeConstants.IntakeOrientation;
+    private static boolean isReversed;
+    private final static double speed = -1 * IntakeConstants.IntakeSpeedConstant * IntakeConstants.IntakeOrientation;
 
     public Intake() {
-        isReversed = false;
+        isReversed = true;
 
-        m_motor1 = new CANSparkMax(IntakeMotor1CanID, MotorType.kBrushless);
-        m_motor2 = new CANSparkMax(IntakeMotor2CanID, MotorType.kBrushless);
+        intake_motor1 = new CANSparkMax(IntakeMotor1CanID, MotorType.kBrushless);
+        intake_motor2 = new CANSparkMax(IntakeMotor2CanID, MotorType.kBrushless);
 
-        m_motor1.restoreFactoryDefaults();
-        m_motor2.restoreFactoryDefaults();
+        intake_motor1.restoreFactoryDefaults();
+        intake_motor2.restoreFactoryDefaults();
 
     }
 
     public void startIntake() {
         if(getSpeed()!=speed*1){
-            m_motor1.set(speed);
-            m_motor2.follow(m_motor1, isReversed);//true); invert
+            intake_motor1.set(speed);
+            intake_motor2.follow(intake_motor1, isReversed);//true); invert
             //System.out.println("Intake: Started");
         }
     }
 
     public void startOuttake() {
         if(getSpeed()!=speed*-1){
-            m_motor1.set(speed*-1);
-            m_motor2.follow(m_motor1, isReversed);//true); invert
+            intake_motor1.set(speed*-1);
+            intake_motor2.follow(intake_motor1, isReversed);//true); invert
             //System.out.println("Intake: Reversed");
         }
     }
 
     public void endIntakeOuttake() {
         if(getSpeed()!=0){
-            m_motor1.set(0);
-            m_motor2.follow(m_motor1, isReversed);
+            intake_motor1.set(0);
+            intake_motor2.follow(intake_motor1, isReversed);
             //System.out.println("Intake: Ended");
         }
     }
 
     public double getSpeed(){
-        return m_motor1.get();
+        return intake_motor1.get();
     }
 }

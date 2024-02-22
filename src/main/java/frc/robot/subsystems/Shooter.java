@@ -11,14 +11,15 @@ public class Shooter extends SubsystemBase {
     private int motor1ID = Constants.ShooterConstants.ShooterMotor1CanID;
     private int motor2ID = Constants.ShooterConstants.ShooterMotor2CanID;
 
-    private final static double speed = IntakeConstants.IntakeSpeedConstant * IntakeConstants.IntakeOrientation;
+    private final static double speed = 5 * IntakeConstants.IntakeSpeedConstant * IntakeConstants.IntakeOrientation;
 
     private static boolean isReversed;
+
     private static CANSparkMax m_motor1;
     private static CANSparkMax m_motor2;
 
     public Shooter() {
-        isReversed = false;
+        isReversed = true;
         m_motor1 = new CANSparkMax(motor1ID, MotorType.kBrushless);
         m_motor2 = new CANSparkMax(motor2ID, MotorType.kBrushless);
 
@@ -30,6 +31,7 @@ public class Shooter extends SubsystemBase {
         if(getSpeed()!=speed*1){
             m_motor1.set(speed);
             m_motor2.follow(m_motor1, isReversed);
+            //m_support.support();
         }
     }
 
@@ -37,6 +39,7 @@ public class Shooter extends SubsystemBase {
         if(getSpeed()!=speed*-1){
             m_motor1.set(speed*-1);
             m_motor2.follow(m_motor1, isReversed);
+            //m_support.reverseSupport();
         }
     }
 
@@ -44,6 +47,7 @@ public class Shooter extends SubsystemBase {
         if(getSpeed()!=0){
             m_motor1.set(0);
             m_motor2.follow(m_motor1, isReversed);
+            //m_support.supportIdle();
         }
     }
 

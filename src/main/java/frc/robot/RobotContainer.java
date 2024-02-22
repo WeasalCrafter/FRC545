@@ -11,6 +11,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Support;
 import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +30,7 @@ public class RobotContainer {
 	private final Field2d field = new Field2d(); //  a representation of the field
 
 	private final Lights m_lights = new Lights(); // MUST BE BEFORE ITS USES
+	private final Support m_support = new Support();
 
 	private final Drivetrain m_robotDrive = new Drivetrain();
 	private final Intake m_intake = new Intake();
@@ -56,6 +58,9 @@ public class RobotContainer {
 
 		m_intake.setDefaultCommand(new RunCommand(() -> m_intake.endIntakeOuttake(), m_intake));
 		m_lights.setDefaultCommand(new RunCommand(() -> m_lights.DefaultState(), m_lights));
+		m_support.setDefaultCommand(new RunCommand(() -> m_support.supportIdle(), m_support));
+		m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.shooterIdle(), m_shooter));
+
 	}
 
 	private void configureButtonBindings() {		
@@ -67,25 +72,33 @@ public class RobotContainer {
 				.whileTrue(new RunCommand(() -> m_climber.Descend(),m_climber))
 				.whileTrue(new RunCommand(() -> m_lights.ClimbReverseState(), m_lights));
 
-		m_driverController.x() // REVERSE HEADING
-				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
+		 m_driverController.y() // REVERSE HEADING
+		 		.onTrue(new DrivetrainReverseHeading(m_robotDrive));
 
-		m_driverController.y() // TEST PATH
-				.onTrue(new DrivetrainTestPath(this, m_robotDrive, 1));
+		//m_driverController.y() // TEST PATH
+		//		.onTrue(new DrivetrainTestPath(this, m_robotDrive, 1));
 
 		m_driverController.leftTrigger() // START INTAKE
 				.whileTrue(new RunCommand(() -> m_intake.startIntake(),m_intake))
+				.whileTrue(new RunCommand(() -> m_support.support(), m_support))
 				.whileTrue(new RunCommand(() -> m_lights.IntakeState(), m_lights));
 
 		m_driverController.leftBumper() // START OUTTAKE
 				.whileTrue(new RunCommand(() -> m_intake.startOuttake(),m_intake))
+				.whileTrue(new RunCommand(() -> m_support.reverseSupport(), m_support))
 				.whileTrue(new RunCommand(() -> m_lights.OuttakeState(), m_lights));
 
 		m_driverController.rightTrigger() // SHOOT
 				.whileTrue(new RunCommand(() -> m_shooter.shoot(),m_shooter))
+				.whileTrue(new RunCommand(() -> m_support.support(), m_support))
 				.whileTrue(new RunCommand(() -> m_lights.ShootState(), m_lights));
 
-		m_driverController.rightBumper() // BRAKE
+		m_driverController.rightBumper() // REVERSE SHOOT
+				.whileTrue(new RunCommand(() -> m_shooter.reverseShoot(),m_shooter))
+				.whileTrue(new RunCommand(() -> m_support.reverseSupport(), m_support))
+				.whileTrue(new RunCommand(() -> m_lights.ShootState(), m_lights));
+
+		m_driverController.x() // BRAKE
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
 				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 	
@@ -143,5 +156,9 @@ public class RobotContainer {
 	public Lights getLights()
 	{
 		return m_lights;
+	}
+	public Support getSupport()
+	{
+		return m_support;
 	}
 }
