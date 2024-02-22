@@ -4,32 +4,51 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
- /**
-  * 
+public final class Constants {
+	 /**
 	PORTS AND ID'S
+
+	CONTROLLERS
+	  driver - 0
+	  operator - 1
+
+	FRONT LEFT (drivetrain 3-10)
+	  drive: CAN- 5
+	  turn: CAN- 6
+	  encoder: ANALOG- 3
 
 	FRONT RIGHT
 	  drive: CAN- 10
 	  turn: CAN- 9
 	  encoder: ANALOG- 2
 
-	FRONT LEFT
-	  drive: CAN- 5
-	  turn: CAN- 6
-	  encoder: ANALOG- 3
-
-	BACK RIGHT
-	  drive: CAN- 4
-	  turn: CAN- 7
-	  encoder: ANALOG- 0
-
 	BACK LEFT
-	  drive: CAN- 3
+	  drive: CAN- 7
 	  turn: CAN- 8
 	  encoder: ANALOG- 1
 
+	BACK RIGHT
+	  drive: CAN- 4
+	  turn: CAN- 3
+	  encoder: ANALOG- 0
+
+	INTAKE
+	  orange - 11
+	  green - 12
+
+	SHOOTER
+	  motor1 - 13
+	  motor2 - 14
+
+	CLIMBER
+	  left - 15
+	  right - 16
+
+	LED
+	  module_pwm - 0
   */
-public final class Constants {
+
+
 	public static final class DrivetrainConstants {
 		// Driving Parameters - Note that these are not the maximum capable speeds of
 		// the robot, rather the allowed maximum speeds
@@ -40,13 +59,11 @@ public final class Constants {
 		public static final double kMagnitudeSlewRate = 1.8; // 2.0; //1.8; // percent per second (1 = 100%)
 		public static final double kRotationalSlewRate = 2.0; // 20.0; //2.0; // percent per second (1 = 100%)
 
-		// Chassis configuration
 		public static final double kTrackWidth = Units.inchesToMeters(30);
 		
 		// Distance between centers of right and left wheels on robot
 		public static final double kWheelBase = Units.inchesToMeters(30);
 		
-		// Distance between front and back wheels on robot
 		public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
 				new Translation2d(kWheelBase / 2, kTrackWidth / 2),
 				new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
@@ -61,23 +78,86 @@ public final class Constants {
 
 		// SPARK MAX CAN IDs
 		public static final int kFrontLeftDrivingCanId = 5;
-		public static final int kRearLeftDrivingCanId = 7;
 		public static final int kFrontRightDrivingCanId = 10;
+		public static final int kRearLeftDrivingCanId = 7;
 		public static final int kRearRightDrivingCanId = 4;
 
 		public static final int kFrontLeftTurningCanId = 6;
-		public static final int kRearLeftTurningCanId = 8;
 		public static final int kFrontRightTurningCanId = 9;
+		public static final int kRearLeftTurningCanId = 8;
 		public static final int kRearRightTurningCanId = 3;
 
 		 // SPARK MAX Absolute encoders
 		public static final int kFrontLeftTurningAnalogPort = 3;
-		public static final int kRearLeftTurningAnalogPort = 1;
 		public static final int kFrontRightTurningAnalogPort = 2;
+		public static final int kRearLeftTurningAnalogPort = 1;
 		public static final int kRearRightTurningAnalogPort = 0;
 
 		public static final boolean kGyroReversed = false;
 	}
+
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+
+	public static final class IntakeConstants {
+		public static final int IntakeMotor1CanID = 11; 
+		public static final int IntakeMotor2CanID = 12; 
+
+		public static final double IntakeSpeedConstant = 0.5;
+		public static final int IntakeOrientation = 1; //-1 is reversed
+	}
+
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+
+	public static final class ShooterConstants{
+		public static final int ShooterMotor1CanID = 13;
+		public static final int ShooterMotor2CanID = 14;
+	}
+
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+
+	public static final class ClimberConstants{
+		public static final int LeftActuatorCANID = 15;
+		public static final int RightActuatorCANID = 16;
+	}
+
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+
+	public static final class OIConstants {
+		public static final int kDriverControllerPort = 0;
+		public static final int kOperatorControllerPort = 1;
+		
+		public static final double kDriveDeadband = 0.05;
+	}
+
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+
+	public static final class LEDConstants{ 
+		//PWM VALUES FOR LED COLORS
+		//https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+
+		public static final int BlinkinPWMPort = 0;
+
+	    public static final double TELEOP_STATE = 0.77; //solid green
+		public static final double AUTON_STATE = 0.15; //change color 1 on BLINKEN to green //TODO flashing green
+
+    	public static final double BREAK_STATE = 0.61; //solid red
+
+    	public static final double SHOOT_STATE = 0.65; //solid orange //TODO make flashing 
+
+    	public static final double INTAKE_STATE = 0.87; //solid blue
+    	public static final double OUTTAKE_STATE = -0.09; //strobe blue //TODO flashing blue
+
+    	public static final double CLIMB_STATE = 0.69; //solid yellow
+		public static final double REVERSE_CLIMB_STATE = -0.07; //strobe gold //TODO make flashing yellow
+	}
+	
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class SwerveModuleConstants {
 		// The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
@@ -132,48 +212,8 @@ public final class Constants {
 		public static final int kTurningMotorCurrentLimit = 20; // amps
 	}
 
-	public static final class IntakeConstants {
-		public static final int IntakeMotorCanID = 11; 
-		public static final double IntakeSpeedConstant = 0.5;
-		public static final int IntakeOrientation = 1; //-1 is reversed
-	}
-
-	public static final class LEDConstants{ 
-		//PWM VALUES FOR LED COLORS
-		//https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
-
-		public static final int BlinkinPWMPort = 0;
-
-	    public static final double TELEOP_STATE = 0.77; //solid green
-		public static final double AUTON_STATE = 0.15; //change color 1 on BLINKEN to green //TODO flashing green
-
-    	public static final double BREAK_STATE = 0.61; //solid red
-
-    	public static final double SHOOT_STATE = 0.65; //solid orange //TODO make flashing 
-
-    	public static final double INTAKE_STATE = 0.87; //solid blue
-    	public static final double OUTTAKE_STATE = -0.09; //strobe blue //TODO flashing blue
-
-    	public static final double CLIMB_STATE = 0.69; //solid yellow
-		public static final double REVERSE_CLIMB_STATE = -0.07; //strobe gold //TODO make flashing yellow
-	}
-
-	public static final class ShooterConstants{
-		public static final int ShooterMotor1CanID = 12;
-		public static final int ShooterMotor2CanID = 13;
-	}
-
-	public static final class ClimberConstants{
-		public static final int LeftActuatorCANID = 14;
-		public static final int RightActuatorCANID = 15;
-	}
-
-	public static final class OIConstants {
-		public static final int kDriverControllerPort = 0;
-		public static final int kOperatorControllerPort = 1;
-		
-		public static final double kDriveDeadband = 0.05;
-	}
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class AutoConstants {
 		public static final double kMaxSpeedMetersPerSecond = 3.0; //4.42; //3.0;
