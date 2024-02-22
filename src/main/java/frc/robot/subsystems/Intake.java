@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
         isReversed = false;
 
         m_motor1 = new CANSparkMax(IntakeMotor1CanID, MotorType.kBrushless);
-        m_motor1 = new CANSparkMax(IntakeMotor2CanID, MotorType.kBrushless);
+        m_motor2 = new CANSparkMax(IntakeMotor2CanID, MotorType.kBrushless);
 
         m_motor1.restoreFactoryDefaults();
         m_motor2.restoreFactoryDefaults();

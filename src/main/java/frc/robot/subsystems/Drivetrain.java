@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
 	
-	// //********adjust as needed so that virtual (turn) position of wheel is zero when straight********
 	public final double FRONT_LEFT_VIRTUAL_OFFSET_RADIANS = 3.14;
 	public final double FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS = 3.14;
 	public final double REAR_LEFT_VIRTUAL_OFFSET_RADIANS = -1.74;
@@ -39,26 +38,22 @@ public class Drivetrain extends SubsystemBase {
 	private final SwerveModule m_frontLeft = new SwerveModule(
 		DrivetrainConstants.kFrontLeftDrivingCanId,
 		DrivetrainConstants.kFrontLeftTurningCanId,
-		DrivetrainConstants.kFrontLeftTurningAnalogPort,
-		DrivetrainConstants.kFrontLeftChassisAngularOffset);
+		DrivetrainConstants.kFrontLeftTurningAnalogPort);
 
 	private final SwerveModule m_frontRight = new SwerveModule(
 		DrivetrainConstants.kFrontRightDrivingCanId,
 		DrivetrainConstants.kFrontRightTurningCanId,
-		DrivetrainConstants.kFrontRightTurningAnalogPort,
-		DrivetrainConstants.kFrontRightChassisAngularOffset);
+		DrivetrainConstants.kFrontRightTurningAnalogPort);
 
 	private final SwerveModule m_rearLeft = new SwerveModule(
 		DrivetrainConstants.kRearLeftDrivingCanId,
 		DrivetrainConstants.kRearLeftTurningCanId,
-		DrivetrainConstants.kRearLeftTurningAnalogPort,
-		DrivetrainConstants.kBackLeftChassisAngularOffset);
+		DrivetrainConstants.kRearLeftTurningAnalogPort);
 
 	private final SwerveModule m_rearRight = new SwerveModule(
 		DrivetrainConstants.kRearRightDrivingCanId,
 		DrivetrainConstants.kRearRightTurningCanId,
-		DrivetrainConstants.kRearRightTurningAnalogPort,
-		DrivetrainConstants.kBackRightChassisAngularOffset);
+		DrivetrainConstants.kRearRightTurningAnalogPort);
 	
 	// The gyro sensor
 	//private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
