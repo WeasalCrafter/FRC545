@@ -5,7 +5,6 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
-import frc.robot.commands.drivetrain.DrivetrainTestPath;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
