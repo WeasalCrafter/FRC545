@@ -99,12 +99,21 @@ public final class Constants {
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
+	public static final class SpeedConstants {
+		public static final double HumanInputSpeed = -0.1;
+		public static final double HumanInputTime = 1;
+
+		public static final double IntakeSpeed = 0.5;
+
+		public static final double ShooterSpeedDefault = 0.5;
+	}
+
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+
 	public static final class IntakeConstants {
 		public static final int IntakeMotor1CanID = 15; 
 		public static final int IntakeMotor2CanID = 16; 
-
-		public static final double IntakeSpeedConstant = 0.2;
-		public static final int IntakeOrientation = 1; //-1 is reversed
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//

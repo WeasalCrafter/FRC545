@@ -14,7 +14,6 @@ public class Intake extends SubsystemBase {
     private static CANSparkMax intake_motor2;
 
     private static boolean isReversed;
-    private final static double speed = -1 * IntakeConstants.IntakeSpeedConstant * IntakeConstants.IntakeOrientation;
 
     public Intake() {
         isReversed = true;
@@ -27,27 +26,25 @@ public class Intake extends SubsystemBase {
 
     }
 
-    public void startIntake() {
-        if(getSpeed()!=speed*1){
-            intake_motor1.set(speed);
+    public void startIntake(double spd) {
+        if(getSpeed()!=spd){
+            intake_motor1.set(spd);
             intake_motor2.follow(intake_motor1, isReversed);//true); invert
-            //System.out.println("Intake: Started");
         }
     }
 
-    public void startOuttake() {
-        if(getSpeed()!=speed*-1){
-            intake_motor1.set(speed*-1);
-            intake_motor2.follow(intake_motor1, isReversed);//true); invert
-            //System.out.println("Intake: Reversed");
-        }
-    }
+    // public void reverseIntake(double spd) {
+    //     if(getSpeed()!=spd*-1){
+    //         intake_motor1.set(spd*-1);
+    //         intake_motor2.follow(intake_motor1, isReversed);//true); invert
+    //         //System.out.println("Intake: Reversed");
+    //     }
+    // }
 
-    public void endIntakeOuttake() {
+    public void stopIntake() {
         if(getSpeed()!=0){
             intake_motor1.set(0);
             intake_motor2.follow(intake_motor1, isReversed);
-            //System.out.println("Intake: Ended");
         }
     }
 

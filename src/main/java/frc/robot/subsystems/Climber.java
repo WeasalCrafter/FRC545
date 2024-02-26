@@ -15,14 +15,13 @@ public class Climber extends SubsystemBase {
         m_rightActuator = new CANSparkMax(Constants.ClimberConstants.RightActuatorCANID, MotorType.kBrushless);
     }
 
-    public void Climb(){
-        System.err.println("Climber: enabled");
+    public void climberClimb(){
         //climb code
     }
-
-    public void Descend(){
-        System.out.println("Climber: reversed");
+    public void climberDescend(){
         //descend code
     }
-
+    public void climberStop(){
+        //stop
+    }
 }
