@@ -9,7 +9,7 @@ public class TempSupport extends SequentialCommandGroup {
         super(
             new StartSupport(support, speed),
             new WaitCommand(time),
-            new StopSupport(support, speed)
+            new StopSupport(support)
             //addRequirements(intake);
         );
     }

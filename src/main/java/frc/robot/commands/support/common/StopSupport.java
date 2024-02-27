@@ -5,15 +5,13 @@ import frc.robot.subsystems.Support;
 
 public class StopSupport extends InstantCommand{
     private final Support support;
-    private final double speed;
 
-    public StopSupport(Support support, double speed){
+    public StopSupport(Support support){
         this.support = support;
-        this.speed = speed;
-        addRequirements(support);
+        //addRequirements(support);
     }
     public void initialize(){
-        support.startSupport(speed);
+        support.stopSupport();
         System.out.println("stop support");
     }
 }

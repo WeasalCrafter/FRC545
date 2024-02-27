@@ -103,7 +103,7 @@ public final class Constants {
 		public static final double HumanInputSpeed = -0.1;
 		public static final double HumanInputTime = 1;
 
-		public static final double IntakeSpeed = 0.5;
+		public static final double IntakeSpeed = 0.1;
 
 		public static final double ShooterSpeedDefault = 0.5;
 	}

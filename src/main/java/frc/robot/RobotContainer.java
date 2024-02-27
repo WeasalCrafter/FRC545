@@ -8,8 +8,11 @@ import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.common.HumanInput;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
 import frc.robot.commands.intake.common.StartIntake;
+import frc.robot.commands.intake.common.StopIntake;
 import frc.robot.commands.shooter.common.StartShooter;
+import frc.robot.commands.shooter.common.StopShooter;
 import frc.robot.commands.support.common.StartSupport;
+import frc.robot.commands.support.common.StopSupport;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -60,10 +63,10 @@ public class RobotContainer {
 					true, true),
 				m_robotDrive));
 
-		m_intake.setDefaultCommand(new RunCommand(() -> m_intake.stopIntake(), m_intake));
-		m_lights.setDefaultCommand(new RunCommand(() -> m_lights.DefaultState(), m_lights));
-		m_support.setDefaultCommand(new RunCommand(() -> m_support.stopSupport(), m_support));
-		m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.stopShooter(), m_shooter));
+		// m_intake.setDefaultCommand(new RunCommand(() -> m_intake.stopIntake(), m_intake));
+		// m_lights.setDefaultCommand(new RunCommand(() -> m_lights.DefaultState(), m_lights));
+		// m_support.setDefaultCommand(new RunCommand(() -> m_support.stopSupport(), m_support));
+		// m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.stopShooter(), m_shooter));
 
 	}
 
@@ -83,18 +86,22 @@ public class RobotContainer {
 
 		m_driverController.leftTrigger() // START INTAKE
 				.whileTrue(new StartIntake(m_intake, SpeedConstants.IntakeSpeed))
-				.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed));
+				.whileFalse(new StopIntake(m_intake));
 
 		m_driverController.leftBumper() // START OUTTAKE
 				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
-				.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed));
+				.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
+				.whileFalse(new StopIntake(m_intake))
+				.whileFalse(new StopSupport(m_support));
 
 		m_driverController.rightTrigger() // SHOOT
 		 		.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedDefault))
-				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedDefault));
-				
+				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedDefault))
+				.whileFalse(new StopShooter(m_shooter))
+				.whileFalse(new StopSupport(m_support));
+
 		m_driverController.rightBumper() // HUMAN INPUT
-				.whileTrue(new HumanInput(m_shooter,m_support));
+				.onTrue(new HumanInput(m_shooter,m_support));
 
 	
 	}
