@@ -9,7 +9,6 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
     private int motor1ID = Constants.ShooterConstants.ShooterMotor1CanID;
     private int motor2ID = Constants.ShooterConstants.ShooterMotor2CanID;
-
     private static boolean isReversed;
 
     private static CANSparkMax m_motor1;

@@ -86,11 +86,13 @@ public class RobotContainer {
 
 		m_driverController.leftTrigger() // START INTAKE
 				.whileTrue(new StartIntake(m_intake, SpeedConstants.IntakeSpeed))
-				.whileFalse(new StopIntake(m_intake));
+				.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
+				.whileFalse(new StopIntake(m_intake))
+				.whileFalse(new StopSupport(m_support));
 
 		m_driverController.leftBumper() // START OUTTAKE
 				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
-				.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
+				.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed))
 				.whileFalse(new StopIntake(m_intake))
 				.whileFalse(new StopSupport(m_support));
 
@@ -148,6 +150,11 @@ public class RobotContainer {
 	public Intake getIntake()
 	{
 		return m_intake;
+	}
+
+	public Shooter getShooter()
+	{
+		return m_shooter;
 	}
 
 	public Climber getcClimber()

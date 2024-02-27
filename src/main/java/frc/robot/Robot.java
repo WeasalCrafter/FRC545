@@ -104,12 +104,15 @@ public class Robot extends TimedRobot {
 		};
 
 		SmartDashboard.putNumber("Intake Speed", m_robotContainer.getIntake().getSpeed());
+		SmartDashboard.putNumber("Shooter Speed", m_robotContainer.getShooter().getSpeed());
+		SmartDashboard.putNumber("Support Speed", m_robotContainer.getSupport().getSpeed());
+
 		SmartDashboard.putString("Light Status", m_robotContainer.getLights().GetState());
 		
-		SmartDashboard.putNumberArray("offsets", offsets);
-		SmartDashboard.putNumberArray("absolute", absolutePositions);
-		SmartDashboard.putNumberArray("virtual", virtualPositions);
-		SmartDashboard.putNumberArray("SwerveModuleStates", loggingState);
+		// SmartDashboard.putNumberArray("offsets", offsets);
+		// SmartDashboard.putNumberArray("absolute", absolutePositions);
+		// SmartDashboard.putNumberArray("virtual", virtualPositions);
+		// SmartDashboard.putNumberArray("SwerveModuleStates", loggingState);
 
 		m_robotContainer.getField().setRobotPose(m_robotContainer.getDrive().getPose());
 	}
