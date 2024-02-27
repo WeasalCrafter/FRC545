@@ -102,7 +102,7 @@ public class RobotContainer {
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
 
-		m_driverController.rightBumper() // HUMAN INPUT
+		m_driverController.rightBumper() // HUMAN INPUT3
 				.onTrue(new HumanInput(m_shooter,m_support));
 
 	
