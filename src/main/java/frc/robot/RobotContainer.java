@@ -16,6 +16,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
+import frc.robot.subsystems.Vision;
 import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,13 +34,14 @@ public class RobotContainer {
 
 	private final Field2d field = new Field2d(); //  a representation of the field
 
-	private final Lights m_lights = new Lights(); // MUST BE BEFORE ITS USES
+	private final Lights m_lights = new Lights(); // MUST BE BEFORE ITS USED
 	private final Support m_support = new Support();
 
 	private final Drivetrain m_robotDrive = new Drivetrain();
 	private final Intake m_intake = new Intake();
 	private final Shooter m_shooter = new Shooter();
 	private final Climber m_climber = new Climber();
+	private final Vision m_vision = new Vision();
 
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 	//CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorrControllerPort);
@@ -68,7 +70,8 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {		
-		//m_driverController.a() //HUMAN INPUT
+		// m_driverController.a() //AIMING
+		// 		.whileTrue(new RunCommand(null, m_vision));
 
 		// m_driverController.b() //CLIMBING
 		// 		.whileTrue(new RunCommand(() -> m_lights.ClimbReverseState(), m_lights));
@@ -92,7 +95,7 @@ public class RobotContainer {
 		 		.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedDefault))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedDefault));
 				
-		m_driverController.rightBumper()
+		m_driverController.rightBumper() // HUMAN INPUT
 				.whileTrue(new HumanInput(m_shooter,m_support));
 
 	
@@ -154,5 +157,9 @@ public class RobotContainer {
 	public Support getSupport()
 	{
 		return m_support;
+	}
+	public Vision getVision()
+	{
+		return m_vision;
 	}
 }

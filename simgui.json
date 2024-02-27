@@ -15,6 +15,11 @@
     }
   },
   "NetworkTables": {
+    "persistent": {
+      "Preferences": {
+        "open": true
+      }
+    },
     "retained": {
       "SmartDashboard": {
         "Auto choices": {
@@ -24,13 +29,33 @@
       }
     },
     "transitory": {
+      "FMSInfo": {
+        "open": true
+      },
+      "LiveWindow": {
+        "open": true
+      },
+      "Shuffleboard": {
+        "open": true
+      },
       "SmartDashboard": {
+        "Field": {
+          "open": true
+        }
+      },
+      "photonvision": {
+        "Logitech,_Inc._Webcam_C270": {
+          "open": true
+        },
         "open": true
       }
     }
   },
   "NetworkTables Info": {
     "Connections": {
+      "open": true
+    },
+    "Server": {
       "open": true
     },
     "visible": true

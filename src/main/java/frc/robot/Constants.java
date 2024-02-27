@@ -111,6 +111,17 @@ public final class Constants {
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
+	public static final class VisionConstants {
+		public static final double CameraHeightMeters = Units.inchesToMeters(0);
+		public static final double TargetHeightMeters = Units.inchesToMeters(0);
+
+		public static final double CameraPitchRadians = Units.degreesToRadians(0);
+
+	}
+
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+	//-------------------------------------------------------------------------------------------------------------------------------------//
+
 	public static final class IntakeConstants {
 		public static final int IntakeMotor1CanID = 15; 
 		public static final int IntakeMotor2CanID = 16; 
