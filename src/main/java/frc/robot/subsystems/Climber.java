@@ -15,13 +15,13 @@ public class Climber extends SubsystemBase {
         m_rightActuator = new CANSparkMax(Constants.ClimberConstants.RightActuatorCANID, MotorType.kBrushless);
     }
 
-    public void climberClimb(){
+    public void ascend(double spd){
         //climb code
     }
-    public void climberDescend(){
+    public void descend(double spd){
         //descend code
     }
-    public void climberStop(){
+    public void stop(){
         //stop
     }
 }
