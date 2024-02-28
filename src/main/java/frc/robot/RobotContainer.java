@@ -1,9 +1,16 @@
 package frc.robot;
+import org.opencv.photo.Photo;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
@@ -51,6 +58,10 @@ public class RobotContainer {
     private final double ANGULAR_D = 0.0;
     private PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
+    final double LINEAR_P = 0.1;
+    final double LINEAR_D = 0.0;
+    PIDController forwardController = new PIDController(LINEAR_P, 0, LINEAR_D);
+
 	PhotonCamera camera = new PhotonCamera(OIConstants.cameraName);
 
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -80,19 +91,33 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {	
-		m_driverController.a() // AIMING
-				.whileTrue(			
-					new RunCommand(
-					() -> m_robotDrive.drive(
-						0,
-						0,
-						aimSpeed(camera, turnController),
-						true, true),
-					m_robotDrive));
+		// m_driverController.a() // AIMING
+		// 		.whileTrue(			
+		// 			new RunCommand(
+		// 			() -> m_robotDrive.drive(
+		// 				0,
+		// 				0,
+		// 				aimSpeed(camera, turnController),
+		// 				true, true),
+		// 			m_robotDrive));
 
-		m_driverController.b() //CLIMBING
-		 		.whileTrue(new RunCommand(() -> m_climber.ascend(2), m_climber))
-				.whileTrue(new RunCommand(() -> m_climber.stop(), m_climber));
+		// m_driverController.b() // AIMING
+		// 		.whileTrue(			
+		// 			new RunCommand(
+		// 			() -> m_robotDrive.drive(
+		// 				forwardSpeed(camera, forwardController),
+		// 				0,
+		// 				0,
+		// 				true, true),
+		// 			m_robotDrive));
+
+		m_driverController.a() 
+				.whileTrue(new RunCommand(() -> m_climber.ascend(2),m_climber))
+				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber));
+				
+		m_driverController.b() 
+				.whileTrue(new RunCommand(() -> m_climber.descend(2),m_climber))
+				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber));
 
 		m_driverController.x() // BRAKE
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
@@ -102,14 +127,14 @@ public class RobotContainer {
 				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
 
 		m_driverController.leftTrigger() // START INTAKE
-				.whileTrue(new StartIntake(m_intake, SpeedConstants.IntakeSpeed))
-				.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
+				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
+				.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed))
 				.whileFalse(new StopIntake(m_intake))
 				.whileFalse(new StopSupport(m_support));
 
 		m_driverController.leftBumper() // START OUTTAKE
-				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
-				.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed))
+				.whileTrue(new StartIntake(m_intake, SpeedConstants.IntakeSpeed))
+				.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
 				.whileFalse(new StopIntake(m_intake))
 				.whileFalse(new StopSupport(m_support));
 
@@ -119,8 +144,11 @@ public class RobotContainer {
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
 
-		m_driverController.rightBumper() // HUMAN INPUT3
-				.onTrue(new HumanInput(m_shooter,m_support));
+		m_driverController.rightBumper() // HUMAN INPUT
+				.whileTrue(new StartShooter(m_shooter, SpeedConstants.HumanInputSpeed))
+				.whileTrue(new StartSupport(m_support, SpeedConstants.HumanInputSpeed))
+				.whileFalse(new StopShooter(m_shooter))
+				.whileFalse(new StopSupport(m_support));
 	}
 
 	public Command getAutonomousCommand() {
@@ -148,12 +176,44 @@ public class RobotContainer {
 	}
 
 	public double aimSpeed(PhotonCamera camera, PIDController turnController){
-		double rotationSpeed = 0;
+		double rotationSpeed;
 		var result = camera.getLatestResult();
 		if (result.hasTargets()) {
-			rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0);
+			PhotonTrackedTarget target = result.getBestTarget();
+			rotationSpeed = -turnController.calculate(target.getYaw(), 0);
+		} else {
+			rotationSpeed = 0;
 		}
-		return rotationSpeed;
+		return -0.1 * rotationSpeed;
+	}
+
+	public double forwardSpeed(PhotonCamera camera, PIDController controller){
+		    var result = camera.getLatestResult();
+			double CAMERA_HEIGHT_METERS = 0.44;
+			double TARGET_HEIGHT_METERS = 0.44;
+			double CAMERA_PITCH_RADIANS = 90;
+			double GOAL_RANGE_METERS = 0.2;
+
+			double forwardSpeed;
+
+            if (result.hasTargets()) {
+                // First calculate range
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                CAMERA_HEIGHT_METERS,
+                                TARGET_HEIGHT_METERS,
+                                CAMERA_PITCH_RADIANS,
+                                Units.degreesToRadians(result.getBestTarget().getPitch()));
+				System.out.println(range);
+                // Use this range as the measurement we give to the PID controller.
+                // -1.0 required to ensure positive PID controller effort _increases_ range
+                forwardSpeed = -controller.calculate(range, GOAL_RANGE_METERS);
+            } else {
+                // If we have no targets, stay still.
+                forwardSpeed = 0;
+            }
+			
+			return forwardSpeed;
 	}
 
 	public Field2d getField()
