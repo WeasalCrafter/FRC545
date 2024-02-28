@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
@@ -26,6 +27,7 @@ public class Support extends SubsystemBase {
 
     public void startSupport(double spd) {
         if(getSpeed()!=spd){
+            SmartDashboard.putNumber("Support Speed", spd);
             m_motor1.set(spd);
             m_motor2.follow(m_motor1, isReversed);
         }
@@ -33,6 +35,7 @@ public class Support extends SubsystemBase {
 
     public void reverseSupport(double spd) {
         if(getSpeed()!=spd){
+            SmartDashboard.putNumber("Support Speed", spd);
             m_motor1.set(spd);
             m_motor2.follow(m_motor1, isReversed);
         }
@@ -40,6 +43,7 @@ public class Support extends SubsystemBase {
 
     public void stopSupport() {
         if(getSpeed()!=0){
+            SmartDashboard.putNumber("Support Speed", 0);
             m_motor1.set(0);
             m_motor2.follow(m_motor1, isReversed);
         }

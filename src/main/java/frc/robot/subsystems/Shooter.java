@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -25,6 +26,7 @@ public class Shooter extends SubsystemBase {
 
     public void startShooter(double spd) {
         if(getSpeed()!=spd){
+            SmartDashboard.putNumber("Shooter Speed", spd);
             m_motor1.set(spd);
             m_motor2.follow(m_motor1, isReversed);
         }
@@ -32,6 +34,7 @@ public class Shooter extends SubsystemBase {
 
     public void reverseShooter(double spd) {
         if(getSpeed()!=spd){
+            SmartDashboard.putNumber("Shooter Speed", spd);
             m_motor1.set(spd);
             m_motor2.follow(m_motor1, isReversed);
         }
@@ -39,6 +42,7 @@ public class Shooter extends SubsystemBase {
 
     public void stopShooter() {
         if(getSpeed()!=0){
+            SmartDashboard.putNumber("Shooter Speed", 0);
             m_motor1.set(0);
             m_motor2.follow(m_motor1, isReversed);
         }

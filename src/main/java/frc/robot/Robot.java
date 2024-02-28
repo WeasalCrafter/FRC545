@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+//import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class Robot extends TimedRobot {
 	private Command m_autonomousCommand;
 	private RobotContainer m_robotContainer;
+	//private PhotonCamera camera = new PhotonCamera("photonvision");
 
 	@Override
 	public void robotInit() {
@@ -62,7 +65,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		updateToSmartDash();
-		
+		// var result = camera.getLatestResult();
+        // boolean hasTargets = result.hasTargets();
+        // SmartDashboard.putBoolean("hasTargets", hasTargets);
 	}
 
 	public void updateToSmartDash()
@@ -103,16 +108,16 @@ public class Robot extends TimedRobot {
 			m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getPosition()
 		};
 
-		SmartDashboard.putNumber("Intake Speed", m_robotContainer.getIntake().getSpeed());
-		SmartDashboard.putNumber("Shooter Speed", m_robotContainer.getShooter().getSpeed());
-		SmartDashboard.putNumber("Support Speed", m_robotContainer.getSupport().getSpeed());
+		// SmartDashboard.putNumber("Intake Speed", m_robotContainer.getIntake().getSpeed());
+		// SmartDashboard.putNumber("Shooter Speed", m_robotContainer.getShooter().getSpeed());
+		// SmartDashboard.putNumber("Support Speed", m_robotContainer.getSupport().getSpeed());
 
-		SmartDashboard.putString("Light Status", m_robotContainer.getLights().GetState());
+		// SmartDashboard.putString("Light Status", m_robotContainer.getLights().GetState());
 		
 		// SmartDashboard.putNumberArray("offsets", offsets);
 		// SmartDashboard.putNumberArray("absolute", absolutePositions);
 		// SmartDashboard.putNumberArray("virtual", virtualPositions);
-		// SmartDashboard.putNumberArray("SwerveModuleStates", loggingState);
+		SmartDashboard.putNumberArray("SwerveModuleStates", loggingState);
 
 		m_robotContainer.getField().setRobotPose(m_robotContainer.getDrive().getPose());
 	}

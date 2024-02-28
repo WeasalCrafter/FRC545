@@ -1,5 +1,8 @@
 package frc.robot;
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
@@ -44,8 +47,16 @@ public class RobotContainer {
 	private final Shooter m_shooter = new Shooter();
 	private final Climber m_climber = new Climber();
 
+	private final boolean ISTESTMODE = true;
+
+    private final double ANGULAR_P = 0.1;
+    private final double ANGULAR_D = 0.0;
+    private PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
+
+	PhotonCamera camera = new PhotonCamera("photonvision");
+
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-	//CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorrControllerPort);
+	CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
 	public RobotContainer() {
 		autonChooser.addOption("Forward", AUTON_FORWARD);
@@ -63,49 +74,104 @@ public class RobotContainer {
 					true, true),
 				m_robotDrive));
 
-		// m_intake.setDefaultCommand(new RunCommand(() -> m_intake.stopIntake(), m_intake));
+		//m_intake.setDefaultCommand(new StopIntake(m_intake));
 		// m_lights.setDefaultCommand(new RunCommand(() -> m_lights.DefaultState(), m_lights));
 		// m_support.setDefaultCommand(new RunCommand(() -> m_support.stopSupport(), m_support));
 		// m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.stopShooter(), m_shooter));
 
 	}
 
-	private void configureButtonBindings() {		
-		// m_driverController.a() //AIMING
-		// 		.whileTrue(new RunCommand(null, m_vision));
+	private void configureButtonBindings() {	
+		if(ISTESTMODE){
+			m_driverController.x() // BRAKE
+					.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+					.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 
-		// m_driverController.b() //CLIMBING
-		// 		.whileTrue(new RunCommand(() -> m_lights.ClimbReverseState(), m_lights));
+			m_driverController.y() // REVERSE HEADING
+					.onTrue(new DrivetrainReverseHeading(m_robotDrive));
+					
+			m_driverController.a() // AIMING
+					.whileTrue(			
+						new RunCommand(
+						() -> m_robotDrive.drive(
+							0,
+							0,
+							aimSpeed(camera, turnController),
+							true, true),
+						m_robotDrive));
 
-		m_driverController.x() // BRAKE
-				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
-				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
+			m_driverController.leftTrigger() // START INTAKE
+					.whileTrue(new StartIntake(m_intake, SpeedConstants.IntakeSpeed))
+					.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
+					.whileFalse(new StopIntake(m_intake))
+					.whileFalse(new StopSupport(m_support));
 
-		 m_driverController.y() // REVERSE HEADING
-		 		.onTrue(new DrivetrainReverseHeading(m_robotDrive));
+			m_driverController.leftBumper() // START OUTTAKE
+					.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
+					.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed))
+					.whileFalse(new StopIntake(m_intake))
+					.whileFalse(new StopSupport(m_support));
 
-		m_driverController.leftTrigger() // START INTAKE
-				.whileTrue(new StartIntake(m_intake, SpeedConstants.IntakeSpeed))
-				.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
-				.whileFalse(new StopIntake(m_intake))
-				.whileFalse(new StopSupport(m_support));
+			m_driverController.rightTrigger() // SHOOT
+					.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedDefault))
+					.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedDefault))
+					.whileFalse(new StopShooter(m_shooter))
+					.whileFalse(new StopSupport(m_support));
 
-		m_driverController.leftBumper() // START OUTTAKE
-				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
-				.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed))
-				.whileFalse(new StopIntake(m_intake))
-				.whileFalse(new StopSupport(m_support));
+			m_driverController.rightBumper() // HUMAN INPUT3
+					.onTrue(new HumanInput(m_shooter,m_support));
 
-		m_driverController.rightTrigger() // SHOOT
-		 		.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedDefault))
-				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedDefault))
-				.whileFalse(new StopShooter(m_shooter))
-				.whileFalse(new StopSupport(m_support));
+			m_driverController.x() // BRAKE
+					.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+					.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 
-		m_driverController.rightBumper() // HUMAN INPUT3
-				.onTrue(new HumanInput(m_shooter,m_support));
+			// m_driverController.a() //AIMING
+			// 		.whileTrue(new RunCommand(null, m_vision));
+		
+			// m_driverController.b() //CLIMBING
+			// 		.whileTrue(new RunCommand(() -> m_lights.ClimbReverseState(), m_lights));
+		}else{
+			m_driverController.x() // BRAKE
+					.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+					.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 
-	
+			m_driverController.y() // REVERSE HEADING
+					.onTrue(new DrivetrainReverseHeading(m_robotDrive));
+
+			m_driverController.leftTrigger() // START INTAKE
+					.whileTrue(new StartIntake(m_intake, SpeedConstants.IntakeSpeed))
+					.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
+					.whileFalse(new StopIntake(m_intake))
+					.whileFalse(new StopSupport(m_support));
+
+			m_driverController.leftBumper() // START OUTTAKE
+					.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
+					.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed))
+					.whileFalse(new StopIntake(m_intake))
+					.whileFalse(new StopSupport(m_support));
+
+			//----------------------------------------------------------------------------------------------------------
+
+
+			m_operatorController.rightTrigger() // SHOOT
+					.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedDefault))
+					.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedDefault))
+					.whileFalse(new StopShooter(m_shooter))
+					.whileFalse(new StopSupport(m_support));
+
+			m_operatorController.rightBumper() // HUMAN INPUT3
+					.onTrue(new HumanInput(m_shooter,m_support));
+
+			m_driverController.x() // BRAKE
+					.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+					.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
+
+			// m_operatorController.a() //AIMING
+			// 		.whileTrue(new RunCommand(null, m_vision));
+		
+			// m_operatorController.b() //CLIMBING
+			// 		.whileTrue(new RunCommand(() -> m_lights.ClimbReverseState(), m_lights));
+		}
 	}
 
 	public Command getAutonomousCommand() {
@@ -130,6 +196,15 @@ public class RobotContainer {
 		TrajectoryConfig config = createTrajectoryConfig();
 		config.setReversed(true);
 		return config;
+	}
+
+	public double aimSpeed(PhotonCamera camera, PIDController turnController){
+		double rotationSpeed = 0;
+		var result = camera.getLatestResult();
+		if (result.hasTargets()) {
+			rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0);
+		}
+		return rotationSpeed;
 	}
 
 	public Field2d getField()
