@@ -155,7 +155,7 @@ public final class Constants {
 		
 		public static final double kDriveDeadband = 0.05;
 
-		public static final String cameraName = "photonvision";
+		public static final String cameraName = "Microsoft_LifeCam_HD-3000";
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//

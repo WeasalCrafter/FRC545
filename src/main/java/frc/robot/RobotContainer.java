@@ -90,8 +90,9 @@ public class RobotContainer {
 						true, true),
 					m_robotDrive));
 
-		// m_driverController.b() //CLIMBING
-		// 		.whileTrue(new RunCommand(() -> m_lights.ClimbReverseState(), m_lights));
+		m_driverController.b() //CLIMBING
+		 		.whileTrue(new RunCommand(() -> m_climber.ascend(2), m_climber))
+				.whileTrue(new RunCommand(() -> m_climber.stop(), m_climber));
 
 		m_driverController.x() // BRAKE
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
