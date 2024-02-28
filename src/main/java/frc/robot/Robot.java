@@ -108,9 +108,25 @@ public class Robot extends TimedRobot {
 			m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getPosition()
 		};
 
-		// SmartDashboard.putNumber("Intake Speed", m_robotContainer.getIntake().getSpeed());
-		// SmartDashboard.putNumber("Shooter Speed", m_robotContainer.getShooter().getSpeed());
-		// SmartDashboard.putNumber("Support Speed", m_robotContainer.getSupport().getSpeed());
+		double flTest = virtualPositions[0] - absolutePositions[0];
+		double frTest = virtualPositions[1] - absolutePositions[1];
+		double blTest = virtualPositions[2] - absolutePositions[2];
+		double brTest = virtualPositions[3] - absolutePositions[3];
+
+		double[] frontLeft = {flTest, Math.round(flTest * 100.0) / 100.0};
+		double[] frontRight = {frTest, Math.round(frTest * 100.0) / 100.0};
+		double[] backLeft = {blTest, Math.round(blTest * 100.0) / 100.0};
+		double[] backRight = {brTest, Math.round(brTest * 100.0) / 100.0};
+
+		SmartDashboard.putNumberArray("Front Left", frontLeft);
+		SmartDashboard.putNumberArray("Front Right", frontRight);
+		SmartDashboard.putNumberArray("Back Left", backLeft);
+		SmartDashboard.putNumberArray("Back Right", backRight);
+
+		// SmartDashboard.putNumber("Front Left Calculated Offset", flTest);
+		// SmartDashboard.putNumber("Front Right Calculated Offset", frTest);
+		// SmartDashboard.putNumber("Back Left Calculated Offset", blTest);
+		// SmartDashboard.putNumber("Back Right Calculated Offset", brTest);
 
 		// SmartDashboard.putString("Light Status", m_robotContainer.getLights().GetState());
 		
@@ -120,6 +136,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumberArray("SwerveModuleStates", loggingState);
 
 		m_robotContainer.getField().setRobotPose(m_robotContainer.getDrive().getPose());
+		
 	}
 
 	@Override
