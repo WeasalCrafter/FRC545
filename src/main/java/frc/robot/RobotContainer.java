@@ -91,32 +91,12 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {	
-		// m_driverController.a() // AIMING
-		// 		.whileTrue(			
-		// 			new RunCommand(
-		// 			() -> m_robotDrive.drive(
-		// 				0,
-		// 				0,
-		// 				aimSpeed(camera, turnController),
-		// 				true, true),
-		// 			m_robotDrive));
-
-		// m_driverController.b() // AIMING
-		// 		.whileTrue(			
-		// 			new RunCommand(
-		// 			() -> m_robotDrive.drive(
-		// 				forwardSpeed(camera, forwardController),
-		// 				0,
-		// 				0,
-		// 				true, true),
-		// 			m_robotDrive));
-
-		m_driverController.a() 
-				.whileTrue(new RunCommand(() -> m_climber.ascend(2),m_climber))
+		m_driverController.rightTrigger() //CLIMB
+				.whileTrue(new RunCommand(() -> m_climber.ascend(SpeedConstants.climberSpeed),m_climber))
 				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber));
 				
-		m_driverController.b() 
-				.whileTrue(new RunCommand(() -> m_climber.descend(2),m_climber))
+		m_driverController.leftTrigger() //DESCEND
+				.whileTrue(new RunCommand(() -> m_climber.descend(SpeedConstants.climberSpeed),m_climber))
 				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber));
 
 		m_driverController.x() // BRAKE
@@ -126,25 +106,45 @@ public class RobotContainer {
 		m_driverController.y() // REVERSE HEADING
 				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
 
-		m_driverController.leftTrigger() // START INTAKE
+		m_operatorController.a() // AIMING
+				.whileTrue(			
+					new RunCommand(
+					() -> m_robotDrive.drive(
+						0,
+						0,
+						aimSpeed(camera, turnController),
+						true, true),
+					m_robotDrive));
+
+		m_operatorController.b() // AIMING
+				.whileTrue(			
+					new RunCommand(
+					() -> m_robotDrive.drive(
+						forwardSpeed(camera, forwardController),
+						0,
+						0,
+						true, true),
+					m_robotDrive));
+
+		m_operatorController.leftTrigger() // START INTAKE
 				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed))
 				.whileFalse(new StopIntake(m_intake))
 				.whileFalse(new StopSupport(m_support));
 
-		m_driverController.leftBumper() // START OUTTAKE
+		m_operatorController.leftBumper() // START OUTTAKE
 				.whileTrue(new StartIntake(m_intake, SpeedConstants.IntakeSpeed))
 				.whileTrue(new StartSupport(m_support, -1*SpeedConstants.IntakeSpeed))
 				.whileFalse(new StopIntake(m_intake))
 				.whileFalse(new StopSupport(m_support));
 
-		m_driverController.rightTrigger() // SHOOT
+		m_operatorController.rightTrigger() // SHOOT
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedDefault))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedDefault))
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
 
-		m_driverController.rightBumper() // HUMAN INPUT
+		m_operatorController.rightBumper() // HUMAN INPUT
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.HumanInputSpeed))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.HumanInputSpeed))
 				.whileFalse(new StopShooter(m_shooter))
