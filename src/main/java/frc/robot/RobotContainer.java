@@ -120,7 +120,7 @@ public class RobotContainer {
 				.whileTrue(			
 					new RunCommand(
 					() -> m_robotDrive.drive(
-						forwardSpeed(camera, forwardController),
+						rangeSpeed(camera, forwardController),
 						0,
 						0,
 						true, true),
@@ -139,10 +139,16 @@ public class RobotContainer {
 				.whileFalse(new StopSupport(m_support));
 
 		m_operatorController.rightTrigger() // SHOOT
-				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedDefault))
-				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedDefault))
+				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedLow))
+				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedLow))
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
+
+		m_operatorController.rightStick().and(m_operatorController.rightTrigger())
+				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedHigh))
+				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedHigh))
+				.whileFalse(new StopShooter(m_shooter))
+				.whileFalse(new StopSupport(m_support));			
 
 		m_operatorController.rightBumper() // HUMAN INPUT
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.HumanInputSpeed))
@@ -187,34 +193,35 @@ public class RobotContainer {
 		return -0.1 * rotationSpeed;
 	}
 
-	public double forwardSpeed(PhotonCamera camera, PIDController controller){
-		    var result = camera.getLatestResult();
-			double CAMERA_HEIGHT_METERS = 0.44;
-			double TARGET_HEIGHT_METERS = 0.44;
-			double CAMERA_PITCH_RADIANS = 90;
-			double GOAL_RANGE_METERS = 0.2;
-
-			double forwardSpeed;
-
-            if (result.hasTargets()) {
-                // First calculate range
-                double range =
-                        PhotonUtils.calculateDistanceToTargetMeters(
-                                CAMERA_HEIGHT_METERS,
-                                TARGET_HEIGHT_METERS,
-                                CAMERA_PITCH_RADIANS,
-                                Units.degreesToRadians(result.getBestTarget().getPitch()));
-				System.out.println(range);
-                // Use this range as the measurement we give to the PID controller.
-                // -1.0 required to ensure positive PID controller effort _increases_ range
-                forwardSpeed = -controller.calculate(range, GOAL_RANGE_METERS);
-            } else {
-                // If we have no targets, stay still.
-                forwardSpeed = 0;
-            }
-			
-			return forwardSpeed;
+	public double rangeSpeed(PhotonCamera camera, PIDController controller){
+		// Vision-alignment mode
+		double CAMERA_HEIGHT_METERS = 0.41;
+		double TARGET_HEIGHT_METERS = 0.35;
+		double CAMERA_PITCH_RADIANS = 0;
+		double GOAL_RANGE_METERS = 0.25;
+		double forwardSpeed;
+		// Query the latest result from PhotonVision
+		var result = camera.getLatestResult();
+		if (result.hasTargets()) {
+			// First calculate range
+			double range =
+					PhotonUtils.calculateDistanceToTargetMeters(
+							CAMERA_HEIGHT_METERS,
+							TARGET_HEIGHT_METERS,
+							CAMERA_PITCH_RADIANS,
+							Units.degreesToRadians(result.getBestTarget().getPitch()));
+			// Use this range as the measurement we give to the PID controller.
+			// -1.0 required to ensure positive PID controller effort _increases_ range
+			forwardSpeed = -controller.calculate(range, GOAL_RANGE_METERS);
+			System.out.println(range);
+		} else {
+			// If we have no targets, stay still.
+			forwardSpeed = 0;
+		}
+		forwardSpeed = 0;
+		return forwardSpeed;
 	}
+
 
 	public Field2d getField()
 	{

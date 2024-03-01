@@ -103,9 +103,10 @@ public final class Constants {
 		public static final double HumanInputSpeed = -0.1;
 		public static final double HumanInputTime = 1;
 
-		public static final double IntakeSpeed = 0.15;
+		public static final double IntakeSpeed = 0.30;
 
-		public static final double ShooterSpeedDefault = 1;
+		public static final double ShooterSpeedLow = 0.45;
+		public static final double ShooterSpeedHigh = 1;
 
 		public static final double climberSpeed = 0.2;
 	}
@@ -114,10 +115,10 @@ public final class Constants {
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class VisionConstants {
-		public static final double CameraHeightMeters = Units.inchesToMeters(0);
+		public static final double CameraHeightMeters = 0.42;
 		public static final double TargetHeightMeters = Units.inchesToMeters(0);
 
-		public static final double CameraPitchRadians = Units.degreesToRadians(0);
+		public static final double CameraPitchRadians = Units.degreesToRadians(20);
 
 	}
 
@@ -157,7 +158,7 @@ public final class Constants {
 		
 		public static final double kDriveDeadband = 0.05;
 
-		public static final String cameraName = "Microsoft_LifeCam_HD-3000";
+		public static final String cameraName = "Logitech,_Inc._Webcam_C270"; //"Microsoft_LifeCam_HD-3000"; 
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//
