@@ -15,6 +15,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SpeedConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.common.HumanInput;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
 import frc.robot.commands.intake.common.StartIntake;
@@ -68,8 +69,8 @@ public class RobotContainer {
 	CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
 	public RobotContainer() {
-		autonChooser.addOption("Forward", AUTON_FORWARD);
-		autonChooser.setDefaultOption("S Shape", AUTON_S_SHAPE);
+		autonChooser.setDefaultOption("Forward", AUTON_FORWARD);
+		autonChooser.addOption("S Shape", AUTON_S_SHAPE);
 		SmartDashboard.putData("Auto choices", autonChooser);
 		
 		configureButtonBindings();
@@ -103,16 +104,30 @@ public class RobotContainer {
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
 				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 
+		m_operatorController.x() // BRAKE
+				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
+
 		m_driverController.y() // REVERSE HEADING
 				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
 
-		m_operatorController.a() // AIMING
+		// m_operatorController.a() // AIMING
+		// 		.whileTrue(			
+		// 			new RunCommand(
+		// 			() -> m_robotDrive.drive(
+		// 				0,
+		// 				0,
+		// 				aimSpeed(camera, turnController),
+		// 				true, true),
+		// 			m_robotDrive));
+
+		m_operatorController.a() // OUTPUT RANGE
 				.whileTrue(			
 					new RunCommand(
 					() -> m_robotDrive.drive(
+						getRange(camera, forwardController)[0],
 						0,
 						0,
-						aimSpeed(camera, turnController),
 						true, true),
 					m_robotDrive));
 
@@ -120,9 +135,9 @@ public class RobotContainer {
 				.whileTrue(			
 					new RunCommand(
 					() -> m_robotDrive.drive(
-						rangeSpeed(camera, forwardController),
+						vision(camera, forwardController)[0],
 						0,
-						0,
+						vision(camera, forwardController)[1],
 						true, true),
 					m_robotDrive));
 
@@ -146,9 +161,11 @@ public class RobotContainer {
 
 		m_operatorController.rightStick().and(m_operatorController.rightTrigger())
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedHigh))
+				.whileTrue(new StartIntake(m_intake, -.1*SpeedConstants.ShooterSpeedHigh))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedHigh))
 				.whileFalse(new StopShooter(m_shooter))
-				.whileFalse(new StopSupport(m_support));			
+				.whileFalse(new StopSupport(m_support))			
+				.whileFalse(new StopIntake(m_intake));
 
 		m_operatorController.rightBumper() // HUMAN INPUT
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.HumanInputSpeed))
@@ -160,7 +177,7 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		switch (getSelected()) {
 			case AUTON_FORWARD:
-				return new MoveForward(m_robotDrive, this, 3); //3 meters
+				return new MoveForward(m_robotDrive, this, 2); //2 meters
 			case AUTON_S_SHAPE:
 				return new MoveSShape(m_robotDrive, this, 3);
 			default:
@@ -193,35 +210,79 @@ public class RobotContainer {
 		return -0.1 * rotationSpeed;
 	}
 
-	public double rangeSpeed(PhotonCamera camera, PIDController controller){
-		// Vision-alignment mode
-		double CAMERA_HEIGHT_METERS = 0.41;
-		double TARGET_HEIGHT_METERS = 0.35;
-		double CAMERA_PITCH_RADIANS = 0;
-		double GOAL_RANGE_METERS = 0.25;
+	public double[] getRange(PhotonCamera camera, PIDController controller){
+		double CAMERA_HEIGHT_METERS = VisionConstants.CameraHeightMeters;
+		double TARGET_HEIGHT_METERS = VisionConstants.TargetHeightMeters;
+		double CAMERA_PITCH_RADIANS = VisionConstants.CameraPitchRadians;
+		double GOAL_RANGE_METERS = VisionConstants.TargetDistance;
+		
 		double forwardSpeed;
-		// Query the latest result from PhotonVision
+		double rotationSpeed;
+
 		var result = camera.getLatestResult();
+
 		if (result.hasTargets()) {
-			// First calculate range
+			PhotonTrackedTarget target = result.getBestTarget();
+
 			double range =
-					PhotonUtils.calculateDistanceToTargetMeters(
-							CAMERA_HEIGHT_METERS,
-							TARGET_HEIGHT_METERS,
-							CAMERA_PITCH_RADIANS,
-							Units.degreesToRadians(result.getBestTarget().getPitch()));
-			// Use this range as the measurement we give to the PID controller.
-			// -1.0 required to ensure positive PID controller effort _increases_ range
-			forwardSpeed = -controller.calculate(range, GOAL_RANGE_METERS);
+				PhotonUtils.calculateDistanceToTargetMeters(
+					CAMERA_HEIGHT_METERS,
+					TARGET_HEIGHT_METERS,
+					CAMERA_PITCH_RADIANS,
+					Units.degreesToRadians(result.getBestTarget().getPitch())
+				);
+			
+			forwardSpeed = 10 * -controller.calculate(range, GOAL_RANGE_METERS);
+			rotationSpeed = 0.1 * turnController.calculate(target.getYaw(), 0);
 			System.out.println(range);
-		} else {
-			// If we have no targets, stay still.
+
+		}else{
 			forwardSpeed = 0;
+			rotationSpeed = 0;
 		}
 		forwardSpeed = 0;
-		return forwardSpeed;
+		rotationSpeed = 0;
+		double[] speeds  = {forwardSpeed,rotationSpeed};
+
+		return speeds;
 	}
 
+
+	public double[] vision(PhotonCamera camera, PIDController controller){
+		double CAMERA_HEIGHT_METERS = VisionConstants.CameraHeightMeters;
+		double TARGET_HEIGHT_METERS = VisionConstants.TargetHeightMeters;
+		double CAMERA_PITCH_RADIANS = VisionConstants.CameraPitchRadians;
+		double GOAL_RANGE_METERS = VisionConstants.TargetDistance;
+
+		double forwardSpeed;
+		double rotationSpeed;
+
+		var result = camera.getLatestResult();
+
+		if (result.hasTargets()) {
+			PhotonTrackedTarget target = result.getBestTarget();
+
+			double range =
+				PhotonUtils.calculateDistanceToTargetMeters(
+					CAMERA_HEIGHT_METERS,
+					TARGET_HEIGHT_METERS,
+					CAMERA_PITCH_RADIANS,
+					Units.degreesToRadians(result.getBestTarget().getPitch())
+				);
+			
+			forwardSpeed = -0.1 * -controller.calculate(range, GOAL_RANGE_METERS);
+			rotationSpeed = 0.1 * turnController.calculate(target.getYaw(), 0);
+			System.out.println(range);
+
+		}else{
+			forwardSpeed = 0;
+			rotationSpeed = 0;
+		}
+
+		double[] speeds  = {forwardSpeed,rotationSpeed};
+
+		return speeds;
+	}
 
 	public Field2d getField()
 	{

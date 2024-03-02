@@ -116,10 +116,15 @@ public final class Constants {
 
 	public static final class VisionConstants {
 		public static final double CameraHeightMeters = 0.42;
-		public static final double TargetHeightMeters = Units.inchesToMeters(0);
+		public static final double TargetHeightMeters = 0.52;
+		
+		public static final double TargetDistance = 1;
 
 		public static final double CameraPitchRadians = Units.degreesToRadians(20);
 
+
+
+		
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//

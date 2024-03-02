@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.net.PortForwarder;
+
 //import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -23,6 +25,8 @@ public class Robot extends TimedRobot {
 		m_robotContainer = new RobotContainer();
 		Field2d m_field = new Field2d();
 		
+		PortForwarder.add(5800, "photonvision.local", 5800);
+
 		SmartDashboard.putData("Swerve Odometry", m_robotContainer.getField());
 		SmartDashboard.putData("Field", m_field);
 	}
