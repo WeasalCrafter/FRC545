@@ -28,4 +28,9 @@ public class Climber extends SubsystemBase {
         m_leftActuator.set(0);
         m_rightActuator.set(0);
     }
+
+    public void clearFaults(){
+        m_leftActuator.clearFaults();
+        m_rightActuator.clearFaults();
+    }
 }

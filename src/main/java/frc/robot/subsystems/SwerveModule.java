@@ -207,6 +207,11 @@ public class SwerveModule {
 		return m_turningAbsoluteEncoder;
 	}
 
+    public void clearFaults(){
+        m_drivingSparkMax.clearFaults();
+        m_turningSparkMax.clearFaults();
+    }
+
 	public SwerveModuleState getDesiredState()
 	{
 		return m_desiredState;

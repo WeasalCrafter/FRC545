@@ -51,4 +51,9 @@ public class Shooter extends SubsystemBase {
     public double getSpeed(){
         return m_motor1.get();
     }
+
+    public void clearFaults(){
+        m_motor1.clearFaults();
+        m_motor2.clearFaults();
+    }
 }

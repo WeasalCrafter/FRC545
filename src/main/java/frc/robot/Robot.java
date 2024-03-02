@@ -108,6 +108,17 @@ public class Robot extends TimedRobot {
 			m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getPosition()
 		};
 
+
+		//STICKY FAULTS
+		m_robotContainer.getIntake().clearFaults();
+		m_robotContainer.getClimber().clearFaults();
+		m_robotContainer.getShooter().clearFaults();
+		m_robotContainer.getSupport().clearFaults();
+		m_robotContainer.getDrive().getFrontLeftModule().clearFaults();
+		m_robotContainer.getDrive().getFrontRightModule().clearFaults();
+		m_robotContainer.getDrive().getRearLeftModule().clearFaults();
+		m_robotContainer.getDrive().getRearRightModule().clearFaults();
+
 		double flTest = virtualPositions[0] - absolutePositions[0];
 		double frTest = virtualPositions[1] - absolutePositions[1];
 		double blTest = virtualPositions[2] - absolutePositions[2];

@@ -248,7 +248,7 @@ public class RobotContainer {
 		return m_shooter;
 	}
 
-	public Climber getcClimber()
+	public Climber getClimber()
 	{
 		return m_climber;
 	}
