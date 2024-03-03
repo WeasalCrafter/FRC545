@@ -27,6 +27,7 @@ import frc.robot.commands.support.common.StopSupport;
 import frc.robot.commands.vision.aimAtTarget;
 import frc.robot.commands.vision.fullVision;
 import frc.robot.commands.vision.getInRange;
+import frc.robot.routines.moveThenShoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -146,14 +147,14 @@ public class RobotContainer {
 		// 				true, true),
 		// 			m_robotDrive));
 
-		m_operatorController.pov(180) // NEW RANGE
-				.whileTrue(new getInRange(m_robotDrive, m_Vision));	
+		// m_operatorController.pov(180) // NEW RANGE
+		// 		.whileTrue(new getInRange(m_robotDrive, m_Vision));	
 
 		m_operatorController.pov(0) // NEW AIMING
 				.whileTrue(new aimAtTarget(m_robotDrive, m_Vision));	
 
-		m_operatorController.pov(90) // NEW AIMING
-				.whileTrue(new fullVision(m_robotDrive, m_Vision));					
+		// m_operatorController.pov(90) // NEW AIMING
+		// 		.whileTrue(new fullVision(m_robotDrive, m_Vision));					
 
 		m_operatorController.leftTrigger() // START INTAKE
 				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
@@ -195,11 +196,12 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		switch (getSelected()) {
 			case AUTON_FORWARD:
-				return new MoveForward(m_robotDrive, this, 2); //2 meters
+				return new moveThenShoot(m_robotDrive,m_shooter,m_support,this, 1.0, 1.5,1.0);
+				//return new MoveForward(m_robotDrive, this, 2); //2 meters
 			case AUTON_S_SHAPE:
 				return new MoveSShape(m_robotDrive, this, 3);
 			default:
-				return new MoveForward(m_robotDrive, this, 3);
+				return new MoveForward(m_robotDrive, this, 2); //2 meters
 		}
 	}
 

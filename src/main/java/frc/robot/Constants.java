@@ -105,7 +105,7 @@ public final class Constants {
 
 		public static final double IntakeSpeed = 0.30;
 
-		public static final double ShooterSpeedLow = 0.45;
+		public static final double ShooterSpeedLow = 0.35;
 		public static final double ShooterSpeedHigh = 1;
 
 		public static final double climberSpeed = 0.2;
@@ -163,7 +163,9 @@ public final class Constants {
 		public static final int kDriverControllerPort = 0;
 		public static final int kOperatorControllerPort = 1;
 		
-		public static final double kDriveDeadband = 0.05;
+		public static final double kDriveDeadband = 0.1
+		
+		;
 
 		public static final String cameraName = "Logitech,_Inc._Webcam_C270"; //"Microsoft_LifeCam_HD-3000"; 
 	}
