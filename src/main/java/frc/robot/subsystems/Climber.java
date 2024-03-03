@@ -16,14 +16,16 @@ public class Climber extends SubsystemBase {
     }
 
     public void ascend(double spd){
-        m_leftActuator.set(spd);
-        m_rightActuator.set(spd);
-    }
-    public void descend(double spd){
         spd = -1 * spd;
         m_leftActuator.set(spd);
         m_rightActuator.set(spd);
     }
+
+    public void descend(double spd){
+        m_leftActuator.set(spd);
+        m_rightActuator.set(spd);
+    }
+    
     public void stop(){
         m_leftActuator.set(0);
         m_rightActuator.set(0);

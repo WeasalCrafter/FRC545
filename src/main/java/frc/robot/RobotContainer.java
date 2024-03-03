@@ -24,15 +24,20 @@ import frc.robot.commands.shooter.common.StartShooter;
 import frc.robot.commands.shooter.common.StopShooter;
 import frc.robot.commands.support.common.StartSupport;
 import frc.robot.commands.support.common.StopSupport;
+import frc.robot.commands.vision.aimAtTarget;
+import frc.robot.commands.vision.fullVision;
+import frc.robot.commands.vision.getInRange;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
+import frc.robot.subsystems.Vision;
 import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -54,6 +59,7 @@ public class RobotContainer {
 	private final Intake m_intake = new Intake();
 	private final Shooter m_shooter = new Shooter();
 	private final Climber m_climber = new Climber();
+	private final Vision m_Vision = new Vision();
 
     private final double ANGULAR_P = 0.1;
     private final double ANGULAR_D = 0.0;
@@ -104,42 +110,50 @@ public class RobotContainer {
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
 				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 
-		m_operatorController.x() // BRAKE
-				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
-				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
-
 		m_driverController.y() // REVERSE HEADING
 				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
 
-		// m_operatorController.a() // AIMING
+		// m_driverController.pov(0)
 		// 		.whileTrue(			
 		// 			new RunCommand(
 		// 			() -> m_robotDrive.drive(
+		// 				aimSpeed(camera, forwardController),
 		// 				0,
 		// 				0,
-		// 				aimSpeed(camera, turnController),
 		// 				true, true),
 		// 			m_robotDrive));
 
-		m_operatorController.a() // OUTPUT RANGE
-				.whileTrue(			
-					new RunCommand(
-					() -> m_robotDrive.drive(
-						getRange(camera, forwardController)[0],
-						0,
-						0,
-						true, true),
-					m_robotDrive));
+		// m_driverController.pov(0)
+		// 		.whileTrue(new RunCommand(() -> m_robotDrive.drive(aimSpeed(camera, forwardController),0,0,true,true),m_robotDrive));
 
-		m_operatorController.b() // AIMING
-				.whileTrue(			
-					new RunCommand(
-					() -> m_robotDrive.drive(
-						vision(camera, forwardController)[0],
-						0,
-						vision(camera, forwardController)[1],
-						true, true),
-					m_robotDrive));
+		// m_driverController.pov(0)
+		// 		.whileTrue(new RunCommand(() -> m_robotDrive.drive(m_Vision.forwardSpeed(),0,0,true,true),m_robotDrive));
+
+		// m_driverController.pov(180)
+		// 		.whileTrue(new RunCommand(() -> m_robotDrive.drive(m_Vision.rotationSpeed(),0,0,true,true),m_robotDrive));
+
+		// m_operatorController.a() // OUTPUT RANGE
+		// 		.whileTrue(new InstantCommand(() -> getRange(camera, forwardController)));
+
+
+		// m_operatorController.b() // AIMING
+		// 		.whileTrue(			
+		// 			new RunCommand(
+		// 			() -> m_robotDrive.drive(
+		// 				vision(camera, forwardController)[0],
+		// 				0,
+		// 				vision(camera, forwardController)[1],
+		// 				true, true),
+		// 			m_robotDrive));
+
+		m_operatorController.pov(180) // NEW RANGE
+				.whileTrue(new getInRange(m_robotDrive, m_Vision));	
+
+		m_operatorController.pov(0) // NEW AIMING
+				.whileTrue(new aimAtTarget(m_robotDrive, m_Vision));	
+
+		m_operatorController.pov(90) // NEW AIMING
+				.whileTrue(new fullVision(m_robotDrive, m_Vision));					
 
 		m_operatorController.leftTrigger() // START INTAKE
 				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
@@ -153,13 +167,13 @@ public class RobotContainer {
 				.whileFalse(new StopIntake(m_intake))
 				.whileFalse(new StopSupport(m_support));
 
-		m_operatorController.rightTrigger() // SHOOT
+		m_operatorController.rightTrigger() // SMALL SHOOT
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedLow))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedLow))
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
 
-		m_operatorController.rightStick().and(m_operatorController.rightTrigger())
+		m_operatorController.rightStick().and(m_operatorController.rightTrigger()) // BIG SHOOT
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedHigh))
 				.whileTrue(new StartIntake(m_intake, -.1*SpeedConstants.ShooterSpeedHigh))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedHigh))
@@ -172,6 +186,10 @@ public class RobotContainer {
 				.whileTrue(new StartSupport(m_support, SpeedConstants.HumanInputSpeed))
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
+
+		// m_operatorController.x() // BRAKE
+		// 		.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+		// 		.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 	}
 
 	public Command getAutonomousCommand() {
@@ -207,23 +225,18 @@ public class RobotContainer {
 		} else {
 			rotationSpeed = 0;
 		}
+		System.out.println(("testing"));
 		return -0.1 * rotationSpeed;
 	}
 
-	public double[] getRange(PhotonCamera camera, PIDController controller){
+	public void getRange(PhotonCamera camera, PIDController controller){
 		double CAMERA_HEIGHT_METERS = VisionConstants.CameraHeightMeters;
 		double TARGET_HEIGHT_METERS = VisionConstants.TargetHeightMeters;
 		double CAMERA_PITCH_RADIANS = VisionConstants.CameraPitchRadians;
-		double GOAL_RANGE_METERS = VisionConstants.TargetDistance;
-		
-		double forwardSpeed;
-		double rotationSpeed;
 
 		var result = camera.getLatestResult();
 
 		if (result.hasTargets()) {
-			PhotonTrackedTarget target = result.getBestTarget();
-
 			double range =
 				PhotonUtils.calculateDistanceToTargetMeters(
 					CAMERA_HEIGHT_METERS,
@@ -231,20 +244,11 @@ public class RobotContainer {
 					CAMERA_PITCH_RADIANS,
 					Units.degreesToRadians(result.getBestTarget().getPitch())
 				);
-			
-			forwardSpeed = 10 * -controller.calculate(range, GOAL_RANGE_METERS);
-			rotationSpeed = 0.1 * turnController.calculate(target.getYaw(), 0);
-			System.out.println(range);
+			System.out.println("range: " + range);
 
 		}else{
-			forwardSpeed = 0;
-			rotationSpeed = 0;
+			System.out.println("no targets(range)");
 		}
-		forwardSpeed = 0;
-		rotationSpeed = 0;
-		double[] speeds  = {forwardSpeed,rotationSpeed};
-
-		return speeds;
 	}
 
 
@@ -321,5 +325,8 @@ public class RobotContainer {
 	public Support getSupport()
 	{
 		return m_support;
+	}
+	public Vision getVision(){
+		return m_Vision;
 	}
 }

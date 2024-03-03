@@ -122,9 +122,11 @@ public final class Constants {
 
 		public static final double CameraPitchRadians = Units.degreesToRadians(20);
 
+		public static final double ANGULAR_P = 0.1;
+		public static final double ANGULAR_D = 0.0;
 
-
-		
+        public static final double LINEAR_P = 0.1;
+        public static final double LINEAR_D = 0.0;
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//
@@ -196,7 +198,7 @@ public final class Constants {
 		// The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
 		// This changes the drive speed of the module (a pinion gear with more teeth will result in a
 		// robot that drives faster).
-		public static final int kDrivingMotorPinionTeeth = 14;
+		public static final int kDrivingMotorPinionTeeth = 14; // ALL GOOD
 
 		// Invert the turning encoder, since the output shaft rotates in the opposite direction of
 		// the steering motor in the MAXSwerve Module.
@@ -204,17 +206,15 @@ public final class Constants {
 
 		// Calculations required for driving motor conversion factors and feed forward
 		public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
-		public static final double kWheelDiameterMeters = 0.1016;
+		public static final double kWheelDiameterMeters = 0.1016; // ALL GOOD
 		public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
+
 		// 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
 		public static final double kDrivingMotorReduction = (45.0 * 17 * 50) / (kDrivingMotorPinionTeeth * 15 * 27);
-		public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
-				/ kDrivingMotorReduction;
+		public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters) / kDrivingMotorReduction;
 
-		public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
-				/ kDrivingMotorReduction; // meters
-		public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
-				/ kDrivingMotorReduction) / 60.0; // meters per second
+		public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI) / kDrivingMotorReduction; // meters
+		public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI) / kDrivingMotorReduction) / 60.0; // meters per second
 
 		public static final double TURNING_MOTOR_REDUCTION = 150.0 / 7.0; // ratio between internal relative encoder and Through Bore (or Thrifty in our case) absolute encoder - 150.0 / 7.0
 
