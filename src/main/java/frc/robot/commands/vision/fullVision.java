@@ -12,7 +12,7 @@ public class fullVision extends Command {
     private double lateralSpeed;
     private double rotationSpeed;
 
-    private double speedConstant = 0.1;
+    private double speedConstant = 0.5;
 
     public fullVision(Drivetrain robotDrive, Vision3d visionSystem) {
         m_robotDrive = robotDrive;
@@ -25,9 +25,9 @@ public class fullVision extends Command {
     public void execute() {
         double speeds[] = m_visionSystem.getSpeeds();
 
-        forwardSpeed = speedConstant * speeds[0];
-        lateralSpeed = speedConstant * speeds[1];
-        rotationSpeed = speedConstant * speeds[2];
+        forwardSpeed = -5 * speeds[0];
+        lateralSpeed = -7.5 * speeds[1];
+        rotationSpeed = 0 *  -0.1 * speeds[2];
 
         m_robotDrive.drive(forwardSpeed, lateralSpeed, rotationSpeed, true, true);
     }

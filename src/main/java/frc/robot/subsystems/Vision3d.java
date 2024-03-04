@@ -48,16 +48,21 @@ public class Vision3d extends SubsystemBase{
             var pose = target.getBestCameraToTarget();
             if(pose!=null){
                 Translation3d translation = pose.getTranslation();
-                Rotation3d rotation = pose.getRotation();
                 double x = translation.getX();
-                double z = translation.getZ();
-                double angleError = Units.radiansToDegrees(rotation.getAngle()); 
+                double y = translation.getY();
+                double z = pose.getZ();
 
-                angularSpeed = angularController.calculate(angleError, 0);
-                forwardSpeed = linearController.calculate(z, targetDistance);
-                lateralSpeed = linearController.calculate(x, 0);
+                angularSpeed = angularController.calculate(z, 180);
+                forwardSpeed = linearController.calculate(x, targetDistance);
+                lateralSpeed = linearController.calculate(y, 0);
+                // System.out.println("distance: "+ x + " meters");
+                // System.out.println("forward speed: "+ forwardSpeed);
+
+                // System.out.println("lat distance: "+ y + " meters");
+                // System.out.println("lat speed: "+ lateralSpeed);
 
                 System.out.println("distance: "+ z + " meters");
+                System.out.println("speed: "+ angularSpeed);
             }else{
                 System.out.println("no position");
             }
