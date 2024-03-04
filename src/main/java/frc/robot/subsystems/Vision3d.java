@@ -33,7 +33,7 @@ public class Vision3d extends SubsystemBase{
         angularController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
         camera = new PhotonCamera(OIConstants.cameraName);
-        targetDistance = 1; // METERS
+        targetDistance = 2; // METERS
     }
 
     public double[] getSpeeds(){

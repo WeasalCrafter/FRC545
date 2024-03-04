@@ -115,7 +115,6 @@ public class RobotContainer {
 
 		m_driverController.y() // REVERSE HEADING
 				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
-
 		// m_driverController.pov(0)
 		// 		.whileTrue(			
 		// 			new RunCommand(
@@ -150,6 +149,7 @@ public class RobotContainer {
 		// 			m_robotDrive));
 
 		m_operatorController.b() // AIMING
+			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
 			.whileTrue(new fullVision(m_robotDrive, m_Vision3d));
 
 		// m_operatorController.pov(180) // NEW RANGE
