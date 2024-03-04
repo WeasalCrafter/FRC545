@@ -35,6 +35,7 @@ import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision3d;
 import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,6 +62,7 @@ public class RobotContainer {
 	private final Shooter m_shooter = new Shooter();
 	private final Climber m_climber = new Climber();
 	private final Vision m_Vision = new Vision();
+	private final Vision3d m_Vision3d = new Vision3d();
 
     private final double ANGULAR_P = 0.1;
     private final double ANGULAR_D = 0.0;
@@ -141,17 +143,20 @@ public class RobotContainer {
 		// 		.whileTrue(			
 		// 			new RunCommand(
 		// 			() -> m_robotDrive.drive(
-		// 				vision(camera, forwardController)[0],
-		// 				0,
-		// 				vision(camera, forwardController)[1],
+		// 				m_Vision3d.getSpeeds()[0],
+		// 				m_Vision3d.getSpeeds()[1],
+		// 				m_Vision3d.getSpeeds()[2],
 		// 				true, true),
 		// 			m_robotDrive));
+
+		m_operatorController.b() // AIMING
+			.whileTrue(new fullVision(m_robotDrive, m_Vision3d));
 
 		// m_operatorController.pov(180) // NEW RANGE
 		// 		.whileTrue(new getInRange(m_robotDrive, m_Vision));	
 
-		m_operatorController.pov(0) // NEW AIMING
-				.whileTrue(new aimAtTarget(m_robotDrive, m_Vision));	
+		// m_operatorController.pov(90) // NEW AIMING
+		// 		.whileTrue(new aimAtTarget(m_robotDrive, m_Vision));	
 
 		// m_operatorController.pov(90) // NEW AIMING
 		// 		.whileTrue(new fullVision(m_robotDrive, m_Vision));					
@@ -330,5 +335,8 @@ public class RobotContainer {
 	}
 	public Vision getVision(){
 		return m_Vision;
+	}
+	public Vision3d getVision3d(){
+		return m_Vision3d;
 	}
 }

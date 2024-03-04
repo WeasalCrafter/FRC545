@@ -78,7 +78,6 @@ public class Vision extends SubsystemBase{
     }
 
     public double forwardSpeed(){
-        PhotonCamera cam = camera;
         PIDController controller = forwardController;
         double targetRangeMeters = 1;
 
@@ -95,8 +94,11 @@ public class Vision extends SubsystemBase{
         PhotonCamera cam = camera;
         PIDController controller = turnController;
         PhotonTrackedTarget target = getTarget(cam); 
-
-        return 0.1 * controller.calculate(target.getYaw(), 0);
+        if (target!=null){
+            return 0.1 * controller.calculate(target.getYaw(), 0);
+        }else{
+            return 0;
+        }
     }
 
 }
