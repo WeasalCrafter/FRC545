@@ -1,15 +1,20 @@
 package frc.robot.commands.vision;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision3d;
 
-public class getInRange extends InstantCommand {
+public class getInRange extends Command {
     private Drivetrain m_robotDrive;
-    private Vision m_visionSystem;
-    private double forwardSpeed;
+    private Vision3d m_visionSystem;
 
-    public getInRange(Drivetrain robotDrive, Vision visionSystem) {
+    private double forwardSpeed;
+    private double lateralSpeed;
+    private double rotationSpeed;
+
+    private double speedConstant = 0.5;
+
+    public getInRange(Drivetrain robotDrive, Vision3d visionSystem) {
         m_robotDrive = robotDrive;
         m_visionSystem = visionSystem;
 
@@ -18,7 +23,18 @@ public class getInRange extends InstantCommand {
 
     @Override
     public void execute() {
-        forwardSpeed = m_visionSystem.forwardSpeed();
-        m_robotDrive.drive(forwardSpeed, 0, 0, true, true);
+        double speeds[] = m_visionSystem.getSpeeds();
+
+        forwardSpeed = 0 * speeds[0];
+        lateralSpeed = -7.5 * speeds[1];
+
+        rotationSpeed = 0 * m_visionSystem.angle();;
+
+        m_robotDrive.drive(forwardSpeed, lateralSpeed, rotationSpeed, true, true);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false; 
     }
 }

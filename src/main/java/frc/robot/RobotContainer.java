@@ -36,6 +36,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision3d;
+import frc.robot.trajectories.MoveBackward;
 import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -148,14 +149,18 @@ public class RobotContainer {
 		// 				true, true),
 		// 			m_robotDrive));
 
-		m_operatorController.a() // AIMING
+		m_driverController.a() // AIMING
 			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
 			.whileTrue(new aimAtTarget(m_robotDrive, m_Vision3d));
 
-		m_operatorController.b() // AIMING
+		m_driverController.b() // AIMING
 			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
 			.whileTrue(new fullVision(m_robotDrive, m_Vision3d));
 
+		m_operatorController.b() // AIMING
+			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
+			.whileTrue(new fullVision(m_robotDrive, m_Vision3d))
+			.onFalse(new MoveBackward(m_robotDrive, this, 1));
 		// m_operatorController.pov(180) // NEW RANGE
 		// 		.whileTrue(new getInRange(m_robotDrive, m_Vision));	
 

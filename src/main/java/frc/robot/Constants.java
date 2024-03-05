@@ -105,7 +105,7 @@ public final class Constants {
 
 		public static final double IntakeSpeed = 0.30;
 
-		public static final double ShooterSpeedLow = 0.35;
+		public static final double ShooterSpeedLow = 0.215;
 		public static final double ShooterSpeedHigh = 1;
 
 		public static final double climberSpeed = 0.2;
