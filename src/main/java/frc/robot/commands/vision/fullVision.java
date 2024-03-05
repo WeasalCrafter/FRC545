@@ -27,7 +27,8 @@ public class fullVision extends Command {
 
         forwardSpeed = -5 * speeds[0];
         lateralSpeed = -7.5 * speeds[1];
-        rotationSpeed = 0 *  -0.1 * speeds[2];
+
+        rotationSpeed = -0.1 * m_visionSystem.angle();;
 
         m_robotDrive.drive(forwardSpeed, lateralSpeed, rotationSpeed, true, true);
     }

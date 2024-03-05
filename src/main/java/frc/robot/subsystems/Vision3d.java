@@ -5,12 +5,16 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.commands.vision.aimAtTarget;
 
 public class Vision3d extends SubsystemBase{
 
@@ -22,6 +26,7 @@ public class Vision3d extends SubsystemBase{
     private PIDController angularController;
     private PhotonCamera camera;
     private double targetDistance;
+    private TrapezoidProfile angularProfile;
 
     public Vision3d(){
         LINEAR_P = VisionConstants.LINEAR_P;
@@ -33,7 +38,42 @@ public class Vision3d extends SubsystemBase{
         angularController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
         camera = new PhotonCamera(OIConstants.cameraName);
-        targetDistance = 2; // METERS
+        targetDistance = 1; // METERS
+    }
+
+    public double angle(){
+        PhotonTrackedTarget target = null;
+        PhotonPipelineResult result = camera.getLatestResult();
+        
+        double angularSpeed = 0;
+        
+        double zAngle;
+        double zAngleAbs;
+        
+        double range = 5; // DEGREES
+
+        if(result.hasTargets()){
+            target = result.getBestTarget();
+            var pose = target.getBestCameraToTarget();
+            if(pose!=null){
+                zAngle = Units.radiansToDegrees(pose.getRotation().getZ());
+                zAngleAbs = Math.abs(zAngle);
+                angularSpeed = angularController.calculate(zAngleAbs, 180);
+
+                if(zAngle < 0){
+                    angularSpeed = -0.5 * angularSpeed;
+                }
+
+                if((180 - range) < zAngleAbs && zAngleAbs < (180 + range)){
+                    angularSpeed = 0;
+                }
+
+                SmartDashboard.putNumber("z angle: ", zAngle);
+                SmartDashboard.putNumber("z speed: ", angularSpeed);
+            }
+        }
+
+        return angularSpeed;
     }
 
     public double[] getSpeeds(){

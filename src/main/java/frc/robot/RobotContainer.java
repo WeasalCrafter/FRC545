@@ -148,6 +148,10 @@ public class RobotContainer {
 		// 				true, true),
 		// 			m_robotDrive));
 
+		m_operatorController.a() // AIMING
+			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
+			.whileTrue(new aimAtTarget(m_robotDrive, m_Vision3d));
+
 		m_operatorController.b() // AIMING
 			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
 			.whileTrue(new fullVision(m_robotDrive, m_Vision3d));

@@ -2,24 +2,35 @@ package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision3d;
 
 public class aimAtTarget extends Command {
     private Drivetrain m_robotDrive;
-    private Vision m_visionSystem;
+    private Vision3d m_visionSystem;
+
+    private double forwardSpeed;
+    private double lateralSpeed;
     private double rotationSpeed;
 
-    public aimAtTarget(Drivetrain robotDrive, Vision visionSystem) {
+    private double speedConstant = 0.5;
+
+    public aimAtTarget(Drivetrain robotDrive, Vision3d visionSystem) {
         m_robotDrive = robotDrive;
         m_visionSystem = visionSystem;
+
         addRequirements(robotDrive, visionSystem);
     }
 
     @Override
     public void execute() {
-        rotationSpeed = m_visionSystem.rotationSpeed();
-        System.out.println("Aiming: " + rotationSpeed);
-        m_robotDrive.drive(0, 0, rotationSpeed, true, true);
+        double speeds[] = m_visionSystem.getSpeeds();
+
+        forwardSpeed = 0 * speeds[0];
+        lateralSpeed = 0 * speeds[1];
+
+        rotationSpeed = -0.1 * m_visionSystem.angle();;
+
+        m_robotDrive.drive(forwardSpeed, lateralSpeed, rotationSpeed, true, true);
     }
 
     @Override
