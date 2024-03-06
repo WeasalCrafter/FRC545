@@ -24,9 +24,9 @@ import frc.robot.commands.shooter.common.StartShooter;
 import frc.robot.commands.shooter.common.StopShooter;
 import frc.robot.commands.support.common.StartSupport;
 import frc.robot.commands.support.common.StopSupport;
-import frc.robot.commands.vision.aimAtTarget;
+import frc.robot.commands.vision.rotationAim;
 import frc.robot.commands.vision.fullVision;
-import frc.robot.commands.vision.getInRange;
+import frc.robot.commands.vision.lateralAim;
 import frc.robot.routines.moveThenShoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -34,7 +34,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
-import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision3d;
 import frc.robot.trajectories.MoveBackward;
 import frc.robot.trajectories.MoveForward;
@@ -62,7 +61,6 @@ public class RobotContainer {
 	private final Intake m_intake = new Intake();
 	private final Shooter m_shooter = new Shooter();
 	private final Climber m_climber = new Climber();
-	private final Vision m_Vision = new Vision();
 	private final Vision3d m_Vision3d = new Vision3d();
 
     private final double ANGULAR_P = 0.1;
@@ -114,61 +112,23 @@ public class RobotContainer {
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
 				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 
+
 		m_driverController.y() // REVERSE HEADING
-				.onTrue(new DrivetrainReverseHeading(m_robotDrive));
-		// m_driverController.pov(0)
-		// 		.whileTrue(			
-		// 			new RunCommand(
-		// 			() -> m_robotDrive.drive(
-		// 				aimSpeed(camera, forwardController),
-		// 				0,
-		// 				0,
-		// 				true, true),
-		// 			m_robotDrive));
+			.onTrue(new DrivetrainReverseHeading(m_robotDrive));
 
-		// m_driverController.pov(0)
-		// 		.whileTrue(new RunCommand(() -> m_robotDrive.drive(aimSpeed(camera, forwardController),0,0,true,true),m_robotDrive));
+		m_driverController.a() 
+			.whileTrue(new rotationAim(m_robotDrive, m_Vision3d));
 
-		// m_driverController.pov(0)
-		// 		.whileTrue(new RunCommand(() -> m_robotDrive.drive(m_Vision.forwardSpeed(),0,0,true,true),m_robotDrive));
-
-		// m_driverController.pov(180)
-		// 		.whileTrue(new RunCommand(() -> m_robotDrive.drive(m_Vision.rotationSpeed(),0,0,true,true),m_robotDrive));
-
-		// m_operatorController.a() // OUTPUT RANGE
-		// 		.whileTrue(new InstantCommand(() -> getRange(camera, forwardController)));
-
-
-		// m_operatorController.b() // AIMING
-		// 		.whileTrue(			
-		// 			new RunCommand(
-		// 			() -> m_robotDrive.drive(
-		// 				m_Vision3d.getSpeeds()[0],
-		// 				m_Vision3d.getSpeeds()[1],
-		// 				m_Vision3d.getSpeeds()[2],
-		// 				true, true),
-		// 			m_robotDrive));
-
-		m_driverController.a() // AIMING
-			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
-			.whileTrue(new aimAtTarget(m_robotDrive, m_Vision3d));
-
-		m_driverController.b() // AIMING
-			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
+		m_driverController.b() 
 			.whileTrue(new fullVision(m_robotDrive, m_Vision3d));
 
-		m_operatorController.b() // AIMING
-			//.onTrue(new fullVision(m_robotDrive, m_Vision3d));
+
+		m_operatorController.b() 
 			.whileTrue(new fullVision(m_robotDrive, m_Vision3d))
 			.onFalse(new MoveBackward(m_robotDrive, this, 1));
-		// m_operatorController.pov(180) // NEW RANGE
-		// 		.whileTrue(new getInRange(m_robotDrive, m_Vision));	
 
-		// m_operatorController.pov(90) // NEW AIMING
-		// 		.whileTrue(new aimAtTarget(m_robotDrive, m_Vision));	
-
-		// m_operatorController.pov(90) // NEW AIMING
-		// 		.whileTrue(new fullVision(m_robotDrive, m_Vision));					
+		m_operatorController.a() 
+			.whileTrue(new lateralAim(m_robotDrive, m_Vision3d));					
 
 		m_operatorController.leftTrigger() // START INTAKE
 				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
@@ -201,10 +161,6 @@ public class RobotContainer {
 				.whileTrue(new StartSupport(m_support, SpeedConstants.HumanInputSpeed))
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
-
-		// m_operatorController.x() // BRAKE
-		// 		.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
-		// 		.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 	}
 
 	public Command getAutonomousCommand() {
@@ -341,9 +297,6 @@ public class RobotContainer {
 	public Support getSupport()
 	{
 		return m_support;
-	}
-	public Vision getVision(){
-		return m_Vision;
 	}
 	public Vision3d getVision3d(){
 		return m_Vision3d;

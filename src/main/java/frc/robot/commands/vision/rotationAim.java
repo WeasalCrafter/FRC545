@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision3d;
 
-public class getInRange extends Command {
+public class rotationAim extends Command {
     private Drivetrain m_robotDrive;
     private Vision3d m_visionSystem;
 
@@ -14,7 +14,7 @@ public class getInRange extends Command {
 
     private double speedConstant = 0.5;
 
-    public getInRange(Drivetrain robotDrive, Vision3d visionSystem) {
+    public rotationAim(Drivetrain robotDrive, Vision3d visionSystem) {
         m_robotDrive = robotDrive;
         m_visionSystem = visionSystem;
 
@@ -26,9 +26,9 @@ public class getInRange extends Command {
         double speeds[] = m_visionSystem.getSpeeds();
 
         forwardSpeed = 0 * speeds[0];
-        lateralSpeed = -7.5 * speeds[1];
+        lateralSpeed = 0 * speeds[1];
 
-        rotationSpeed = 0 * m_visionSystem.angle();;
+        rotationSpeed = -0.1 * m_visionSystem.angle();;
 
         m_robotDrive.drive(forwardSpeed, lateralSpeed, rotationSpeed, true, true);
     }
