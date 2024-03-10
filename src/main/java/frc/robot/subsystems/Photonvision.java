@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -7,7 +9,6 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
@@ -22,6 +23,12 @@ public class Photonvision extends SubsystemBase{
     private PIDController angularController;
     private PhotonCamera camera;
     private double targetDistance;
+    private double cameraHorizontalOffset = VisionConstants.cameraHorizontalOffset;
+    private double errorMargin = VisionConstants.rotationErrorMargin;
+
+    private double lateralConstant = VisionConstants.lateralSpeed;
+    private double forwardConstant = VisionConstants.forwardSpeed;
+    private double angularConstant = VisionConstants.rotationSpeed;
 
     public Photonvision(){
         LINEAR_P = VisionConstants.LINEAR_P;
@@ -33,83 +40,96 @@ public class Photonvision extends SubsystemBase{
         angularController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
         camera = new PhotonCamera(OIConstants.cameraName);
+
         targetDistance = 1; // METERS
     }
 
-    public double angle(){
-        PhotonTrackedTarget target = null;
-        PhotonPipelineResult result = camera.getLatestResult();
-        
+    public double angularSpeed(PhotonTrackedTarget target){
         double angularSpeed = 0;
         
         double zAngle;
         double zAngleAbs;
         
-        double range = 5; // DEGREES
+        var pose = target.getBestCameraToTarget();
+        if(pose!=null){
+            zAngle = Units.radiansToDegrees(pose.getRotation().getZ());
+            zAngleAbs = Math.abs(zAngle);
+            angularSpeed = angularController.calculate(zAngleAbs, 180);
 
-        if(result.hasTargets()){
-            target = result.getBestTarget();
-            var pose = target.getBestCameraToTarget();
-            if(pose!=null){
-                zAngle = Units.radiansToDegrees(pose.getRotation().getZ());
-                zAngleAbs = Math.abs(zAngle);
-                angularSpeed = angularController.calculate(zAngleAbs, 180);
+            if(zAngle < 0){
+                angularSpeed *= -1;
+            }
 
-                if(zAngle < 0){
-                    angularSpeed = -0.5 * angularSpeed;
-                }
-
-                if((180 - range) < zAngleAbs && zAngleAbs < (180 + range)){
-                    angularSpeed = 0;
-                }
-
-                SmartDashboard.putNumber("z angle: ", zAngle);
-                SmartDashboard.putNumber("z speed: ", angularSpeed);
+            if((180 - errorMargin) < zAngleAbs && zAngleAbs < (180 + errorMargin)){
+                angularSpeed = 0;
             }
         }
-
+        
+        angularSpeed *= (-1 * angularConstant);
         return angularSpeed;
     }
 
-    public double[] getSpeeds(){
-        PhotonTrackedTarget target = null;
+    public double[] linearSpeeds(PhotonTrackedTarget target){
         double forwardSpeed = 0;
         double lateralSpeed = 0;
-        double angularSpeed = 0;
 
-        PhotonPipelineResult result = camera.getLatestResult();
-        if(result.hasTargets()){
-            target = result.getBestTarget();
             var pose = target.getBestCameraToTarget();
             if(pose!=null){
                 Translation3d translation = pose.getTranslation();
                 double x = translation.getX();
                 double y = translation.getY();
-                double z = pose.getZ();
 
-                angularSpeed = angularController.calculate(z, 180);
                 forwardSpeed = linearController.calculate(x, targetDistance);
-                lateralSpeed = linearController.calculate(y, 0);
-                // System.out.println("distance: "+ x + " meters");
-                // System.out.println("forward speed: "+ forwardSpeed);
-
-                // System.out.println("lat distance: "+ y + " meters");
-                // System.out.println("lat speed: "+ lateralSpeed);
-
-                System.out.println("distance: "+ z + " meters");
-                System.out.println("speed: "+ angularSpeed);
-            }else{
-                System.out.println("no position");
+                lateralSpeed = linearController.calculate(y, cameraHorizontalOffset);
             }
-        }else{
-            System.out.println("no target");
-        }
+        
         double[] speeds = {
-            forwardSpeed,
-            lateralSpeed,
-            angularSpeed
+            (-1 * forwardConstant * forwardSpeed),
+            (-1 * lateralConstant * lateralSpeed),
         };
 
+        return speeds;
+    }
+
+    public double[] getSpeeds(){
+        PhotonPipelineResult result = camera.getLatestResult();
+        PhotonTrackedTarget target = null;
+
+        List<PhotonTrackedTarget> targets = result.getTargets();
+
+        double rot = 0;
+        double[] linear = {0,0};
+
+        for (PhotonTrackedTarget i : targets) {
+            switch (i.getFiducialId()) {
+                case 7:
+                    target = i; // HIGH BLUE
+                    break;
+                case 6:
+                    target = i; // LOW BLUE
+                    break;
+                case 4:
+                    target = i; // HIGH RED
+                    break;
+                case 5:
+                    target = i; // LOW RED
+                    break;
+                default:
+                    break;
+            }
+        }
+    
+        if(target != null){
+            rot = angularSpeed(target);
+            linear = linearSpeeds(target);
+        }
+        
+        double[] speeds = {
+            linear[0], //FORWARD
+            linear[1], //LATERAL
+            rot //ANGULAR
+        };
+            
         return speeds;
     }
 }

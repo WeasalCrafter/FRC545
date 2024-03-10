@@ -7,9 +7,6 @@ import frc.robot.subsystems.Photonvision;
 public class aim extends Command {
     private Drivetrain m_robotDrive;
     private Photonvision m_visionSystem;
-
-    private double forwardSpeed;
-    private double lateralSpeed;
     private double rotationSpeed;
 
     public aim(Drivetrain robotDrive, Photonvision visionSystem) {
@@ -21,14 +18,8 @@ public class aim extends Command {
 
     @Override
     public void execute() {
-        double speeds[] = m_visionSystem.getSpeeds();
-
-        forwardSpeed = 0 * speeds[0];
-        lateralSpeed = 0 * speeds[1];
-
-        rotationSpeed = -0.1 * m_visionSystem.angle();;
-
-        m_robotDrive.drive(forwardSpeed, lateralSpeed, rotationSpeed, true, true);
+        rotationSpeed = m_visionSystem.getSpeeds()[2];
+        m_robotDrive.drive(0, 0, rotationSpeed, true, true);
     }
 
     @Override

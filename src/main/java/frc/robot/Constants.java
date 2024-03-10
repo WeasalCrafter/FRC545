@@ -108,25 +108,27 @@ public final class Constants {
 		public static final double ShooterSpeedLow = 0.215;
 		public static final double ShooterSpeedHigh = 1;
 
-		public static final double climberSpeed = 0.2;
+		public static final double climberSpeed = 0.2;	
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class VisionConstants {
-		public static final double CameraHeightMeters = 0.42;
-		public static final double TargetHeightMeters = 0.52;
+		public static final double cameraHorizontalOffset = 0; //meters from robot center
+		public static final double rotationErrorMargin = 5; //degrees
 		
 		public static final double TargetDistance = 1;
-
-		public static final double CameraPitchRadians = Units.degreesToRadians(20);
 
 		public static final double ANGULAR_P = 0.1;
 		public static final double ANGULAR_D = 0.0;
 
         public static final double LINEAR_P = 0.1;
         public static final double LINEAR_D = 0.0;
+
+		public static final double rotationSpeed = 0.1;
+		public static final double forwardSpeed = 5;
+		public static final double lateralSpeed = 7.5;	
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//

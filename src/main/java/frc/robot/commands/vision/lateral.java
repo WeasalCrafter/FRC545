@@ -4,15 +4,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Photonvision;
 
-public class align extends Command {
+public class lateral extends Command {
     private Drivetrain m_robotDrive;
     private Photonvision m_visionSystem;
-
-    private double forwardSpeed;
     private double lateralSpeed;
-    private double rotationSpeed;
 
-    public align(Drivetrain robotDrive, Photonvision visionSystem) {
+    public lateral(Drivetrain robotDrive, Photonvision visionSystem) {
         m_robotDrive = robotDrive;
         m_visionSystem = visionSystem;
 
@@ -21,14 +18,8 @@ public class align extends Command {
 
     @Override
     public void execute() {
-        double speeds[] = m_visionSystem.getSpeeds();
-
-        forwardSpeed = 0 * speeds[0];
-        lateralSpeed = -7.5 * speeds[1];
-
-        rotationSpeed = 0 * m_visionSystem.angle();;
-
-        m_robotDrive.drive(forwardSpeed, lateralSpeed, rotationSpeed, true, true);
+        lateralSpeed = m_visionSystem.getSpeeds()[1];
+        m_robotDrive.drive(0, lateralSpeed, 0, true, true);
     }
 
     @Override

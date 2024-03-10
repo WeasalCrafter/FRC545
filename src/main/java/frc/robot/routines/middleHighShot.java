@@ -19,9 +19,9 @@ import frc.robot.subsystems.Support;
 import frc.robot.trajectories.MoveBackward;
 import frc.robot.trajectories.MoveForward;
 
-public class moveThenShoot extends SequentialCommandGroup{
+public class middleHighShot extends SequentialCommandGroup{
 
-    public moveThenShoot(Intake intake, Drivetrain drive, Shooter shooter, Support support, RobotContainer container){
+    public middleHighShot(Intake intake, Drivetrain drive, Shooter shooter, Support support, RobotContainer container){
         double DISTANCE_TO_NOTE = 2; 
         
         double SHOOT_TIME = 1; //Tweak Later, not detrimental

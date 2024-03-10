@@ -1,17 +1,10 @@
 package frc.robot;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonUtils;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SpeedConstants;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
 import frc.robot.commands.intake.common.StartIntake;
 import frc.robot.commands.intake.common.StopIntake;
@@ -19,10 +12,8 @@ import frc.robot.commands.shooter.common.StartShooter;
 import frc.robot.commands.shooter.common.StopShooter;
 import frc.robot.commands.support.common.StartSupport;
 import frc.robot.commands.support.common.StopSupport;
-import frc.robot.commands.vision.aim;
 import frc.robot.commands.vision.fullVision;
-import frc.robot.commands.vision.align;
-import frc.robot.routines.moveThenShoot;
+import frc.robot.routines.middleHighShot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -30,8 +21,6 @@ import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
 import frc.robot.subsystems.Photonvision;
-import frc.robot.trajectories.MoveBackward;
-import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -45,26 +34,16 @@ public class RobotContainer {
 	public static final String AUTON_S_SHAPE = "S Shape";
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
 
-	private final Field2d field = new Field2d(); //  a representation of the field
+	private final Field2d field = new Field2d();
 
-	private final Lights m_lights = new Lights(); // MUST BE BEFORE ITS USED
+	private final Lights m_lights = new Lights();
 	private final Support m_support = new Support();
 
 	private final Drivetrain m_robotDrive = new Drivetrain();
 	private final Intake m_intake = new Intake();
 	private final Shooter m_shooter = new Shooter();
 	private final Climber m_climber = new Climber();
-	private final Photonvision m_Vision3d = new Photonvision();
-
-    private final double ANGULAR_P = 0.1;
-    private final double ANGULAR_D = 0.0;
-    private PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
-
-    final double LINEAR_P = 0.1;
-    final double LINEAR_D = 0.0;
-    PIDController forwardController = new PIDController(LINEAR_P, 0, LINEAR_D);
-
-	PhotonCamera camera = new PhotonCamera(OIConstants.cameraName);
+	private final Photonvision m_vision = new Photonvision();
 
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 	CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
@@ -74,7 +53,8 @@ public class RobotContainer {
 		autonChooser.addOption("S Shape", AUTON_S_SHAPE);
 		SmartDashboard.putData("Auto choices", autonChooser);
 		
-		configureButtonBindings();
+		configureDriverBindings();
+		configureOperatorBindings();
 
 		m_robotDrive.setDefaultCommand(		
 			new RunCommand(
@@ -86,7 +66,7 @@ public class RobotContainer {
 				m_robotDrive));
 	}
 
-	private void configureButtonBindings() {	
+	private void configureDriverBindings() {
 		m_driverController.rightTrigger() //CLIMB
 				.whileTrue(new RunCommand(() -> m_climber.ascend(SpeedConstants.climberSpeed),m_climber))
 				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber));
@@ -99,24 +79,14 @@ public class RobotContainer {
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
 				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
 
-
 		m_driverController.y() // REVERSE HEADING
-			.onTrue(new DrivetrainReverseHeading(m_robotDrive));
+			.onTrue(new DrivetrainReverseHeading(m_robotDrive));					
 
-		m_driverController.a() 
-			.whileTrue(new aim(m_robotDrive, m_Vision3d));
+		m_driverController.b() //AIM AND MOVE AT TARGET
+			.whileTrue(new fullVision(m_robotDrive, m_vision));
+	}
 
-		m_driverController.b() 
-			.whileTrue(new fullVision(m_robotDrive, m_Vision3d));
-
-
-		m_operatorController.b() 
-			.whileTrue(new fullVision(m_robotDrive, m_Vision3d))
-			.onFalse(new MoveBackward(m_robotDrive, this, 1));
-
-		m_operatorController.a() 
-			.whileTrue(new align(m_robotDrive, m_Vision3d));					
-
+	private void configureOperatorBindings() {
 		m_operatorController.leftTrigger() // START INTAKE
 				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.IntakeSpeed))
@@ -129,13 +99,14 @@ public class RobotContainer {
 				.whileFalse(new StopIntake(m_intake))
 				.whileFalse(new StopSupport(m_support));
 
-		m_operatorController.rightTrigger() // SMALL SHOOT
+		m_operatorController.rightTrigger() // LOW SHOOT
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedLow))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedLow))
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
 
-		m_operatorController.rightStick().and(m_operatorController.rightTrigger()) // BIG SHOOT
+		m_operatorController.rightStick().and(
+			m_operatorController.rightTrigger()) // HIGH SHOOT
 				.whileTrue(new StartShooter(m_shooter, SpeedConstants.ShooterSpeedHigh))
 				.whileTrue(new StartIntake(m_intake, -.1*SpeedConstants.ShooterSpeedHigh))
 				.whileTrue(new StartSupport(m_support, SpeedConstants.ShooterSpeedHigh))
@@ -153,11 +124,11 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		switch (getSelected()) {
 			case AUTON_MIDDLE_HIGHSHOOT:
-				return new moveThenShoot(m_intake,m_robotDrive,m_shooter,m_support,this);
+				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
 			case AUTON_S_SHAPE:
 				return new MoveSShape(m_robotDrive, this, 3);
 			default:
-				return new MoveForward(m_robotDrive, this, 2); //2 meters
+				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
 		}
 	}
 
@@ -172,78 +143,6 @@ public class RobotContainer {
 		TrajectoryConfig config = createTrajectoryConfig();
 		config.setReversed(true);
 		return config;
-	}
-
-	public double aimSpeed(PhotonCamera camera, PIDController turnController){
-		double rotationSpeed;
-		var result = camera.getLatestResult();
-		if (result.hasTargets()) {
-			PhotonTrackedTarget target = result.getBestTarget();
-			rotationSpeed = -turnController.calculate(target.getYaw(), 0);
-		} else {
-			rotationSpeed = 0;
-		}
-		System.out.println(("testing"));
-		return -0.1 * rotationSpeed;
-	}
-
-	public void getRange(PhotonCamera camera, PIDController controller){
-		double CAMERA_HEIGHT_METERS = VisionConstants.CameraHeightMeters;
-		double TARGET_HEIGHT_METERS = VisionConstants.TargetHeightMeters;
-		double CAMERA_PITCH_RADIANS = VisionConstants.CameraPitchRadians;
-
-		var result = camera.getLatestResult();
-
-		if (result.hasTargets()) {
-			double range =
-				PhotonUtils.calculateDistanceToTargetMeters(
-					CAMERA_HEIGHT_METERS,
-					TARGET_HEIGHT_METERS,
-					CAMERA_PITCH_RADIANS,
-					Units.degreesToRadians(result.getBestTarget().getPitch())
-				);
-			System.out.println("range: " + range);
-
-		}else{
-			System.out.println("no targets(range)");
-		}
-	}
-
-
-	public double[] vision(PhotonCamera camera, PIDController controller){
-		double CAMERA_HEIGHT_METERS = VisionConstants.CameraHeightMeters;
-		double TARGET_HEIGHT_METERS = VisionConstants.TargetHeightMeters;
-		double CAMERA_PITCH_RADIANS = VisionConstants.CameraPitchRadians;
-		double GOAL_RANGE_METERS = VisionConstants.TargetDistance;
-
-		double forwardSpeed;
-		double rotationSpeed;
-
-		var result = camera.getLatestResult();
-
-		if (result.hasTargets()) {
-			PhotonTrackedTarget target = result.getBestTarget();
-
-			double range =
-				PhotonUtils.calculateDistanceToTargetMeters(
-					CAMERA_HEIGHT_METERS,
-					TARGET_HEIGHT_METERS,
-					CAMERA_PITCH_RADIANS,
-					Units.degreesToRadians(result.getBestTarget().getPitch())
-				);
-			
-			forwardSpeed = -0.1 * -controller.calculate(range, GOAL_RANGE_METERS);
-			rotationSpeed = 0.1 * turnController.calculate(target.getYaw(), 0);
-			System.out.println(range);
-
-		}else{
-			forwardSpeed = 0;
-			rotationSpeed = 0;
-		}
-
-		double[] speeds  = {forwardSpeed,rotationSpeed};
-
-		return speeds;
 	}
 
 	public Field2d getField()
@@ -284,7 +183,7 @@ public class RobotContainer {
 	{
 		return m_support;
 	}
-	public Photonvision getVision3d(){
-		return m_Vision3d;
+	public Photonvision getVision(){
+		return m_vision;
 	}
 }
