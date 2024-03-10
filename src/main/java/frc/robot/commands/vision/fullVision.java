@@ -2,19 +2,17 @@ package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision3d;
+import frc.robot.subsystems.Photonvision;
 
 public class fullVision extends Command {
     private Drivetrain m_robotDrive;
-    private Vision3d m_visionSystem;
+    private Photonvision m_visionSystem;
 
     private double forwardSpeed;
     private double lateralSpeed;
     private double rotationSpeed;
 
-    private double speedConstant = 0.5;
-
-    public fullVision(Drivetrain robotDrive, Vision3d visionSystem) {
+    public fullVision(Drivetrain robotDrive, Photonvision visionSystem) {
         m_robotDrive = robotDrive;
         m_visionSystem = visionSystem;
 

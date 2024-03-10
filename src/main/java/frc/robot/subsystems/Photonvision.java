@@ -5,18 +5,14 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.commands.vision.rotationAim;
 
-public class Vision3d extends SubsystemBase{
+public class Photonvision extends SubsystemBase{
 
     private final double LINEAR_P;
     private final double LINEAR_D;
@@ -26,9 +22,8 @@ public class Vision3d extends SubsystemBase{
     private PIDController angularController;
     private PhotonCamera camera;
     private double targetDistance;
-    private TrapezoidProfile angularProfile;
 
-    public Vision3d(){
+    public Photonvision(){
         LINEAR_P = VisionConstants.LINEAR_P;
         LINEAR_D = VisionConstants.LINEAR_D;
         ANGULAR_P = VisionConstants.ANGULAR_P;

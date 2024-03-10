@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class Robot extends TimedRobot {
 	private Command m_autonomousCommand;
 	private RobotContainer m_robotContainer;
-	//private PhotonCamera camera = new PhotonCamera("photonvision");
 
 	@Override
 	public void robotInit() {
@@ -89,12 +88,12 @@ public class Robot extends TimedRobot {
 		};
 		
 		//FL, FR, BL, BR
-		double offsets[] = {
-			m_robotContainer.getDrive().FRONT_LEFT_VIRTUAL_OFFSET_RADIANS,
-			m_robotContainer.getDrive().FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS,
-			m_robotContainer.getDrive().REAR_LEFT_VIRTUAL_OFFSET_RADIANS,
-			m_robotContainer.getDrive().REAR_RIGHT_VIRTUAL_OFFSET_RADIANS
-		};
+		// double offsets[] = {
+		// 	m_robotContainer.getDrive().FRONT_LEFT_VIRTUAL_OFFSET_RADIANS,
+		// 	m_robotContainer.getDrive().FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS,
+		// 	m_robotContainer.getDrive().REAR_LEFT_VIRTUAL_OFFSET_RADIANS,
+		// 	m_robotContainer.getDrive().REAR_RIGHT_VIRTUAL_OFFSET_RADIANS
+		// };
 
 		//FL, FR, BL, BR
 		double virtualPositions[] = {

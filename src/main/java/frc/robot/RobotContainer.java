@@ -1,14 +1,10 @@
 package frc.robot;
-import org.opencv.photo.Photo;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.AutoConstants;
@@ -16,7 +12,6 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.commands.common.HumanInput;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
 import frc.robot.commands.intake.common.StartIntake;
 import frc.robot.commands.intake.common.StopIntake;
@@ -24,9 +19,9 @@ import frc.robot.commands.shooter.common.StartShooter;
 import frc.robot.commands.shooter.common.StopShooter;
 import frc.robot.commands.support.common.StartSupport;
 import frc.robot.commands.support.common.StopSupport;
-import frc.robot.commands.vision.rotationAim;
+import frc.robot.commands.vision.aim;
 import frc.robot.commands.vision.fullVision;
-import frc.robot.commands.vision.lateralAim;
+import frc.robot.commands.vision.align;
 import frc.robot.routines.moveThenShoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -34,12 +29,11 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
-import frc.robot.subsystems.Vision3d;
+import frc.robot.subsystems.Photonvision;
 import frc.robot.trajectories.MoveBackward;
 import frc.robot.trajectories.MoveForward;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -47,8 +41,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
-	public static final String AUTON_PATH_FLIP = "TEST";
-	public static final String AUTON_FORWARD = "Forward";
+	public static final String AUTON_MIDDLE_HIGHSHOOT = "Middle of High Shooter";
 	public static final String AUTON_S_SHAPE = "S Shape";
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
 
@@ -61,7 +54,7 @@ public class RobotContainer {
 	private final Intake m_intake = new Intake();
 	private final Shooter m_shooter = new Shooter();
 	private final Climber m_climber = new Climber();
-	private final Vision3d m_Vision3d = new Vision3d();
+	private final Photonvision m_Vision3d = new Photonvision();
 
     private final double ANGULAR_P = 0.1;
     private final double ANGULAR_D = 0.0;
@@ -77,7 +70,7 @@ public class RobotContainer {
 	CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
 	public RobotContainer() {
-		autonChooser.setDefaultOption("Forward", AUTON_FORWARD);
+		autonChooser.setDefaultOption("Middle of High Shooter", AUTON_MIDDLE_HIGHSHOOT);
 		autonChooser.addOption("S Shape", AUTON_S_SHAPE);
 		SmartDashboard.putData("Auto choices", autonChooser);
 		
@@ -91,12 +84,6 @@ public class RobotContainer {
 					-MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
 					true, true),
 				m_robotDrive));
-
-		//m_intake.setDefaultCommand(new StopIntake(m_intake));
-		// m_lights.setDefaultCommand(new RunCommand(() -> m_lights.DefaultState(), m_lights));
-		// m_support.setDefaultCommand(new RunCommand(() -> m_support.stopSupport(), m_support));
-		// m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.stopShooter(), m_shooter));
-
 	}
 
 	private void configureButtonBindings() {	
@@ -117,7 +104,7 @@ public class RobotContainer {
 			.onTrue(new DrivetrainReverseHeading(m_robotDrive));
 
 		m_driverController.a() 
-			.whileTrue(new rotationAim(m_robotDrive, m_Vision3d));
+			.whileTrue(new aim(m_robotDrive, m_Vision3d));
 
 		m_driverController.b() 
 			.whileTrue(new fullVision(m_robotDrive, m_Vision3d));
@@ -128,7 +115,7 @@ public class RobotContainer {
 			.onFalse(new MoveBackward(m_robotDrive, this, 1));
 
 		m_operatorController.a() 
-			.whileTrue(new lateralAim(m_robotDrive, m_Vision3d));					
+			.whileTrue(new align(m_robotDrive, m_Vision3d));					
 
 		m_operatorController.leftTrigger() // START INTAKE
 				.whileTrue(new StartIntake(m_intake, -1*SpeedConstants.IntakeSpeed))
@@ -165,9 +152,8 @@ public class RobotContainer {
 
 	public Command getAutonomousCommand() {
 		switch (getSelected()) {
-			case AUTON_FORWARD:
-				return new moveThenShoot(m_robotDrive,m_shooter,m_support,this, 1.0, 1.5,1.0);
-				//return new MoveForward(m_robotDrive, this, 2); //2 meters
+			case AUTON_MIDDLE_HIGHSHOOT:
+				return new moveThenShoot(m_intake,m_robotDrive,m_shooter,m_support,this);
 			case AUTON_S_SHAPE:
 				return new MoveSShape(m_robotDrive, this, 3);
 			default:
@@ -298,7 +284,7 @@ public class RobotContainer {
 	{
 		return m_support;
 	}
-	public Vision3d getVision3d(){
+	public Photonvision getVision3d(){
 		return m_Vision3d;
 	}
 }

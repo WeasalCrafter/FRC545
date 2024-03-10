@@ -11,7 +11,11 @@ public class HumanInput extends ParallelCommandGroup{
     private double time = SpeedConstants.HumanInputTime;
     private double speed = SpeedConstants.HumanInputSpeed;
 
-    public HumanInput(Shooter shooter, Support support){
+    public HumanInput(Shooter shooter, Support support, Double seconds){
+        if(seconds == null){
+            seconds=time;
+        }
+        
         addCommands(
             new TempShooter(shooter, time, speed),
             new TempSupport(support, time, speed)
