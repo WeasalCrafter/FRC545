@@ -119,6 +119,7 @@ public final class Constants {
 		public static final double rotationErrorMargin = 5; //degrees
 		
 		public static final double TargetDistance = 1;
+		public static final double goalDeadband = 0.25;
 
 		public static final double ANGULAR_P = 0.1;
 		public static final double ANGULAR_D = 0.0;

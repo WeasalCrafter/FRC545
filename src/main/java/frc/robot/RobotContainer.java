@@ -15,6 +15,7 @@ import frc.robot.commands.support.common.StopSupport;
 import frc.robot.commands.vision.aim;
 import frc.robot.commands.vision.fullVision;
 import frc.robot.commands.vision.lateral;
+import frc.robot.commands.vision.loopVision;
 import frc.robot.commands.vision.range;
 import frc.robot.routines.middleHighShot;
 import frc.robot.subsystems.Climber;
@@ -141,6 +142,10 @@ public class RobotContainer {
 		m_driverController.leftTrigger().and(
 			m_driverController.pov(0)) //UP
 				.whileTrue(new fullVision(m_robotDrive, m_vision));
+
+		m_driverController.rightTrigger().and(
+			m_driverController.pov(0)) //UP
+				.whileTrue(new loopVision(m_robotDrive, m_vision));
 	}
 
 

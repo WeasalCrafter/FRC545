@@ -1,9 +1,13 @@
 package frc.robot.commands.vision;
+
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Photonvision;
 
-public class fullVision extends Command {
+public class loopVision extends Command {
     private Drivetrain m_robotDrive;
     private Photonvision m_visionSystem;
 
@@ -11,7 +15,9 @@ public class fullVision extends Command {
     private double lateralSpeed;
     private double rotationSpeed;
 
-    public fullVision(Drivetrain robotDrive, Photonvision visionSystem) {
+    private double goalDeadband = VisionConstants.goalDeadband;
+
+    public loopVision(Drivetrain robotDrive, Photonvision visionSystem) {
         m_robotDrive = robotDrive;
         m_visionSystem = visionSystem;
 
@@ -32,6 +38,13 @@ public class fullVision extends Command {
 
     @Override
     public boolean isFinished() {
-        return false; 
+        PhotonTrackedTarget target = m_visionSystem.getTarget();
+        double[] speeds = m_visionSystem.getSpeeds();
+
+        if (target==null){
+            return true;
+        }else{
+            return Math.abs(speeds[0]) < goalDeadband && Math.abs(speeds[1]) < goalDeadband && Math.abs(speeds[2]) < goalDeadband;
+        }
     }
 }

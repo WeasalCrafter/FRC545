@@ -92,13 +92,30 @@ public class Photonvision extends SubsystemBase{
     }
 
     public double[] getSpeeds(){
+        PhotonTrackedTarget target = getTarget();
+        
+        double rot = 0;
+        double[] linear = {0,0};
+    
+        if(target != null){
+            rot = angularSpeed(target);
+            linear = linearSpeeds(target);
+        }
+        
+        double[] speeds = {
+            linear[0], //FORWARD
+            linear[1], //LATERAL
+            rot, //ANGULAR
+        };
+            
+        return speeds;
+    }
+
+    public PhotonTrackedTarget getTarget(){
         PhotonPipelineResult result = camera.getLatestResult();
         PhotonTrackedTarget target = null;
 
         List<PhotonTrackedTarget> targets = result.getTargets();
-
-        double rot = 0;
-        double[] linear = {0,0};
 
         for (PhotonTrackedTarget i : targets) {
             switch (i.getFiducialId()) {
@@ -118,18 +135,6 @@ public class Photonvision extends SubsystemBase{
                     break;
             }
         }
-    
-        if(target != null){
-            rot = angularSpeed(target);
-            linear = linearSpeeds(target);
-        }
-        
-        double[] speeds = {
-            linear[0], //FORWARD
-            linear[1], //LATERAL
-            rot //ANGULAR
-        };
-            
-        return speeds;
+        return target;
     }
 }
