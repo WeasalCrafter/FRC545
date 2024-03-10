@@ -12,7 +12,10 @@ import frc.robot.commands.shooter.common.StartShooter;
 import frc.robot.commands.shooter.common.StopShooter;
 import frc.robot.commands.support.common.StartSupport;
 import frc.robot.commands.support.common.StopSupport;
+import frc.robot.commands.vision.aim;
 import frc.robot.commands.vision.fullVision;
+import frc.robot.commands.vision.lateral;
+import frc.robot.commands.vision.range;
 import frc.robot.routines.middleHighShot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -55,6 +58,7 @@ public class RobotContainer {
 		
 		configureDriverBindings();
 		configureOperatorBindings();
+		configureDebugBindings(); //TODO remove before comp
 
 		m_robotDrive.setDefaultCommand(		
 			new RunCommand(
@@ -120,6 +124,25 @@ public class RobotContainer {
 				.whileFalse(new StopShooter(m_shooter))
 				.whileFalse(new StopSupport(m_support));
 	}
+
+	public void configureDebugBindings(){
+		m_driverController.leftTrigger().and(
+			m_driverController.pov(180)) //DOWN
+				.whileTrue(new aim(m_robotDrive, m_vision));
+
+		m_driverController.leftTrigger().and(
+			m_driverController.pov(270)) //LEFT
+				.whileTrue(new lateral(m_robotDrive, m_vision));
+
+		m_driverController.leftTrigger().and(
+			m_driverController.pov(90)) //RIGHT
+				.whileTrue(new range(m_robotDrive, m_vision));
+
+		m_driverController.leftTrigger().and(
+			m_driverController.pov(0)) //UP
+				.whileTrue(new fullVision(m_robotDrive, m_vision));
+	}
+
 
 	public Command getAutonomousCommand() {
 		switch (getSelected()) {
