@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LedConstants.FixedPatterns;
 import frc.robot.LedConstants.SolidColors;
 import frc.robot.Constants;
+import frc.robot.LedConstants;
 
 
 public class Lights extends SubsystemBase {
@@ -16,14 +17,16 @@ public class Lights extends SubsystemBase {
 
     double currentState;
     double desiredState;
+    int i = 0;
+    double TELEOP_STATE = SolidColors.BLUE;
+    double REVERSE_TELEOP_STATE = SolidColors.GOLD;
 
-    double TELEOP_STATE = FixedPatterns.STROBE_BLUE;
-    double REVERSE_TELEOP_STATE = FixedPatterns.STROBE_GOLD;
-
-    double BREAK_STATE = FixedPatterns.STROBE_RED;
-    double AUTON_STATE = SolidColors.BLUE;
+    double BREAK_STATE = FixedPatterns.STROBE_GOLD;
+    double AUTON_STATE = FixedPatterns.STROBE_BLUE;
     double CLIMB_STATE = SolidColors.VIOLET;   
      
+    double[] patterns = LedConstants.FixedPatterns.patterns;
+
     public Lights(){
         currentState = AUTON_STATE;
         m_ledController = new Spark(m_port);
@@ -34,9 +37,9 @@ public class Lights extends SubsystemBase {
         currentState = m_ledController.get();
 
         if(currentState != desiredState){
-            m_ledController.set(currentState);
+            m_ledController.set(desiredState);
         }
-
+        
         super.periodic();
     }
 
@@ -63,6 +66,16 @@ public class Lights extends SubsystemBase {
                 break;
             case "climb":
                 desiredState = CLIMB_STATE;
+                break;
+            case "i":
+                i++;
+                desiredState = patterns[i];
+                SmartDashboard.putNumber("filter pattern", patterns[i]);
+                break;
+            case "-i":
+                i--;
+                desiredState = patterns[i];
+                SmartDashboard.putNumber("filter pattern", patterns[i]);
                 break;
         }
     }

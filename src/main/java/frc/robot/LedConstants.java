@@ -76,6 +76,54 @@ public final class LedConstants {
         public static final double STROBE_BLUE = -0.09;
         public static final double STROBE_GOLD = -0.07;
         public static final double STROBE_WHITE = -0.05;
+
+        public static final double[] patterns = {
+            RAINBOW,
+            PARTY,
+            OCEAN,
+            LAVA,
+            FOREST,
+            RAINBOW_GLITTER,
+            CONFETTI,
+            SHOT_RED,
+            SHOT_BLUE,
+            SHOT_WHITE,
+            SINELON_RAINBOW,
+            SINELON_PARTY,
+            SINELON_OCEAN,
+            SINELON_LAVA,
+            SINELON_FOREST,
+            BPM_RAINBOW,
+            BPM_FOREST,
+            FIRE_MEDIUM,
+            FIRE_LARGE,
+            TWINKLES_RAINBOW,
+            TWINKLES_PARTY,
+            TWINKLES_OCEAN,
+            TWINKLES_LAVA,
+            TWINKLES_FOREST,
+            COLOR_WAVES_RAINBOW,
+            COLOR_WAVES_PARTY,
+            COLOR_WAVES_OCEAN,
+            COLOR_WAVES_LAVA,
+            COLOR_WAVES_FOREST,
+            LARSON_SCANNER_RED,
+            LARSON_SCANNER_GRAY,
+            LIGHT_CHASE_RED,
+            LIGHT_CHASE_BLUE,
+            LIGHT_CHASE_GRAY,
+            HEARTBEAT_RED,
+            HEARTBEAT_BLUE,
+            HEARTBEAT_WHITE,
+            HEARTBEAT_GRAY,
+            BREATH_RED,
+            BREATH_BLUE,
+            BREATH_GRAY,
+            STROBE_RED,
+            STROBE_BLUE,
+            STROBE_GOLD,
+            STROBE_WHITE
+        };
     }
     
 }

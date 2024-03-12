@@ -152,6 +152,13 @@ public class RobotContainer {
 		m_driverController.rightTrigger().and(
 			m_driverController.pov(0)) //UP
 				.whileTrue(new loopVision(m_robotDrive, m_vision));
+
+		m_driverController.a()
+				.onTrue(new InstantCommand(() -> m_lights.ChangeState("i"), m_lights));
+
+		m_driverController.b()
+				.onTrue(new InstantCommand(() -> m_lights.ChangeState("-i"), m_lights));
+
 	}
 
 
