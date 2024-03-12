@@ -166,36 +166,13 @@ public final class Constants {
 		public static final int kDriverControllerPort = 0;
 		public static final int kOperatorControllerPort = 1;
 		
-		public static final double kDriveDeadband = 0.1
-		
-		;
+		public static final double kDriveDeadband = 0.1;
+
+		public static final int BlinkinPWMPort = 0;
 
 		public static final String cameraName = "Logitech,_Inc._Webcam_C270"; //"Microsoft_LifeCam_HD-3000"; 
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------//
-	//-------------------------------------------------------------------------------------------------------------------------------------//
-
-	public static final class LEDConstants{ 
-		//PWM VALUES FOR LED COLORS
-		//https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
-
-		public static final int BlinkinPWMPort = 0;
-
-	    public static final double TELEOP_STATE = 0.77; //solid green
-		public static final double AUTON_STATE = 0.15; //change color 1 on BLINKEN to green //TODO flashing green
-
-    	public static final double BREAK_STATE = 0.61; //solid red
-
-    	public static final double SHOOT_STATE = 0.65; //solid orange //TODO make flashing 
-
-    	public static final double INTAKE_STATE = 0.87; //solid blue
-    	public static final double OUTTAKE_STATE = -0.09; //strobe blue //TODO flashing blue
-
-    	public static final double CLIMB_STATE = 0.69; //solid yellow
-		public static final double REVERSE_CLIMB_STATE = -0.07; //strobe gold //TODO make flashing yellow
-	}
-	
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 

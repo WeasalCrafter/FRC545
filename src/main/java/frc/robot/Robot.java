@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class Robot extends TimedRobot {
 	private Command m_autonomousCommand;
@@ -45,6 +44,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		m_robotContainer.getLights().ChangeState("auto");
+		m_robotContainer.reset();
+
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.schedule();
@@ -53,12 +55,15 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousPeriodic() {
-		new RunCommand(() -> m_robotContainer.getLights().DefaultState(), m_robotContainer.getLights());
+		m_robotContainer.getLights().ChangeState("auto");
 		updateToSmartDash();
 	}
 
 	@Override
 	public void teleopInit() {		
+		m_robotContainer.getLights().ChangeState("tele");
+		m_robotContainer.reset();
+
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}

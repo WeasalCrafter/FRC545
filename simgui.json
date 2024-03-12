@@ -29,9 +29,6 @@
       }
     },
     "transitory": {
-      "FMSInfo": {
-        "open": true
-      },
       "LiveWindow": {
         "open": true
       },
@@ -41,7 +38,8 @@
       "SmartDashboard": {
         "Field": {
           "open": true
-        }
+        },
+        "open": true
       },
       "photonvision": {
         "Logitech,_Inc._Webcam_C270": {

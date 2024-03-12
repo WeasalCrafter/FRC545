@@ -1,74 +1,69 @@
 package frc.robot.subsystems;
-
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LedConstants.FixedPatterns;
+import frc.robot.LedConstants.SolidColors;
 import frc.robot.Constants;
 
+
 public class Lights extends SubsystemBase {
-    int m_port = Constants.LEDConstants.BlinkinPWMPort;
-    Spark m_ledController = new Spark(m_port);
 
-    double TELEOP_STATE = Constants.LEDConstants.TELEOP_STATE;
-    double AUTON_STATE = Constants.LEDConstants.AUTON_STATE;
-    double SHOOT_STATE = Constants.LEDConstants.SHOOT_STATE;
-    double INTAKE_STATE = Constants.LEDConstants.INTAKE_STATE;
-    double OUTTAKE_STATE = Constants.LEDConstants.OUTTAKE_STATE;
-    double CLIMB_STATE = Constants.LEDConstants.CLIMB_STATE; 
-    double REVERSE_CLIMB_STATE = Constants.LEDConstants.REVERSE_CLIMB_STATE;  
-    double BREAK_STATE = Constants.LEDConstants.BREAK_STATE;  
+    int m_port = Constants.OIConstants.BlinkinPWMPort;
+    boolean isReversed = false;
+    
+    Spark m_ledController;
 
-    private String STATE;   
+    double currentState;
+    double desiredState;
 
-    public Lights() {
-        nothing();
+    double TELEOP_STATE = FixedPatterns.STROBE_BLUE;
+    double REVERSE_TELEOP_STATE = FixedPatterns.STROBE_GOLD;
+
+    double BREAK_STATE = FixedPatterns.STROBE_RED;
+    double AUTON_STATE = SolidColors.BLUE;
+    double CLIMB_STATE = SolidColors.VIOLET;   
+     
+    public Lights(){
+        currentState = AUTON_STATE;
+        m_ledController = new Spark(m_port);
     }
 
-    public void changeState(double state, String name){
-        if(this.STATE != name){
-            m_ledController.set(state);
-            System.out.println("Lights: " + name);
-            this.STATE = name;
+    @Override
+    public void periodic() {
+        currentState = m_ledController.get();
+
+        if(currentState != desiredState){
+            m_ledController.set(currentState);
         }
+
+        super.periodic();
     }
 
-    public void nothing(){
-        changeState(0, "off");
-    }
-
-    public void DefaultState(){
-        if(RobotState.isTeleop() == true){
-            changeState(TELEOP_STATE, "tele-op");
-        }else if(RobotState.isAutonomous() == true){
-            changeState(AUTON_STATE, "autonomous");
+    public void ChangeState(String name){
+        SmartDashboard.putString("Lights: ", name);
+        switch (name) {
+            case "tele":
+                isReversed = SmartDashboard.getBoolean("IS REVERSED", true);
+                if(isReversed==true){
+                    desiredState = REVERSE_TELEOP_STATE;
+                    SmartDashboard.putString("Lights: ", "reversed " + name);
+                }else{
+                    desiredState = TELEOP_STATE;
+                }
+                break;
+            case "tele-reverse":
+                desiredState = REVERSE_TELEOP_STATE;
+                break;
+            case "auto":
+                desiredState = AUTON_STATE;
+                break;
+            case "break":
+                desiredState = BREAK_STATE;
+                break;
+            case "climb":
+                desiredState = CLIMB_STATE;
+                break;
         }
-    }
-
-    public void ShootState(){
-        changeState(SHOOT_STATE, "shoot");
-    }
-
-    public void IntakeState(){
-        changeState(INTAKE_STATE, "intake");
-    }
-
-    public void OuttakeState(){
-        changeState(OUTTAKE_STATE, "outtake");
-    }
-
-    public void ClimbState(){
-        changeState(CLIMB_STATE, "climb");
-    }
-
-    public void ClimbReverseState(){
-        changeState(REVERSE_CLIMB_STATE, "climb reversed");
-    }
-
-    public void BreakState(){
-        changeState(BREAK_STATE, "break");
-    }
-
-    public String GetState(){
-        return this.STATE;
     }
 }

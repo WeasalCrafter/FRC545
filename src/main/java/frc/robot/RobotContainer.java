@@ -27,6 +27,7 @@ import frc.robot.subsystems.Support;
 import frc.robot.subsystems.Photonvision;
 import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -74,18 +75,23 @@ public class RobotContainer {
 	private void configureDriverBindings() {
 		m_driverController.rightTrigger() //CLIMB
 				.whileTrue(new RunCommand(() -> m_climber.ascend(SpeedConstants.climberSpeed),m_climber))
-				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber));
+				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber))
+				.onTrue(new InstantCommand(() -> m_lights.ChangeState("climb"), m_lights))
+				.onFalse(new InstantCommand(() -> m_lights.ChangeState("tele"), m_lights));
 				
 		m_driverController.leftTrigger() //DESCEND
 				.whileTrue(new RunCommand(() -> m_climber.descend(SpeedConstants.climberSpeed),m_climber))
-				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber));
+				.whileFalse(new RunCommand(() -> m_climber.stop(),m_climber))
+				.onTrue(new InstantCommand(() -> m_lights.ChangeState("climb"), m_lights))
+				.onFalse(new InstantCommand(() -> m_lights.ChangeState("tele"), m_lights));
 
 		m_driverController.x() // BRAKE
 				.whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
-				.whileTrue(new RunCommand(() -> m_lights.BreakState(), m_lights));
+				.onTrue(new InstantCommand(() -> m_lights.ChangeState("break"), m_lights))
+				.onFalse(new InstantCommand(() -> m_lights.ChangeState("tele"), m_lights));
 
 		m_driverController.y() // REVERSE HEADING
-			.onTrue(new DrivetrainReverseHeading(m_robotDrive));					
+			.onTrue(new DrivetrainReverseHeading(m_robotDrive,m_lights));					
 
 		m_driverController.b() //AIM AND MOVE AT TARGET
 			.whileTrue(new fullVision(m_robotDrive, m_vision));
@@ -171,6 +177,13 @@ public class RobotContainer {
 		TrajectoryConfig config = createTrajectoryConfig();
 		config.setReversed(true);
 		return config;
+	}
+
+	public void reset(){
+		m_climber.stop();
+		m_intake.stopIntake();
+		m_shooter.stopShooter();
+		m_support.stopSupport();
 	}
 
 	public Field2d getField()

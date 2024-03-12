@@ -22,11 +22,13 @@ import frc.robot.trajectories.MoveForward;
 public class middleHighShot extends SequentialCommandGroup{
 
     public middleHighShot(Intake intake, Drivetrain drive, Shooter shooter, Support support, RobotContainer container){
-        double DISTANCE_TO_NOTE = 2; 
+        //double DISTANCE_TO_NOTE = 2; 
+        double DISTANCE_TO_NOTE = 0.5; //testing
         
-        double SHOOT_TIME = 1; //Tweak Later, not detrimental
-        double OUTTAKE_TIME = 0.25; //TODO
-        double HUMANN_INPUT_TIME = 0.5; //Tweak Later, not detrimental
+        double SHOOT_TIME = 1; 
+        double OUTTAKE_TIME = 0.075;
+        double HUMANN_INPUT_TIME = 0.5; 
+        double SHOOT_DELAY_TIME = 0.5;
 
         double HIGH_SHOOT_SPEED = SpeedConstants.ShooterSpeedHigh;
         double INTAKE_SPEED = SpeedConstants.IntakeSpeed;
@@ -56,6 +58,8 @@ public class middleHighShot extends SequentialCommandGroup{
 
             new StopIntake(intake), //Stop Outtaking
             new StopSupport(support),
+
+            new WaitCommand(SHOOT_DELAY_TIME), //Slight delay before shooting
 
             new ParallelCommandGroup( //Shoot loaded note
                 new TempShooter(shooter, SHOOT_TIME, HIGH_SHOOT_SPEED),
