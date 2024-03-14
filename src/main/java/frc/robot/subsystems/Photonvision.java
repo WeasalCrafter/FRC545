@@ -41,7 +41,7 @@ public class Photonvision extends SubsystemBase{
 
         camera = new PhotonCamera(OIConstants.cameraName);
 
-        targetDistance = 1; // METERS
+        targetDistance = 0.5; // METERS
     }
 
     public double angularSpeed(PhotonTrackedTarget target){
@@ -113,28 +113,32 @@ public class Photonvision extends SubsystemBase{
 
     public PhotonTrackedTarget getTarget(){
         PhotonPipelineResult result = camera.getLatestResult();
-        PhotonTrackedTarget target = null;
+        PhotonTrackedTarget target = result.getBestTarget();
 
-        List<PhotonTrackedTarget> targets = result.getTargets();
+        // List<PhotonTrackedTarget> targets = result.getTargets();
 
-        for (PhotonTrackedTarget i : targets) {
-            switch (i.getFiducialId()) {
-                case 7:
-                    target = i; // HIGH BLUE
-                    break;
-                case 6:
-                    target = i; // LOW BLUE
-                    break;
-                case 4:
-                    target = i; // HIGH RED
-                    break;
-                case 5:
-                    target = i; // LOW RED
-                    break;
-                default:
-                    break;
-            }
-        }
+        // for (PhotonTrackedTarget i : targets) {
+        //     switch (i.getFiducialId()) {
+        //         case 7:
+        //             target = i; // HIGH BLUE
+        //             break;
+        //         case 6:
+        //             target = i; // LOW BLUE
+        //             break;
+        //         case 4:
+        //             target = i; // HIGH RED
+        //             break;
+        //         case 5:
+        //             target = i; // LOW RED
+        //             break;                
+        //         case 16:
+        //             target = i; //DEBUG
+        //             System.out.println("read");
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
         return target;
     }
 }

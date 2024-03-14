@@ -19,7 +19,7 @@ public class aim extends Command {
     @Override
     public void execute() {
         rotationSpeed = m_visionSystem.getSpeeds()[2];
-        m_robotDrive.drive(0, 0, rotationSpeed, true, true);
+        m_robotDrive.drive(0, 0, rotationSpeed, false, true);
     }
 
     @Override

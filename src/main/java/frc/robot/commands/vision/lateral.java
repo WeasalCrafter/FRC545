@@ -19,7 +19,7 @@ public class lateral extends Command {
     @Override
     public void execute() {
         lateralSpeed = m_visionSystem.getSpeeds()[1];
-        m_robotDrive.drive(0, lateralSpeed, 0, true, true);
+        m_robotDrive.drive(0, lateralSpeed, 0, false, true);
     }
 
     @Override

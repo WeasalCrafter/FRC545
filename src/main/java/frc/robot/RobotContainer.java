@@ -6,6 +6,7 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.drivetrain.DrivetrainReverseHeading;
+import frc.robot.commands.drivetrain.DrivetrainZeroHeading;
 import frc.robot.commands.intake.common.StartIntake;
 import frc.robot.commands.intake.common.StopIntake;
 import frc.robot.commands.shooter.common.StartShooter;
@@ -159,6 +160,10 @@ public class RobotContainer {
 		m_driverController.b()
 				.onTrue(new InstantCommand(() -> m_lights.ChangeState("-i"), m_lights));
 
+		//m_driverController.rightStick().and(
+			m_driverController.leftStick()//)
+				.onTrue(new DrivetrainZeroHeading(m_robotDrive))
+				.onTrue(new DrivetrainReverseHeading(m_robotDrive,m_lights));					
 	}
 
 

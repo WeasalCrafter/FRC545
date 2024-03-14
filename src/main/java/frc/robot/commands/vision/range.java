@@ -19,7 +19,7 @@ public class range extends Command {
     @Override
     public void execute() {
         forwardSpeed = m_visionSystem.getSpeeds()[0];
-        m_robotDrive.drive(forwardSpeed, 0, 0, true, true);
+        m_robotDrive.drive(forwardSpeed, 0, 0, false, true);
     }
 
     @Override

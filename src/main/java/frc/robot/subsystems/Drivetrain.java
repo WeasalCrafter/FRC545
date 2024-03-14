@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Drivetrain extends SubsystemBase {
 	
 	public final double FRONT_LEFT_VIRTUAL_OFFSET_RADIANS = 3.55;
-	public final double FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS = -3.55;
+	public final double FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS = -3.5;
 	public final double REAR_LEFT_VIRTUAL_OFFSET_RADIANS = 0.3;
 	public final double REAR_RIGHT_VIRTUAL_OFFSET_RADIANS = -2.25;
 
@@ -266,21 +266,21 @@ public class Drivetrain extends SubsystemBase {
 	public void zeroHeading() {
 		m_gyro.reset();
 		m_gyro.setAngleAdjustment(0);
-		IS_REVERSED  = false;
 	}
 
 	public void oppositeHeading() {
-		m_gyro.reset();
-		m_gyro.setAngleAdjustment(180);
-		IS_REVERSED = true;
+		if(m_gyro.getAngleAdjustment()!=180){
+			m_gyro.setAngleAdjustment(180);
+			IS_REVERSED = false;
+		}else{
+			m_gyro.setAngleAdjustment(0);
+			IS_REVERSED = true;
+		}
+
 	}
 	public void toggleHeading(){
+		oppositeHeading();
 		SmartDashboard.putBoolean("IS REVERSED", IS_REVERSED);
-		if(IS_REVERSED == true){
-			zeroHeading();
-		}else{
-			oppositeHeading();
-		}
 	}
 	/**
 	 * Returns the heading of the robot.

@@ -115,8 +115,8 @@ public final class Constants {
 	//-------------------------------------------------------------------------------------------------------------------------------------//
 
 	public static final class VisionConstants {
-		public static final double cameraHorizontalOffset = 0; //meters from robot center
-		public static final double rotationErrorMargin = 5; //degrees
+		public static final double cameraHorizontalOffset = -0.1; //meters from robot center
+		public static final double rotationErrorMargin = 2.5; //degrees
 		
 		public static final double TargetDistance = 1;
 		public static final double goalDeadband = 0.25;
@@ -128,8 +128,8 @@ public final class Constants {
         public static final double LINEAR_D = 0.0;
 
 		public static final double rotationSpeed = 0.1;
-		public static final double forwardSpeed = 5;
-		public static final double lateralSpeed = 7.5;	
+		public static final double forwardSpeed = -5;
+		public static final double lateralSpeed = -7.5;	
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//
@@ -170,7 +170,7 @@ public final class Constants {
 
 		public static final int BlinkinPWMPort = 0;
 
-		public static final String cameraName = "Logitech,_Inc._Webcam_C270"; //"Microsoft_LifeCam_HD-3000"; 
+		public static final String cameraName = "Camera_Module_v1";//"Logitech,_Inc._Webcam_C270"; //"Microsoft_LifeCam_HD-3000"; 
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//
