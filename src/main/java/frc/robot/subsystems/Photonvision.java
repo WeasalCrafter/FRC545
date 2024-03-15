@@ -113,32 +113,22 @@ public class Photonvision extends SubsystemBase{
 
     public PhotonTrackedTarget getTarget(){
         PhotonPipelineResult result = camera.getLatestResult();
+
+        List<PhotonTrackedTarget> targets = result.getTargets();
         PhotonTrackedTarget target = result.getBestTarget();
 
-        // List<PhotonTrackedTarget> targets = result.getTargets();
+        for (PhotonTrackedTarget i : targets) {
+            if(i.getFiducialId()==7){
+                target = i; // HIGH BLUE
+            }else if(i.getFiducialId()==6){
+                target = i; // LOW BLUE
+            }else if(i.getFiducialId()==4){
+                target = i; // HIGH RED
+            }else if(i.getFiducialId()==5){
+                target = i; // LOW RED
+            }
+        }
 
-        // for (PhotonTrackedTarget i : targets) {
-        //     switch (i.getFiducialId()) {
-        //         case 7:
-        //             target = i; // HIGH BLUE
-        //             break;
-        //         case 6:
-        //             target = i; // LOW BLUE
-        //             break;
-        //         case 4:
-        //             target = i; // HIGH RED
-        //             break;
-        //         case 5:
-        //             target = i; // LOW RED
-        //             break;                
-        //         case 16:
-        //             target = i; //DEBUG
-        //             System.out.println("read");
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        // }
         return target;
     }
 }

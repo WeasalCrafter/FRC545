@@ -116,7 +116,7 @@ public final class Constants {
 
 	public static final class VisionConstants {
 		public static final double cameraHorizontalOffset = -0.1; //meters from robot center
-		public static final double rotationErrorMargin = 2.5; //degrees
+		public static final double rotationErrorMargin = 1; //degrees
 		
 		public static final double TargetDistance = 1;
 		public static final double goalDeadband = 0.25;

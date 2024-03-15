@@ -26,7 +26,7 @@ import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
 import frc.robot.subsystems.Photonvision;
-import frc.robot.trajectories.MoveSShape;
+import frc.robot.trajectories.MoveForward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -172,7 +172,7 @@ public class RobotContainer {
 			case AUTON_MIDDLE_HIGHSHOOT:
 				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
 			case AUTON_S_SHAPE:
-				return new MoveSShape(m_robotDrive, this, 3);
+				return new MoveForward(m_robotDrive, this, 1);
 			default:
 				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
 		}
