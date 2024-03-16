@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		updateToSmartDash();
+		calibrateSmartDash();
 	}
 
 	@Override
@@ -85,9 +86,46 @@ public class Robot extends TimedRobot {
 		};
 
 		SmartDashboard.putNumberArray("SwerveModuleStates", loggingState);
-
 		m_robotContainer.getField().setRobotPose(m_robotContainer.getDrive().getPose());
-		
+	}
+
+	public void calibrateSmartDash(){
+		double desiredStates[] = {
+			m_robotContainer.getDrive().getFrontLeftModule().getDesiredState().angle.getRadians(),
+			m_robotContainer.getDrive().getFrontRightModule().getDesiredState().angle.getRadians(),
+			m_robotContainer.getDrive().getRearLeftModule().getDesiredState().angle.getRadians(),
+			m_robotContainer.getDrive().getRearRightModule().getDesiredState().angle.getRadians()
+		};
+
+		double absoluteStates[] = {
+			m_robotContainer.getDrive().getFrontLeftModule().getTurningAbsoluteEncoder().getPosition(),
+			m_robotContainer.getDrive().getFrontRightModule().getTurningAbsoluteEncoder().getPosition(),
+			m_robotContainer.getDrive().getRearLeftModule().getTurningAbsoluteEncoder().getPosition(),
+			m_robotContainer.getDrive().getRearRightModule().getTurningAbsoluteEncoder().getPosition()
+		};
+
+		double offSets[] = {
+			desiredStates[0] - absoluteStates[0],
+			desiredStates[1] - absoluteStates[1],
+			desiredStates[2] - absoluteStates[2],
+			desiredStates[3] - absoluteStates[3]
+		};
+
+		SmartDashboard.putNumber("FrontLeftVirtual", desiredStates[0]);
+		SmartDashboard.putNumber("FrontLeftAbsolute", absoluteStates[0]);
+		SmartDashboard.putNumber("FrontLeftCalculatedOffset", offSets[0]);
+
+		SmartDashboard.putNumber("FrontRightVirtual", desiredStates[1]);
+		SmartDashboard.putNumber("FrontRightAbsolute", absoluteStates[1]);
+		SmartDashboard.putNumber("FrontRightCalculatedOffset", offSets[1]);
+
+		SmartDashboard.putNumber("BackLeftVirtual", desiredStates[2]);
+		SmartDashboard.putNumber("BackLeftAbsolute", absoluteStates[2]);
+		SmartDashboard.putNumber("BackLeftCalculatedOffset", offSets[2]);
+
+		SmartDashboard.putNumber("BackRightVirtual", desiredStates[3]);
+		SmartDashboard.putNumber("BackRightAbsolute", absoluteStates[3]);
+		SmartDashboard.putNumber("BackRightCalculatedOffset", offSets[3]);
 	}
 
 	@Override
