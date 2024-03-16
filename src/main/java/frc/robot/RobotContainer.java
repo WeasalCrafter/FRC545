@@ -27,6 +27,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
 import frc.robot.subsystems.Photonvision;
 import frc.robot.trajectories.MoveForward;
+import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -38,6 +39,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RobotContainer {
 	public static final String AUTON_MIDDLE_HIGHSHOOT = "Middle of High Shooter";
 	public static final String AUTON_S_SHAPE = "S Shape";
+	public static final String AUTON_FORWARD = "Forward";
+
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
 
 	private final Field2d field = new Field2d();
@@ -57,6 +60,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		autonChooser.setDefaultOption("Middle of High Shooter", AUTON_MIDDLE_HIGHSHOOT);
 		autonChooser.addOption("S Shape", AUTON_S_SHAPE);
+		autonChooser.addOption("Forward", AUTON_FORWARD);
 		SmartDashboard.putData("Auto choices", autonChooser);
 		
 		configureDriverBindings();
@@ -96,6 +100,10 @@ public class RobotContainer {
 
 		m_driverController.b() //AIM AND MOVE AT TARGET
 			.whileTrue(new fullVision(m_robotDrive, m_vision));
+
+		m_driverController.leftStick() //CALIBRATE GYROSCOPE
+			.onTrue(new DrivetrainZeroHeading(m_robotDrive))
+			.onTrue(new DrivetrainReverseHeading(m_robotDrive,m_lights));
 	}
 
 	private void configureOperatorBindings() {
@@ -159,11 +167,6 @@ public class RobotContainer {
 
 		m_driverController.b()
 				.onTrue(new InstantCommand(() -> m_lights.ChangeState("-i"), m_lights));
-
-		//m_driverController.rightStick().and(
-			m_driverController.leftStick()//)
-				.onTrue(new DrivetrainZeroHeading(m_robotDrive))
-				.onTrue(new DrivetrainReverseHeading(m_robotDrive,m_lights));					
 	}
 
 
@@ -171,8 +174,10 @@ public class RobotContainer {
 		switch (getSelected()) {
 			case AUTON_MIDDLE_HIGHSHOOT:
 				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
-			case AUTON_S_SHAPE:
+			case AUTON_FORWARD:
 				return new MoveForward(m_robotDrive, this, 1);
+			case AUTON_S_SHAPE:
+				return new MoveSShape(m_robotDrive, this, 1);
 			default:
 				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
 		}

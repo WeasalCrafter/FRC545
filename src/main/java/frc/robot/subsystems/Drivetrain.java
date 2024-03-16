@@ -160,6 +160,10 @@ public class Drivetrain extends SubsystemBase {
 		double xSpeedCommanded;
 		double ySpeedCommanded;
 
+		if(fieldRelative == true){
+			fieldRelative = SmartDashboard.getBoolean("Field Oriented", true);;
+		}
+
 		if (rateLimit) {
 			// Convert XY to polar for rate limiting
 			double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
