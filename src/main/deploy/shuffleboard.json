@@ -42,7 +42,7 @@
           "4,0": {
             "size": [
               2,
-              1
+              2
             ],
             "content": {
               "_type": "Toggle Switch",
@@ -112,7 +112,7 @@
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
-        "gridSize": 100.0,
+        "gridSize": 128.0,
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
@@ -133,21 +133,21 @@
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/BackLeftAbsolute",
-                  "_title": "SmartDashboard/BackLeftAbsolute",
+                  "_title": "/SmartDashboard/BackLeftAbsolute",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/BackLeftVirtual",
-                  "_title": "SmartDashboard/BackLeftVirtual",
+                  "_title": "/SmartDashboard/BackLeftVirtual",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/BackLeftCalculatedOffset",
-                  "_title": "SmartDashboard/BackLeftCalculatedOffset",
+                  "_title": "/SmartDashboard/BackLeftCalculatedOffset",
                   "_glyph": 148,
                   "_showGlyph": false
                 }
@@ -169,21 +169,21 @@
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/BackRightAbsolute",
-                  "_title": "SmartDashboard/BackRightAbsolute",
+                  "_title": "/SmartDashboard/BackRightAbsolute",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/BackRightVirtual",
-                  "_title": "SmartDashboard/BackRightVirtual",
+                  "_title": "/SmartDashboard/BackRightVirtual",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/BackRightCalculatedOffset",
-                  "_title": "SmartDashboard/BackRightCalculatedOffset",
+                  "_title": "/SmartDashboard/BackRightCalculatedOffset",
                   "_glyph": 148,
                   "_showGlyph": false
                 }
@@ -205,21 +205,21 @@
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/FrontRightAbsolute",
-                  "_title": "SmartDashboard/FrontRightAbsolute",
+                  "_title": "/SmartDashboard/FrontRightAbsolute",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/FrontRightVirtual",
-                  "_title": "SmartDashboard/FrontRightVirtual",
+                  "_title": "/SmartDashboard/FrontRightVirtual",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/FrontRightCalculatedOffset",
-                  "_title": "SmartDashboard/FrontRightCalculatedOffset",
+                  "_title": "/SmartDashboard/FrontRightCalculatedOffset",
                   "_glyph": 148,
                   "_showGlyph": false
                 }
@@ -241,21 +241,21 @@
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/FrontLeftAbsolute",
-                  "_title": "SmartDashboard/FrontLeftAbsolute",
+                  "_title": "/SmartDashboard/FrontLeftAbsolute",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/FrontLeftVirtual",
-                  "_title": "SmartDashboard/FrontLeftVirtual",
+                  "_title": "/SmartDashboard/FrontLeftVirtual",
                   "_glyph": 148,
                   "_showGlyph": false
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/FrontLeftCalculatedOffset",
-                  "_title": "SmartDashboard/FrontLeftCalculatedOffset",
+                  "_title": "/SmartDashboard/FrontLeftCalculatedOffset",
                   "_glyph": 148,
                   "_showGlyph": false
                 }

@@ -22,13 +22,19 @@ public class Photonvision extends SubsystemBase{
     private PIDController linearController;
     private PIDController angularController;
     private PhotonCamera camera;
-    private double targetDistance;
+
+    private double defaultTargetDistance;
+    private double highTargetDistance;
+    private double lowTargetDistance;
+
     private double cameraHorizontalOffset = VisionConstants.cameraHorizontalOffset;
     private double errorMargin = VisionConstants.rotationErrorMargin;
 
     private double lateralConstant = VisionConstants.lateralSpeed;
     private double forwardConstant = VisionConstants.forwardSpeed;
     private double angularConstant = VisionConstants.rotationSpeed;
+
+    boolean debug = true; //TODO remove
 
     public Photonvision(){
         LINEAR_P = VisionConstants.LINEAR_P;
@@ -41,7 +47,9 @@ public class Photonvision extends SubsystemBase{
 
         camera = new PhotonCamera(OIConstants.cameraName);
 
-        targetDistance = 0.5; // METERS
+        defaultTargetDistance = 0.5; // METERS
+        highTargetDistance = VisionConstants.TargetDistanceHigh;
+        lowTargetDistance = VisionConstants.TargetDistanceLow;
     }
 
     public double angularSpeed(PhotonTrackedTarget target){
@@ -72,8 +80,18 @@ public class Photonvision extends SubsystemBase{
     public double[] linearSpeeds(PhotonTrackedTarget target){
         double forwardSpeed = 0;
         double lateralSpeed = 0;
+        double id = target.getFiducialId();
+        double targetDistance = defaultTargetDistance;
 
-            var pose = target.getBestCameraToTarget();
+        if(debug!=true){
+            if(id==7||id==4){ //HIGH
+                targetDistance = highTargetDistance;
+            }else if(id==6||id==5){ //LOW
+                targetDistance = lowTargetDistance;
+            }
+        }
+
+        var pose = target.getBestCameraToTarget();
             if(pose!=null){
                 Translation3d translation = pose.getTranslation();
                 double x = translation.getX();

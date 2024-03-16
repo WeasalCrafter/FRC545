@@ -42,8 +42,10 @@ public class loopVision extends Command {
         double[] speeds = m_visionSystem.getSpeeds();
 
         if (target==null){
+            System.out.println("ending loop vision early");
             return true;
         }else{
+            System.out.println("ended loop vision normally");
             return Math.abs(speeds[0]) < goalDeadband && Math.abs(speeds[1]) < goalDeadband && Math.abs(speeds[2]) < goalDeadband;
         }
     }
