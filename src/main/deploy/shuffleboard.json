@@ -2,7 +2,7 @@
   "tabPane": [
     {
       "title": "SmartDashboard",
-      "autoPopulate": true,
+      "autoPopulate": false,
       "autoPopulatePrefix": "SmartDashboard/",
       "widgetPane": {
         "gridSize": 128.0,
@@ -75,12 +75,12 @@
             ],
             "content": {
               "_type": "Camera Stream",
-              "_title": "Camera Stream",
+              "_title": "Processed Stream",
               "_glyph": 148,
               "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
+              "Crosshair/Show crosshair": false,
               "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
+              "Controls/Show controls": false,
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
@@ -135,19 +135,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "title": "LiveWindow",
-      "autoPopulate": true,
-      "autoPopulatePrefix": "LiveWindow/",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "titleType": 0,
-        "tiles": {}
       }
     }
   ],
