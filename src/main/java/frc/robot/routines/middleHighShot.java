@@ -23,7 +23,7 @@ public class middleHighShot extends SequentialCommandGroup{
 
     public middleHighShot(Intake intake, Drivetrain drive, Shooter shooter, Support support, RobotContainer container){
         //double DISTANCE_TO_NOTE = 2; 
-        double DISTANCE_TO_NOTE = 0.5; //testing
+        double DISTANCE_TO_NOTE = 3; //testing
         
         double SHOOT_TIME = 1; 
         double OUTTAKE_TIME = 0.075;

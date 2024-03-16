@@ -39,19 +39,6 @@
               "_showGlyph": false
             }
           },
-          "4,0": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Toggle Switch",
-              "_source0": "network_table:///SmartDashboard/Field Oriented",
-              "_title": "Field Oriented",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "8,0": {
             "size": [
               5,
@@ -71,10 +58,11 @@
           "0,0": {
             "size": [
               4,
-              3
+              4
             ],
             "content": {
               "_type": "Camera Stream",
+              "_source0": "camera_server://photonvision_Port_1182_Output_MJPEG_Server",
               "_title": "Processed Stream",
               "_glyph": 148,
               "_showGlyph": false,
@@ -84,8 +72,8 @@
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           },
           "6,1": {
@@ -102,6 +90,19 @@
               "Visuals/Starting angle": 180.0,
               "Visuals/Show tick mark ring": true,
               "Visuals/Counter clockwise": false
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/Field Oriented",
+              "_title": "SmartDashboard/Field Oriented",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }
@@ -261,28 +262,15 @@
                 }
               ]
             }
-          },
-          "1,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Toggle Switch",
-              "_source0": "network_table:///SmartDashboard/Field Oriented",
-              "_title": "Is Field Oriented",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 4.0,
+    "x": -7.0,
     "y": 0.0,
-    "width": 1916.0,
+    "width": 1927.0,
     "height": 1032.0
   }
 }

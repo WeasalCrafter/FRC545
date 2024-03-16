@@ -46,7 +46,11 @@ public class loopVision extends Command {
             return true;
         }else{
             System.out.println("ended loop vision normally");
-            return Math.abs(speeds[0]) < goalDeadband && Math.abs(speeds[1]) < goalDeadband && Math.abs(speeds[2]) < goalDeadband;
+            return (
+                (Math.abs(speeds[0]) < goalDeadband) && 
+                (Math.abs(speeds[1]) < goalDeadband) && 
+                (Math.abs(speeds[2]) < goalDeadband)
+            );
         }
     }
 }

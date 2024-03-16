@@ -175,7 +175,7 @@ public class RobotContainer {
 			case AUTON_MIDDLE_HIGHSHOOT:
 				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
 			case AUTON_FORWARD:
-				return new MoveForward(m_robotDrive, this, 1);
+				return new MoveForward(m_robotDrive, this, 1.33);
 			case AUTON_S_SHAPE:
 				return new MoveSShape(m_robotDrive, this, 1);
 			default:
