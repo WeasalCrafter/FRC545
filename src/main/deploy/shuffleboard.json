@@ -104,6 +104,54 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "5,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Intake Speed",
+              "_title": "Intake Speed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": -1.0,
+              "Range/Max": 1.0,
+              "Visuals/Show value": true
+            }
+          },
+          "6,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Shooter Speed",
+              "_title": "Shooter Speed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": -1.0,
+              "Range/Max": 1.0,
+              "Visuals/Show value": true
+            }
+          },
+          "7,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Support Speed",
+              "_title": "Support Speed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": -1.0,
+              "Range/Max": 1.0,
+              "Visuals/Show value": true
+            }
           }
         }
       }
@@ -268,9 +316,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.0,
-    "y": 0.0,
-    "width": 1927.0,
-    "height": 1032.0
+    "x": 1.0,
+    "y": 1.0,
+    "width": 1918.0,
+    "height": 1030.0
   }
 }
