@@ -18,7 +18,11 @@ import frc.robot.commands.vision.fullVision;
 import frc.robot.commands.vision.lateral;
 import frc.robot.commands.vision.loopVision;
 import frc.robot.commands.vision.range;
-import frc.robot.routines.middleHighShot;
+import frc.robot.routines.highShot.doubleLeftHighShoot;
+import frc.robot.routines.highShot.doubleMiddleHighShoot;
+import frc.robot.routines.highShot.doubleRightHighShoot;
+import frc.robot.routines.highShot.multiMiddleHighShoot;
+import frc.robot.routines.highShot.singleMiddleHighShoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -26,8 +30,6 @@ import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
 import frc.robot.subsystems.Photonvision;
-import frc.robot.trajectories.MoveForward;
-import frc.robot.trajectories.MoveSShape;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -37,9 +39,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
-	public static final String AUTON_MIDDLE_HIGHSHOOT = "Middle of High Shooter";
-	public static final String AUTON_S_SHAPE = "S Shape";
-	public static final String AUTON_FORWARD = "Forward";
+	public static final String AUTON_FOUR_MIDDLE_HIGHSHOOT = "four notes + one loaded";
+	public static final String AUTON_TWO_MIDDLE_HIGHSHOOT = "one note + one loaded";
+	public static final String AUTON_ONE_MIDDLE_HIGHSHOOT = "one loaded";
+
+	public static final String AUTON_LEFT_HIGHSHOOT = "zero notes left";
+	public static final String AUTON_RIGHT_HIGHSHOOT = "zero notes right";
 
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
 
@@ -58,9 +63,14 @@ public class RobotContainer {
 	CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
 	public RobotContainer() {
-		autonChooser.setDefaultOption("Middle of High Shooter", AUTON_MIDDLE_HIGHSHOOT);
-		autonChooser.addOption("S Shape", AUTON_S_SHAPE);
-		autonChooser.addOption("Forward", AUTON_FORWARD);
+
+		autonChooser.setDefaultOption("1 loaded, middle of high(7 pts)", AUTON_ONE_MIDDLE_HIGHSHOOT);
+		autonChooser.addOption("1 loaded + 1 note, middle of high(12 pts)", AUTON_TWO_MIDDLE_HIGHSHOOT);
+		autonChooser.addOption("1 loaded + 3 notes, middle of high(22 pts)", AUTON_FOUR_MIDDLE_HIGHSHOOT);
+
+		autonChooser.addOption("1 loaded + 1 note, left side of high(12 pts)", AUTON_LEFT_HIGHSHOOT);
+		autonChooser.addOption("1 loaded + 1 note, right side of high(12 pts)", AUTON_RIGHT_HIGHSHOOT);
+		
 		SmartDashboard.putData("Auto choices", autonChooser);
 		
 		configureDriverBindings();
@@ -172,14 +182,18 @@ public class RobotContainer {
 
 	public Command getAutonomousCommand() {
 		switch (getSelected()) {
-			case AUTON_MIDDLE_HIGHSHOOT:
-				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
-			case AUTON_FORWARD:
-				return new MoveForward(m_robotDrive, this, 1.33);
-			case AUTON_S_SHAPE:
-				return new MoveSShape(m_robotDrive, this, 1);
+			case AUTON_FOUR_MIDDLE_HIGHSHOOT:
+				return new multiMiddleHighShoot(m_intake,m_robotDrive,m_shooter,m_support,this);
+			case AUTON_TWO_MIDDLE_HIGHSHOOT:
+				return new doubleMiddleHighShoot(m_intake,m_robotDrive,m_shooter,m_support,this);
+			case AUTON_ONE_MIDDLE_HIGHSHOOT:
+				return new singleMiddleHighShoot(m_intake,m_robotDrive,m_shooter,m_support,this);
+			case AUTON_LEFT_HIGHSHOOT:
+				return new doubleLeftHighShoot(m_intake,m_robotDrive,m_shooter,m_support,this);
+			case AUTON_RIGHT_HIGHSHOOT:
+				return new doubleRightHighShoot(m_intake,m_robotDrive,m_shooter,m_support,this);
 			default:
-				return new middleHighShot(m_intake,m_robotDrive,m_shooter,m_support,this);
+				return new singleMiddleHighShoot(m_intake,m_robotDrive,m_shooter,m_support,this);
 		}
 	}
 

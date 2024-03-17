@@ -5,49 +5,14 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-	 /**
-	PORTS AND ID'S
 
-	CONTROLLERS
-	  driver - 0
-	  operator - 1
+	public static double loganMeters(double meters){
+		return meters * (4/3);
+	}
 
-	FRONT LEFT (drivetrain 3-10)
-	  drive: CAN- 5
-	  turn: CAN- 6
-	  encoder: ANALOG- 3
-
-	FRONT RIGHT
-	  drive: CAN- 10
-	  turn: CAN- 9
-	  encoder: ANALOG- 2
-
-	BACK LEFT
-	  drive: CAN- 7
-	  turn: CAN- 8
-	  encoder: ANALOG- 1
-
-	BACK RIGHT
-	  drive: CAN- 4
-	  turn: CAN- 3
-	  encoder: ANALOG- 0
-
-	INTAKE
-	  orange - 11
-	  green - 12
-
-	SHOOTER
-	  motor1 - 13
-	  motor2 - 14
-
-	CLIMBER
-	  left - 15
-	  right - 16
-
-	LED
-	  module_pwm - 0
-  */
-
+	public static double loganInches(double inches){
+		return (Units.inchesToMeters(inches) * (4/3));
+	}
 
 	public static final class DrivetrainConstants {
 		// Driving Parameters - Note that these are not the maximum capable speeds of

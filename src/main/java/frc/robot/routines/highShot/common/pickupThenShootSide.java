@@ -1,9 +1,10 @@
-package frc.robot.routines;
+package frc.robot.routines.highShot.common;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.SpeedConstants;
+import frc.robot.AutonConstants.HighShot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.common.HumanInput;
 import frc.robot.commands.intake.common.StartIntake;
@@ -16,40 +17,43 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Support;
-import frc.robot.trajectories.MoveBackward;
-import frc.robot.trajectories.MoveForward;
+import frc.robot.trajectories.MoveDiagonalBackward;
+import frc.robot.trajectories.MoveDiagonalForward;
 
-public class middleHighShot extends SequentialCommandGroup{
+public class pickupThenShootSide extends SequentialCommandGroup{
 
-    public middleHighShot(Intake intake, Drivetrain drive, Shooter shooter, Support support, RobotContainer container){
-        //double DISTANCE_TO_NOTE = 2; 
-        double DISTANCE_TO_NOTE = 3; //testing
-        
-        double SHOOT_TIME = 1; 
-        double OUTTAKE_TIME = 0.075;
-        double HUMANN_INPUT_TIME = 0.5; 
-        double SHOOT_DELAY_TIME = 0.5;
+    public pickupThenShootSide(Intake intake, Drivetrain drive, Shooter shooter, Support support, RobotContainer container, String direction, double degrees){
+        double DISTANCE_TO_NOTE_METERS = HighShot.DISTANCE_TO_NOTE_METERS;
+        double HORIZONTAL_OFFSET_SIDE = HighShot.HORIZONTAL_OFFSET_SIDE;
+        double SHOOT_TIME = HighShot.SHOOT_TIME; 
+        double OUTTAKE_TIME = HighShot.OUTTAKE_TIME;
+        double HUMANN_INPUT_TIME = HighShot.HUMANN_INPUT_TIME; 
+        double SHOOT_DELAY_TIME = HighShot.SHOOT_DELAY_TIME;
 
         double HIGH_SHOOT_SPEED = SpeedConstants.ShooterSpeedHigh;
         double INTAKE_SPEED = SpeedConstants.IntakeSpeed;
 
-        addCommands(
-            new ParallelCommandGroup( //Shoot loaded note
-                new TempShooter(shooter, SHOOT_TIME, HIGH_SHOOT_SPEED),
-                new TempSupport(support, SHOOT_TIME, HIGH_SHOOT_SPEED)  
-            ),
+        double constant = 0;
 
+        if(direction == "left"){
+            constant = 1;
+        }else if(direction == "right"){
+            constant = -1;
+        }
+
+        addCommands(
 			new StartIntake(intake, -1*INTAKE_SPEED), //Start Intaking
 			new StartSupport(support, INTAKE_SPEED),
 
-            new MoveForward(drive, container, DISTANCE_TO_NOTE), //Drive backward to note on floor
+            new MoveDiagonalForward(drive, container, DISTANCE_TO_NOTE_METERS, (constant*HORIZONTAL_OFFSET_SIDE),((-constant)*degrees)), 
 
             new StopIntake(intake), //Stop Intaking
             new StopSupport(support),
 
             new HumanInput(shooter, support, HUMANN_INPUT_TIME),
 
-            new MoveBackward(drive, container, DISTANCE_TO_NOTE), //Drive to goal
+            //new MoveBackward(drive, container, DISTANCE_TO_NOTE_METERS), //Drive to goal
+            new MoveDiagonalBackward(drive, container, -DISTANCE_TO_NOTE_METERS, -(constant*HORIZONTAL_OFFSET_SIDE),-((-constant)*degrees)), //Drive to goal
 
             new StartIntake(intake, INTAKE_SPEED), //Start Outtaking
             new StartSupport(support, -1*INTAKE_SPEED),
@@ -64,10 +68,11 @@ public class middleHighShot extends SequentialCommandGroup{
             new ParallelCommandGroup( //Shoot loaded note
                 new TempShooter(shooter, SHOOT_TIME, HIGH_SHOOT_SPEED),
                 new TempSupport(support, SHOOT_TIME, HIGH_SHOOT_SPEED)  
-            ),
+            )
 
-            new MoveForward(drive, container, DISTANCE_TO_NOTE) //Drive backward to where note was
         );
 
     }
+
+
 }
