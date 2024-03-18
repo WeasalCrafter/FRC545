@@ -8,6 +8,8 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.shooter.common.TempShooter;
 import frc.robot.commands.support.common.TempSupport;
 import frc.robot.routines.highShot.common.pickupThenShoot;
+import frc.robot.routines.highShot.common.pickupThenShootMiddleSide;
+import frc.robot.routines.highShot.common.pickupThenShootSide;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -25,8 +27,8 @@ public class multiMiddleHighShoot extends SequentialCommandGroup{
             ),
             
             new pickupThenShoot(intake, drive, shooter, support, container, "middle"),
-            new pickupThenShoot(intake, drive, shooter, support, container, "right"),
-            new pickupThenShoot(intake, drive, shooter, support, container, "left")
+            new pickupThenShootMiddleSide(intake, drive, shooter, support, container, "right"),
+            new pickupThenShootMiddleSide(intake, drive, shooter, support, container, "left")
         );  
     }
 }
