@@ -34,7 +34,7 @@ public class Photonvision extends SubsystemBase{
     private double forwardConstant = VisionConstants.forwardSpeed;
     private double angularConstant = VisionConstants.rotationSpeed;
 
-    boolean debug = true; //TODO remove
+    boolean debug = false; //TODO remove
 
     public Photonvision(){
         LINEAR_P = VisionConstants.LINEAR_P;

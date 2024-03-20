@@ -27,6 +27,7 @@ import frc.robot.trajectories.MoveRight;
 
 public class pickupThenShootMiddleSide extends SequentialCommandGroup{
 
+
     public pickupThenShootMiddleSide(Intake intake, Drivetrain drive, Shooter shooter, Support support, RobotContainer container, String direction){
         double DISTANCE_TO_NOTE_METERS = HighShot.DISTANCE_TO_NOTE_METERS;
         double DISTANCE_BETWEEN_NOTES_METERS = HighShot.DISTANCE_BETWEEN_NOTES_METERS;

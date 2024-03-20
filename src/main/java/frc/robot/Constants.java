@@ -73,7 +73,7 @@ public final class Constants {
 		public static final double ShooterSpeedLow = 0.215;
 		public static final double ShooterSpeedHigh = 1;
 
-		public static final double climberSpeed = 0.2;	
+		public static final double climberSpeed = 0.75;	
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------//
@@ -83,8 +83,8 @@ public final class Constants {
 		public static final double cameraHorizontalOffset = -0.1; //meters from robot center
 		public static final double rotationErrorMargin = 1; //degrees
 		
-		public static final double TargetDistanceHigh = 1; //from camera, not bumper
-		public static final double TargetDistanceLow = 1; //from camera, not bumper
+		public static final double TargetDistanceHigh = Constants.loganInches(37); //from camera, not bumper
+		public static final double TargetDistanceLow = 0; //from camera, not bumper
 
 		public static final double goalDeadband = 0.25;
 

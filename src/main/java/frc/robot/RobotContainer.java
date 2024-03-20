@@ -65,8 +65,8 @@ public class RobotContainer {
 	public RobotContainer() {
 
 		autonChooser.setDefaultOption("1 loaded, middle of high(7 pts)", AUTON_ONE_MIDDLE_HIGHSHOOT);
-		autonChooser.addOption("1 loaded + 1 note, middle of high(12 pts)", AUTON_TWO_MIDDLE_HIGHSHOOT);
-		autonChooser.addOption("1 loaded + 3 notes, middle of high(22 pts)", AUTON_FOUR_MIDDLE_HIGHSHOOT);
+		//autonChooser.addOption("1 loaded + 1 note, middle of high(12 pts)", AUTON_TWO_MIDDLE_HIGHSHOOT);
+		//autonChooser.addOption("1 loaded + 3 notes, middle of high(22 pts)", AUTON_FOUR_MIDDLE_HIGHSHOOT);
 
 		autonChooser.addOption("1 loaded + 1 note, left side of high(12 pts)", AUTON_LEFT_HIGHSHOOT);
 		autonChooser.addOption("1 loaded + 1 note, right side of high(12 pts)", AUTON_RIGHT_HIGHSHOOT);
@@ -75,7 +75,7 @@ public class RobotContainer {
 		
 		configureDriverBindings();
 		configureOperatorBindings();
-		configureDebugBindings(); //TODO remove before comp
+		//configureDebugBindings(); //TODO remove before comp
 
 		m_robotDrive.setDefaultCommand(		
 			new RunCommand(
